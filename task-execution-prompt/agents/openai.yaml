@@ -1,0 +1,4 @@
+interface:
+  display_name: "Task Execution Prompt"
+  short_description: "Create a safe task execution workflow"
+  default_prompt: "Use $task-execution-prompt to create a repository-specific task execution prompt."
