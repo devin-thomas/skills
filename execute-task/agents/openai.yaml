@@ -1,0 +1,4 @@
+interface:
+  display_name: "Execute Task"
+  short_description: "Complete one bounded repository task"
+  default_prompt: "Use $execute-task to complete one next executable task in this repository."
