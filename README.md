@@ -19,3 +19,13 @@ as a whole; it is not required for an individual skill.
 
 - [`execute-task`](execute-task/SKILL.md) completes one bounded task pass from a repository prompt or a portable Linear, GitHub, or Markdown workflow.
 - [`task-execution-prompt`](task-execution-prompt/SKILL.md) creates or revises a repository-specific task execution prompt and validates its selection logic with a read-only rehearsal.
+
+## Install from GitHub
+
+Ask Codex:
+
+```text
+Use $skill-installer to install execute-task and task-execution-prompt from https://github.com/devin-thomas/skills.
+```
+
+The installed skills are available on the next turn.
