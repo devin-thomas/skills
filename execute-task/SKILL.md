@@ -1,11 +1,22 @@
 ---
 name: execute-task
-description: Complete exactly one next executable repository task in a bounded pass. Use when the user invokes `/execute-task`, asks to execute or complete the next task, ticket, or issue, supplies a TASK-EXECUTION-PROMPT.md, or wants one implementation pass from Linear, GitHub Issues, or repository-local Markdown. Prefer a repository's canonical task execution prompt when one exists; otherwise use the portable workflow.
+description: Complete exactly one next executable repository task in a bounded pass. Use when the user invokes `/execute-task`, asks to execute or complete the next task, ticket, or issue, supplies a TASK-EXECUTION-PROMPT.md, or wants one implementation pass from Linear, GitHub Issues, or repository-local Markdown. If the request asks for repeated cycles or a cycle count, delegate to execute-task-cycles. Prefer a repository's canonical task execution prompt when one exists; otherwise use the portable workflow.
 ---
 
 # Execute Task
 
 Complete one task-level pass from fresh repository and task-source state, record a terminal execution result, and stop.
+
+## Delegate cycle requests
+
+Before reading task-source state or beginning a task pass, inspect the user's request for an explicit repetition signal: `max_cycles`, a positive cycle count, "N times", "next N tasks", "repeatedly", or equivalent wording. When the request clearly asks for more than one pass:
+
+- Hand off to `execute-task-cycles`, preserving the user's requested maximum and any task-source, repository, or canonical-prompt context.
+- Let `execute-task-cycles` validate the maximum and control all subsequent passes.
+- Do not execute a single task, choose a task, or reinterpret the request as one pass before handing off.
+- If the repetition count is missing, invalid, zero, negative, or ambiguous, let `execute-task-cycles` report the invalid invocation without starting task work.
+
+Only continue with this skill's one-pass workflow when the user requests one task or the request contains no clear repetition signal.
 
 ## Preserve the outer invariants
 

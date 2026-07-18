@@ -18,6 +18,7 @@ as a whole; it is not required for an individual skill.
 ## Available skills
 
 - [`execute-task`](execute-task/SKILL.md) completes one bounded task pass from a repository prompt or a portable Linear, GitHub, or Markdown workflow.
+- [`execute-task-cycles`](execute-task-cycles/SKILL.md) runs bounded sequential `execute-task` passes up to a caller-specified maximum, stopping on failure, incompleteness, or human gates.
 - [`task-execution-prompt`](task-execution-prompt/SKILL.md) creates or revises a repository-specific task execution prompt and validates its selection logic with a read-only rehearsal.
 
 ## Install from GitHub
