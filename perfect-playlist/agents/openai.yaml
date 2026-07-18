@@ -1,0 +1,4 @@
+interface:
+  display_name: "Perfect Playlist"
+  short_description: "Build exact Spotify playlists without substitutions"
+  default_prompt: "Use $perfect-playlist to build an exact Spotify playlist from my selected songs."
