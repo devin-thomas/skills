@@ -1,22 +1,27 @@
 ---
 name: execute-task
-description: Complete exactly one next executable repository task in a bounded pass. Use when the user invokes `/execute-task`, asks to execute or complete the next task, ticket, or issue, supplies a TASK-EXECUTION-PROMPT.md, or wants one implementation pass from Linear, GitHub Issues, or repository-local Markdown. If the request asks for repeated cycles or a cycle count, delegate to execute-task-cycles. Prefer a repository's canonical task execution prompt when one exists; otherwise use the portable workflow.
+description: Complete exactly one next executable repository task in a bounded pass. Use only when the user explicitly invokes `/execute-task`, explicitly asks to select and execute one next task/ticket/issue, explicitly supplies a TASK-EXECUTION-PROMPT.md for execution, or clearly requests one task pass from Linear, GitHub Issues, or repository-local Markdown. Do not trigger for generic continuation language such as "continue from here," "resume," or "follow the handoff," nor for ordinary implementation work already scoped by the conversation. If the request explicitly asks for multiple tasks, repeated execution, a loop, or completion of a backlog/project, delegate to execute-task-cycles. Prefer a repository's canonical task execution prompt when one exists; otherwise use the portable workflow.
 ---
 
 # Execute Task
 
 Complete one task-level pass from fresh repository and task-source state, record a terminal execution result, and stop.
 
+## Trigger conservatively
+
+Enter this workflow only when the user clearly asks for one repository task to be selected and executed. Generic continuation or handoff phrases alone do not invoke this skill. When the user says `continue from here`, `resume`, `keep going`, or `follow the handoff`, continue the already scoped work through the standard agent workflow unless the request separately contains an explicit task-selection signal.
+
+Do not infer task execution merely because a handoff mentions a tracker issue, a task connector is installed, or repository task files exist.
+
 ## Delegate cycle requests
 
-Before reading task-source state or beginning a task pass, inspect the user's request for an explicit repetition signal: `max_cycles`, a positive cycle count, "N times", "next N tasks", "repeatedly", or equivalent wording. When the request clearly asks for more than one pass:
+Before reading task-source state or beginning a task pass, inspect the user's request for an explicit repetition signal: `max_cycles`, a positive cycle count, "N times", "next N tasks", "repeatedly", "in a loop", "all remaining tasks", "until the project is complete", or equivalent wording. When the request clearly asks for more than one pass:
 
-- Hand off to `execute-task-cycles`, preserving the user's requested maximum and any task-source, repository, or canonical-prompt context.
-- Let `execute-task-cycles` validate the maximum and control all subsequent passes.
+- Hand off to `execute-task-cycles`, preserving any user-supplied maximum and all task-source, repository, or canonical-prompt context.
+- When the user does not supply a valid positive maximum, let `execute-task-cycles` apply its default of `100` without asking the user to confirm a number.
 - Do not execute a single task, choose a task, or reinterpret the request as one pass before handing off.
-- If the repetition count is missing, invalid, zero, negative, or ambiguous, let `execute-task-cycles` report the invalid invocation without starting task work.
 
-Only continue with this skill's one-pass workflow when the user requests one task or the request contains no clear repetition signal.
+Only continue with this skill's one-pass workflow when the user explicitly requests one task. If there is neither an explicit one-task request nor a clear multi-task repetition signal, do not use either task-execution skill.
 
 ## Preserve the outer invariants
 

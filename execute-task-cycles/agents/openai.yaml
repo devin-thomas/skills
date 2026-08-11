@@ -1,4 +1,4 @@
 interface:
   display_name: "Execute Task Cycles"
-  short_description: "Run execute-task in bounded sequential cycles"
-  default_prompt: "Use $execute-task-cycles with max_cycles=3 to execute successive repository tasks until the limit or a stopping condition is reached."
+  short_description: "Run an explicit multi-task execution loop"
+  default_prompt: "Use $execute-task-cycles to work through the remaining repository tasks until the project is complete or a stopping condition is reached."
