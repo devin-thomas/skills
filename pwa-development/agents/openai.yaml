@@ -1,0 +1,4 @@
+interface:
+  display_name: "PWA Development"
+  short_description: "Build, audit, validate, and release robust PWAs"
+  default_prompt: "Use $pwa-development to audit and harden this web app as an installable PWA."
