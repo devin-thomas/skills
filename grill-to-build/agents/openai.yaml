@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grill to Build"
+  short_description: "Turn rough ideas into executable build packs"
+  default_prompt: "Use $grill-to-build to turn this idea into a scoped, implementation-ready build pack."

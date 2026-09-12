@@ -17,6 +17,8 @@ as a whole; it is not required for an individual skill.
 
 ## Available skills
 
+- [`grill-to-build`](grill-to-build/SKILL.md) turns focused discovery into synchronized context, decisions, a specification, and ordered build tickets. See its [usage guide](grill-to-build/README.md) for portable diagram preferences.
+
 - [`execute-task`](execute-task/SKILL.md) completes one bounded task pass from a repository prompt or a portable Linear, GitHub, or Markdown workflow.
 - [`execute-task-cycles`](execute-task-cycles/SKILL.md) runs bounded sequential `execute-task` passes up to a caller-specified maximum, stopping on failure, incompleteness, or human gates.
 - [`perfect-playlist`](perfect-playlist/SKILL.md) builds, appends, verifies, exports, searches, and inspects exact Spotify playlists without substitutions.
