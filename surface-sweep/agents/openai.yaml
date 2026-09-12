@@ -1,0 +1,4 @@
+interface:
+  display_name: "Surface Sweep"
+  short_description: "Inspect and fix visual states across web surfaces"
+  default_prompt: "Use $surface-sweep to test and correct this app across its routes, interaction states, and responsive layouts, with reviewed before/after evidence."

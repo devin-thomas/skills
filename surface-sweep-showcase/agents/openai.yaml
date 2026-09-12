@@ -1,0 +1,4 @@
+interface:
+  display_name: "Surface Sweep Showcase"
+  short_description: "Fix product surfaces and build a screenshot showcase"
+  default_prompt: "Use $surface-sweep-showcase to correct this app across its visual and interaction states, then build a showcase from the reviewed product captures."

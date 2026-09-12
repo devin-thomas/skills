@@ -1,0 +1,4 @@
+interface:
+  display_name: "No Useless Copy"
+  short_description: "Remove filler and redundant interface copy"
+  default_prompt: "Review or revise this interface so every visible string has a distinct user-facing purpose."
