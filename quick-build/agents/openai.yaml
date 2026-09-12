@@ -1,0 +1,4 @@
+interface:
+  display_name: "Quick Build"
+  short_description: "Scope and build one meaningful small app"
+  default_prompt: "Use $quick-build to shape this idea into an approved plan and a working project."
