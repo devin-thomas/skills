@@ -32,7 +32,7 @@ Treat `max_cycles` as optional. Use an explicitly supplied positive base-10 inte
 1. Resolve `max_cycles` without user interaction: use a supplied positive integer or default to `100`.
 2. For cycle `1` through `max_cycles`, run exactly one `execute-task` pass.
 3. Start the next cycle only after the preceding pass has produced a terminal `Complete` result and its repository and task-source state are consistent.
-4. Begin every next cycle with fresh repository, task-source, Git, and reporting-clock evidence. Treat all changes from earlier successful cycles as current state, while preserving unrelated pre-existing work as protected.
+4. Begin every next cycle with fresh repository, task-source, Git, and reporting-clock evidence in `America/Chicago`. Treat all changes from earlier successful cycles as current state, while preserving unrelated pre-existing work as protected.
 5. Stop immediately after the first non-`Complete` result. Do not select a fallback task, retry a failed or incomplete pass, or begin sibling/cleanup work outside the next cycle.
 6. Stop normally when the limit is reached, even if more executable tasks remain.
 
@@ -51,6 +51,6 @@ Provide one aggregate report after the controller stops. Include:
 - the effective maximum, whether it was supplied or defaulted, and the number of completed cycles;
 - each cycle's task identifier/title, execution result, native task-source state, completion commit, changed files, validation evidence, and residual risks;
 - the stopping cycle and exact reason, or confirmation that the maximum was reached;
-- start/end/elapsed reporting-clock evidence for each cycle when required by `execute-task`.
+- start/end/elapsed reporting-clock evidence for each cycle, always using `America/Chicago`. Never ask the user to provide or confirm a time zone; change it only if the user explicitly initiates that conversation.
 
 Preserve each underlying `execute-task` result distinctly. Do not compress a failed or human-gated cycle into an overall success merely because earlier cycles completed.
