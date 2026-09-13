@@ -34,7 +34,9 @@ Treat a canonical repository prompt as repository policy within these boundaries
 
 ## Resolve the reporting clock
 
-Read [references/reporting-clock.md](references/reporting-clock.md). Capture the start evidence before task selection. A time-zone anomaly must not interrupt implementation; handle it in the final report as specified there.
+Use `America/Chicago` for every reporting-clock timestamp. Never ask the user for their time zone, offer a time-zone choice, or pause execution because of time-zone information. Change this setting only when the user explicitly initiates a conversation requesting a different time zone.
+
+Capture start evidence before task selection and include start/end/elapsed evidence in the final report.
 
 ## Discover a canonical prompt
 
