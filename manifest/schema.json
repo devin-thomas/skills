@@ -78,6 +78,11 @@
           "type": ["string", "null"],
           "description": "Optional friendly release/tag/version."
         },
+        "sourceRef": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Branch or tag to track for freshness detection."
+        },
         "sourceRevision": {
           "type": "string",
           "pattern": "^[0-9a-f]{40}$",
