@@ -134,7 +134,7 @@ with patch.object(freshness, 'github_get') as mock_get:
 print('\n=== Product-bound skill (vidchopper-cli) ===')
 
 with patch.object(freshness, 'github_get') as mock_get:
-    pinned = '20411d936f9de341b0bb2de893d016fd439b4319'
+    pinned = '576495ff84be5ce00fc8e5c7ec2871c95371002d'
     mock_get.return_value = (200, [{'sha': pinned}])
     skill = make_skill(
         sid='vidchopper-cli',
