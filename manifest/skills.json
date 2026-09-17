@@ -243,24 +243,28 @@
       "id": "vidchopper-cli",
       "slug": "vidchopper-cli",
       "title": "VidChopper CLI",
-      "summary": "Local media inspection, dry-run planning, explicit write approval, export, and output verification for VidChopper.",
+      "summary": "Plan, review, export, and verify local video chapter clips with VidChopperCLI and ChapterFiles on Windows and Apple Silicon macOS.",
       "category": "specialized",
       "order": 2,
       "sourceRepo": "devin-thomas/vid-chopper",
       "sourcePath": ".agents/skills/vidchopper-cli/SKILL.md",
-      "sourceVersion": "1.0.0",
-      "sourceRevision": "20411d936f9de341b0bb2de893d016fd439b4319",
+      "sourceVersion": "1.2.0",
+      "sourceRevision": "576495ff84be5ce00fc8e5c7ec2871c95371002d",
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [],
       "prerequisites": [
         {
           "platform": "windows",
-          "reason": "Requires a Windows-local harness"
+          "reason": "Supported on Windows 10/11 x64"
         },
         {
-          "application": "VidChopperCLI 1.0.0",
-          "reason": "Verified against VidChopperCLI 1.0.0 / schema 1 / skill-contract 1"
+          "platform": "macos",
+          "reason": "Supported on macOS 15+ Apple Silicon"
+        },
+        {
+          "application": "VidChopperCLI 1.2.0",
+          "reason": "Verified against VidChopperCLI 1.2.0 / schema 1 / skill-contract 1"
         }
       ],
       "recommendationOnly": false,
