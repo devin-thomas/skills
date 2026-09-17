@@ -37,3 +37,14 @@ for error in errors:
 if errors:
     sys.exit(1)
 print(f'PASS: {len(skills)} entry points, local Markdown links, and home-path checks')
+
+# Run manifest validation as part of the standard validation flow
+import subprocess
+manifest_script = Path(__file__).resolve().parent / 'validate-manifest.py'
+if manifest_script.exists():
+    result = subprocess.run([sys.executable, str(manifest_script)],
+                            capture_output=True, text=True)
+    sys.stdout.write(result.stdout)
+    sys.stderr.write(result.stderr)
+    if result.returncode != 0:
+        sys.exit(result.returncode)
