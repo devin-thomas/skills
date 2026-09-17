@@ -1,7 +1,12 @@
 {
   "$schema": "./schema.json",
   "version": "1.0.0",
-  "categories": ["plan", "build", "specialized", "fun"],
+  "categories": [
+    "plan",
+    "build",
+    "specialized",
+    "fun"
+  ],
   "skills": [
     {
       "id": "starter-pack",
@@ -16,9 +21,13 @@
       "sourceRevision": "f2f971f40c4d113c7060743ce1f433371435d4bb",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["computer-setup", "quick-build"],
+      "relatedSkills": [
+        "computer-setup",
+        "quick-build"
+      ],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "computer-setup",
@@ -33,9 +42,12 @@
       "sourceRevision": "0a4da3ada10bb17f3313118a6c3dacac49ce7e36",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["starter-pack"],
+      "relatedSkills": [
+        "starter-pack"
+      ],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "grill-to-build",
@@ -50,9 +62,13 @@
       "sourceRevision": "0fb723ef1668ad9e23ecfd22c455b58158c6e575",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["quick-build", "task-execution-prompt"],
+      "relatedSkills": [
+        "quick-build",
+        "task-execution-prompt"
+      ],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "task-execution-prompt",
@@ -67,9 +83,13 @@
       "sourceRevision": "58b32c2b2192553fb51b352d80455498da86bc8a",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["execute-task", "execute-task-cycles"],
+      "relatedSkills": [
+        "execute-task",
+        "execute-task-cycles"
+      ],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "quick-build",
@@ -84,9 +104,13 @@
       "sourceRevision": "7f8fcd2fd027dc5cd6923b57ad8275419ee0b94f",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["grill-to-build", "surface-sweep"],
+      "relatedSkills": [
+        "grill-to-build",
+        "surface-sweep"
+      ],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "execute-task",
@@ -101,9 +125,13 @@
       "sourceRevision": "9e550860d16e0bc2a62f154d21fbdbb6bc381acc",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["execute-task-cycles", "task-execution-prompt"],
+      "relatedSkills": [
+        "execute-task-cycles",
+        "task-execution-prompt"
+      ],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "execute-task-cycles",
@@ -118,11 +146,17 @@
       "sourceRevision": "9e550860d16e0bc2a62f154d21fbdbb6bc381acc",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["execute-task"],
-      "prerequisites": [
-        {"skillId": "execute-task", "reason": "Runs execute-task as its inner loop"}
+      "relatedSkills": [
+        "execute-task"
       ],
-      "recommendationOnly": false
+      "prerequisites": [
+        {
+          "skillId": "execute-task",
+          "reason": "Runs execute-task as its inner loop"
+        }
+      ],
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "surface-sweep",
@@ -137,9 +171,12 @@
       "sourceRevision": "c29878045bad3ccca7b49784c5f505a7e2dcfd03",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["surface-sweep-showcase"],
+      "relatedSkills": [
+        "surface-sweep-showcase"
+      ],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "surface-sweep-showcase",
@@ -154,11 +191,17 @@
       "sourceRevision": "c29878045bad3ccca7b49784c5f505a7e2dcfd03",
       "public": true,
       "ownedBy": "devin-thomas",
-      "relatedSkills": ["surface-sweep"],
-      "prerequisites": [
-        {"skillId": "surface-sweep", "reason": "Extends Surface Sweep with showcase delivery"}
+      "relatedSkills": [
+        "surface-sweep"
       ],
-      "recommendationOnly": false
+      "prerequisites": [
+        {
+          "skillId": "surface-sweep",
+          "reason": "Extends Surface Sweep with showcase delivery"
+        }
+      ],
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "no-useless-copy",
@@ -175,7 +218,8 @@
       "ownedBy": "devin-thomas",
       "relatedSkills": [],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "pwa-development",
@@ -192,7 +236,8 @@
       "ownedBy": "devin-thomas",
       "relatedSkills": [],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "vidchopper-cli",
@@ -209,10 +254,17 @@
       "ownedBy": "devin-thomas",
       "relatedSkills": [],
       "prerequisites": [
-        {"platform": "windows", "reason": "Requires a Windows-local harness"},
-        {"application": "VidChopperCLI 1.0.0", "reason": "Verified against VidChopperCLI 1.0.0 / schema 1 / skill-contract 1"}
+        {
+          "platform": "windows",
+          "reason": "Requires a Windows-local harness"
+        },
+        {
+          "application": "VidChopperCLI 1.0.0",
+          "reason": "Verified against VidChopperCLI 1.0.0 / schema 1 / skill-contract 1"
+        }
       ],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     },
     {
       "id": "perfect-playlist",
@@ -229,7 +281,8 @@
       "ownedBy": "devin-thomas",
       "relatedSkills": [],
       "prerequisites": [],
-      "recommendationOnly": false
+      "recommendationOnly": false,
+      "sourceRef": "main"
     }
   ]
 }
