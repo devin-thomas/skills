@@ -1,0 +1,20 @@
+{
+  "description": "Fixture: a valid local skill entry (source in devin-thomas/skills).",
+  "skill": {
+    "id": "grill-to-build",
+    "slug": "grill-to-build",
+    "title": "Grill to Build",
+    "summary": "Turn a rough idea into an implementation-ready build pack.",
+    "category": "plan",
+    "order": 1,
+    "sourceRepo": "devin-thomas/skills",
+    "sourcePath": "grill-to-build/SKILL.md",
+    "sourceVersion": null,
+    "sourceRevision": "0fb723ef1668ad9e23ecfd22c455b58158c6e575",
+    "public": true,
+    "ownedBy": "devin-thomas",
+    "relatedSkills": [],
+    "prerequisites": [],
+    "recommendationOnly": false
+  }
+}

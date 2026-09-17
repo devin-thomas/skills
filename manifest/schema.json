@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Owned Skill Manifest",
+  "description": "Central machine-readable catalog of Devin-owned public skills across approved source repositories.",
+  "type": "object",
+  "required": ["version", "categories", "skills"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "categories": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["plan", "build", "specialized", "fun"] },
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true
+    },
+    "skills": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/skill" },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "skill": {
+      "type": "object",
+      "required": [
+        "id", "slug", "title", "summary", "category", "order",
+        "sourceRepo", "sourcePath", "sourceRevision",
+        "public", "ownedBy", "relatedSkills", "prerequisites",
+        "recommendationOnly"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Stable unique skill identity."
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Public Starter Pack route slug."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human display title."
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Concise teaching/catalog summary."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["plan", "build", "specialized", "fun"]
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Deterministic ordering within the category."
+        },
+        "sourceRepo": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$",
+          "description": "Canonical public repository identity."
+        },
+        "sourcePath": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical entry-point path within that repository."
+        },
+        "sourceVersion": {
+          "type": ["string", "null"],
+          "description": "Optional friendly release/tag/version."
+        },
+        "sourceRevision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "description": "Immutable commit SHA or blob SHA as the reproducibility boundary."
+        },
+        "public": {
+          "type": "boolean",
+          "description": "Whether the skill is intentionally public."
+        },
+        "ownedBy": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Ownership attribution."
+        },
+        "relatedSkills": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered stable IDs of related skills."
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/prerequisite" },
+          "description": "Structured prerequisites suitable for rendering."
+        },
+        "recommendationOnly": {
+          "type": "boolean",
+          "description": "True if this is a recommendation-only record, not an owned skill page."
+        }
+      }
+    },
+    "prerequisite": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "skillId": { "type": "string" },
+        "platform": { "type": "string" },
+        "application": { "type": "string" },
+        "reason": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "description": "Fixture: a valid product-bound skill entry (source in devin-thomas/vid-chopper).",
+  "skill": {
+    "id": "vidchopper-cli",
+    "slug": "vidchopper-cli",
+    "title": "VidChopper CLI",
+    "summary": "Local media inspection and export for VidChopper.",
+    "category": "specialized",
+    "order": 1,
+    "sourceRepo": "devin-thomas/vid-chopper",
+    "sourcePath": ".agents/skills/vidchopper-cli/SKILL.md",
+    "sourceVersion": "1.0.0",
+    "sourceRevision": "20411d936f9de341b0bb2de893d016fd439b4319",
+    "public": true,
+    "ownedBy": "devin-thomas",
+    "relatedSkills": [],
+    "prerequisites": [
+      {"platform": "windows", "reason": "Requires a Windows-local harness"},
+      {"application": "VidChopperCLI 1.0.0", "reason": "Verified against VidChopperCLI 1.0.0"}
+    ],
+    "recommendationOnly": false
+  }
+}

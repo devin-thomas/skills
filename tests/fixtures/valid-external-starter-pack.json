@@ -1,0 +1,20 @@
+{
+  "description": "Fixture: a valid external Starter Pack skill entry (source in devin-thomas/starter-pack).",
+  "skill": {
+    "id": "starter-pack",
+    "slug": "starter-pack",
+    "title": "Starter Pack",
+    "summary": "Start, resume, or inspect Starter Pack learner progress.",
+    "category": "plan",
+    "order": 1,
+    "sourceRepo": "devin-thomas/starter-pack",
+    "sourcePath": "public/skills/starter-pack/current/SKILL.md",
+    "sourceVersion": "0.2.2",
+    "sourceRevision": "f2f971f40c4d113c7060743ce1f433371435d4bb",
+    "public": true,
+    "ownedBy": "devin-thomas",
+    "relatedSkills": [],
+    "prerequisites": [],
+    "recommendationOnly": false
+  }
+}
