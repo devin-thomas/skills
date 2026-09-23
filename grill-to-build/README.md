@@ -18,6 +18,8 @@ Resume $grill-to-build from the existing Context and open questions.
 
 Without a saved choice, the first round includes a separate format question that does not spend the discovery allowance. Choices are Markdown/Mermaid, Figma/FigJam, Excalidraw, diagrams.net, and no diagram. Unanswered setup defaults to Markdown/Mermaid.
 
+The chosen format is a hard output constraint. Do not replace it with an AI-generated diagram image. Image generation is valid only when the user explicitly selects generated imagery as the diagram source or output method. For an `Excalidraw to PNG` request, author the editable Excalidraw scene first and render that scene to PNG.
+
 To default to Figma across projects, copy `profiles/figma.md` to `PREFERENCES.md` in your installed skill directory and retain that file in your own versioned copy. Alternatively, say "with the Figma profile" on first use. Each project's Context records its choice, so resuming that project requires no setup question. A project-root `grill-to-build.preferences.md` can supply shared team preferences.
 
 Preferences travel with files you copy or clone; this workflow does not depend on account synchronization or a global AGENTS.md. Integrations and access still need to be available on the destination computer. When an integration is missing, discovery continues locally with Markdown/Mermaid while preserving the preferred format.
@@ -43,6 +45,8 @@ Before changing the workflow, review these cases against the entry point and ref
 | Explicit Figma profile | No redundant format question; check capability |
 | Figma unavailable | Preferred Figma retained; active Markdown fallback disclosed |
 | User selects no diagram | Prose/tables; no hidden diagram or repeated prompting |
+| Explicit Excalidraw + PNG | Native editable Excalidraw scene first, then render/export that scene to PNG; never synthesize a look-alike with image generation |
+| Selected diagram tool unavailable | Disclose the limitation and use only an allowed fallback; image generation is not an implicit fallback |
 | Existing Context on a new machine | Reuse recorded preference and budget |
 | Current user overrides saved preference | Current instruction wins |
 | Five rounds end with material uncertainty | Block affected sections; do not invent acceptance rules |
