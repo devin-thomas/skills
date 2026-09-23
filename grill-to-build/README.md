@@ -26,6 +26,16 @@ Preferences travel with files you copy or clone; this workflow does not depend o
 
 See [the preference contract](references/preferences-and-diagrams.md) for precedence and fallback details.
 
+## Choosing a renderer
+
+The skill distinguishes what the agent can render **inside the current chat surface** from what it can render **inside its execution harness**. Those are often different.
+
+Before recommending a format, the agent should probe the capabilities it can actually inspect instead of assuming Figma, Mermaid, Excalidraw, or any CLI is present. Useful source-first candidates include Graphviz DOT, Mermaid, Excalidraw, diagrams.net, and authored SVG.
+
+For architecture and system diagrams, a fast local Graphviz path is especially useful when available: keep `.dot` as the editable source, render `.svg` as the canonical visual, and optionally render `.png` for previews. This is a recommendation, not a universal default; explicit user preference still wins.
+
+External integrations can be appropriate when collaborative editing matters, but they should not automatically outrank a deterministic local renderer when the user prioritizes speed.
+
 ## Portability boundaries
 
 - Existing artifact layouts and terminology are preserved.
