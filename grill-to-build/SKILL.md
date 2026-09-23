@@ -40,6 +40,8 @@ Infer the requested endpoint: discovery, build pack, or implementation. Run only
 
 Read [preferences-and-diagrams.md](references/preferences-and-diagrams.md) before the first discovery round. Reuse an explicit diagram preference; otherwise ask the separate first-round format question described there. It does not consume the discovery question allowance. If unanswered, use Markdown/Mermaid. A user's choice of no diagram is valid.
 
+Treat the selected diagram format and authoring source as a hard output constraint. Do not substitute an image-generation model for Figma/FigJam, Excalidraw, diagrams.net, Markdown/Mermaid, or no-diagram output. Image generation may be used for a diagram only when the user explicitly selects generated imagery as the diagram source or output method.
+
 On resume, read existing artifacts and their open questions before asking anything. Reuse recorded preferences and completed decisions. Preserve compatible repository layouts, including existing ADR directories and ticket conventions.
 
 ### 1. Extract the raw idea
