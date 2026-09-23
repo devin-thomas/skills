@@ -12,7 +12,8 @@ If no preference is known, ask this setup question alongside the first discovery
 
 "Which format should we use for the living model?"
 
-- Markdown/Mermaid (Recommended default): portable text stored with the project.
+- Graphviz DOT: editable text source with fast deterministic SVG/PNG rendering when a local Graphviz renderer is available.
+- Markdown/Mermaid (portable fallback): text stored with the project; rendering may be host- or CLI-dependent.
 - Figma/FigJam: editable collaborative canvas; requires an available integration and access.
 - Excalidraw: editable sketch-style diagram; requires a supported authoring path.
 - diagrams.net (draw.io): editable structured diagram; requires a supported authoring path.
