@@ -16,7 +16,7 @@ Resume $grill-to-build from the existing Context and open questions.
 
 ## Diagram preferences on another computer
 
-Without a saved choice, the first round includes a separate format question that does not spend the discovery allowance. Choices are Markdown/Mermaid, Figma/FigJam, Excalidraw, diagrams.net, and no diagram. Unanswered setup defaults to Markdown/Mermaid.
+Without a saved choice, the first round includes a separate format question that does not spend the discovery allowance. Choices are Graphviz DOT, Markdown/Mermaid, Figma/FigJam, Excalidraw, diagrams.net, and no diagram. Unanswered setup defaults to Markdown/Mermaid.
 
 The chosen format is a hard output constraint. Do not replace it with an AI-generated diagram image. Image generation is valid only when the user explicitly selects generated imagery as the diagram source or output method. For an `Excalidraw to PNG` request, author the editable Excalidraw scene first and render that scene to PNG.
 
