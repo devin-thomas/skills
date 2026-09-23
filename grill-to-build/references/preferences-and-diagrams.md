@@ -35,6 +35,29 @@ For reuse across projects, users can place this ordinary Markdown file at the in
 
 Copy or version this file with the skill to carry it to another computer. A fresh installation without it uses the first-round question. Project Context carries that project's choice when cloned. Do not promise account-level synchronization, and do not silently modify global instructions or write cross-project preferences. Installation updates may replace local skill files; retain a versioned copy of custom preferences.
 
+## Discover rendering capabilities before recommending a format
+
+Separate **conversation-host capabilities** from **execution-harness capabilities** before recommending a living-model format.
+
+- **Conversation host** means tools available directly in the current chat or agent surface: for example a Figma integration, a diagram-specific connector, file-generation tools, or no direct renderer at all.
+- **Execution harness** means the local or remote runtime the agent can inspect and execute in: for example Graphviz (`dot`/`neato`), Mermaid CLI, Excalidraw packages, diagrams.net CLI, browser automation, SVG libraries, Inkscape, CairoSVG, or ImageMagick.
+- Do not assume a tool exists in either environment. Probe the capabilities you can actually inspect.
+- Do not treat a slow external plugin as preferable merely because it is integrated. Latency, determinism, editability, portability, and offline/local rendering all matter.
+- When the chat host and harness differ, explain both paths briefly and recommend the best available path for the user's priorities.
+
+For architecture, domain, state, dependency, and workflow diagrams, consider these source-first options when available:
+
+| Source format | Typical renderer | Strengths | Trade-offs |
+| --- | --- | --- | --- |
+| Graphviz DOT | `dot`, `neato` | Fast local rendering, deterministic layout, diffable text, excellent agent ergonomics, SVG/PNG output | Less freeform than canvas tools |
+| Mermaid | Mermaid CLI or host renderer | Familiar Markdown-adjacent syntax, portable, strong documentation support | Host rendering may vary; CLI may be absent |
+| Excalidraw | Excalidraw SDK/app | Editable sketch-style canvas, strong human manipulation | Native renderer/package may not be installed; external app can add latency |
+| diagrams.net | diagrams.net app/CLI | Editable structured canvas and broad import/export | Authoring path may require GUI/integration |
+| SVG source | Browser/SVG library + rasterizer | Precise visual control, deterministic, direct SVG artifact | More manual layout responsibility |
+| Figma/FigJam | Figma integration | Rich collaborative editing and presentation | External-plugin latency and access dependencies |
+
+A good default when the user values speed and agent-native maintenance is **editable text source plus deterministic local SVG rendering**, with PNG as a convenience preview when requested. If Graphviz is installed, DOT → SVG/PNG is often a strong choice for software/system models. Do not make Graphviz mandatory; capability discovery and the user's explicit preference take precedence.
+
 ## Capability and fallback
 
 Check available tool capabilities before promising an external diagram. Use applicable tool or skill instructions when authoring it. A format preference does not provide credentials, select a workspace, or authorize public sharing. Reuse a known authorized destination; if one is required but missing, request only that information and continue local modeling meanwhile.
