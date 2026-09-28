@@ -1,4 +1,4 @@
 interface:
   display_name: "Style"
-  short_description: "Apply the matching language style guide"
-  default_prompt: "Follow the style guide for this language from starter.devthomas.site/style."
+  short_description: "Check or refactor code against the matching style guide"
+  default_prompt: "Scan this code against the matching style guide from starter.devthomas.site/style and report what you would change."
