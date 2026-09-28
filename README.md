@@ -15,7 +15,7 @@ For guided onboarding, start at [Starter Pack](https://starter.devthomas.site). 
 | Run several bounded task passes | [execute-task-cycles](execute-task-cycles/SKILL.md) | Sequential passes with stop conditions; requires execute-task |
 | Find and fix visual/interaction defects | [surface-sweep](surface-sweep/SKILL.md) | Corrected app, reviewed browser evidence, honest coverage gaps |
 | Present a working product | [surface-sweep-showcase](surface-sweep-showcase/SKILL.md) | Corrected app and screenshot-led showcase; requires surface-sweep |
-| Follow my coding conventions | [style](style/SKILL.md) | Code written to the matching guide at starter.devthomas.site/style |
+| Follow my coding conventions | [style](style/SKILL.md) | Report of guide deviations (starter.devthomas.site/style); `refactor` applies them |
 | Remove unhelpful UI wording | [no-useless-copy](no-useless-copy/SKILL.md) | Scoped copy improvements with necessary guidance preserved |
 | Build or repair PWA behavior | [pwa-development](pwa-development/SKILL.md) | Install, offline, update, and recovery behavior with platform evidence |
 | Make or inspect an exact Spotify playlist | [perfect-playlist](perfect-playlist/SKILL.md) | Deterministic selected-track workflow; requires its CLI and Spotify access for service operations |

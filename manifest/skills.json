@@ -225,7 +225,7 @@
       "id": "style",
       "slug": "style",
       "title": "Style",
-      "summary": "Write and review code using the matching language guide from Starter Pack's style guides.",
+      "summary": "Scan code against the matching Starter Pack style guide and report changes, or apply them with refactor.",
       "category": "build",
       "order": 7,
       "sourceRepo": "devin-thomas/skills",
