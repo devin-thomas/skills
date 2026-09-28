@@ -1,0 +1,4 @@
+interface:
+  display_name: "Style"
+  short_description: "Apply the matching language style guide"
+  default_prompt: "Follow the style guide for this language from starter.devthomas.site/style."
