@@ -92,6 +92,28 @@
       "sourceRef": "main"
     },
     {
+      "id": "long-horizon-dashboard",
+      "slug": "long-horizon-dashboard",
+      "title": "Long Horizon Dashboard",
+      "summary": "Keep long-running agent work visible with a task dashboard, evidence, checkpoints, and resumable repository state.",
+      "category": "plan",
+      "order": 5,
+      "sourceRepo": "devin-thomas/skills",
+      "sourcePath": "long-horizon-dashboard/SKILL.md",
+      "sourceVersion": null,
+      "sourceRevision": "6213aed689871d1eeda6d200c2769bd66a7faee4",
+      "public": true,
+      "ownedBy": "devin-thomas",
+      "relatedSkills": [
+        "execute-task",
+        "execute-task-cycles",
+        "task-execution-prompt"
+      ],
+      "prerequisites": [],
+      "recommendationOnly": false,
+      "sourceRef": "main"
+    },
+    {
       "id": "quick-build",
       "slug": "quick-build",
       "title": "Quick Build",
@@ -127,7 +149,8 @@
       "ownedBy": "devin-thomas",
       "relatedSkills": [
         "execute-task-cycles",
-        "task-execution-prompt"
+        "task-execution-prompt",
+        "long-horizon-dashboard"
       ],
       "prerequisites": [],
       "recommendationOnly": false,
@@ -147,7 +170,8 @@
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [
-        "execute-task"
+        "execute-task",
+        "long-horizon-dashboard"
       ],
       "prerequisites": [
         {

@@ -130,17 +130,17 @@ print('\n=== Manifest content checks ===')
 skills_by_id = {s['id']: s for s in manifest['skills']}
 all_ids = set(skills_by_id.keys())
 expected_ids = {
-    'starter-pack', 'computer-setup', 'grill-to-build', 'task-execution-prompt',
+    'starter-pack', 'computer-setup', 'grill-to-build', 'task-execution-prompt', 'long-horizon-dashboard',
     'quick-build', 'execute-task', 'execute-task-cycles',
     'surface-sweep', 'surface-sweep-showcase', 'no-useless-copy', 'style',
     'pwa-development', 'vidchopper-cli', 'perfect-playlist'
 }
-check('all 14 skills present', all_ids == expected_ids,
+check('all 15 skills present', all_ids == expected_ids,
       f'missing={expected_ids - all_ids}, extra={all_ids - expected_ids}')
 check('categories match spec', manifest['categories'] == ['plan', 'build', 'specialized', 'fun'])
 
 plan_skills = [s['id'] for s in manifest['skills'] if s['category'] == 'plan']
-check('plan has correct skills', set(plan_skills) == {'starter-pack', 'computer-setup', 'grill-to-build', 'task-execution-prompt'})
+check('plan has correct skills', set(plan_skills) == {'starter-pack', 'computer-setup', 'grill-to-build', 'task-execution-prompt', 'long-horizon-dashboard'})
 
 build_skills = [s['id'] for s in manifest['skills'] if s['category'] == 'build']
 check('build has correct skills', set(build_skills) == {'quick-build', 'execute-task', 'execute-task-cycles', 'surface-sweep', 'surface-sweep-showcase', 'no-useless-copy', 'style'})
