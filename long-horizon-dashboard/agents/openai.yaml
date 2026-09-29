@@ -1,0 +1,4 @@
+interface:
+  display_name: "Long Horizon Dashboard"
+  short_description: "Durable status and recovery for extended work"
+  default_prompt: "Use $long-horizon-dashboard to keep a durable dashboard for this task, with verified local serving and committed checkpoints."

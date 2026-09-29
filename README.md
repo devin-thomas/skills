@@ -13,6 +13,7 @@ For guided onboarding, start at [Starter Pack](https://starter.devthomas.site). 
 | Complete the next scoped task | [execute-task](execute-task/SKILL.md) | One verified task pass from local Markdown, GitHub, or Linear |
 | Establish a repeatable project workflow | [task-execution-prompt](task-execution-prompt/SKILL.md) | Repository execution contract and read-only rehearsal |
 | Run several bounded task passes | [execute-task-cycles](execute-task-cycles/SKILL.md) | Sequential passes with stop conditions; requires execute-task |
+| Follow extended work and resume safely | [Long Horizon Dashboard](long-horizon-dashboard/SKILL.md) | Committed status snapshots, checked localhost serving; optional Claude artifacts or private Tailscale access |
 | Find and fix visual/interaction defects | [surface-sweep](surface-sweep/SKILL.md) | Corrected app, reviewed browser evidence, honest coverage gaps |
 | Present a working product | [surface-sweep-showcase](surface-sweep-showcase/SKILL.md) | Corrected app and screenshot-led showcase; requires surface-sweep |
 | Follow my coding conventions | [style](style/SKILL.md) | Report of guide deviations (starter.devthomas.site/style); `refactor` applies them |
