@@ -4,7 +4,8 @@ This repository contains reusable agent instructions, not an application. Use [R
 
 - Read only the selected skill's entry point and references relevant to the current branch.
 - Preserve each skill's scope and completion contract. Do not run build, deployment, or account setup workflows while merely reviewing these files.
-- Install dependencies explicitly: `surface-sweep-showcase` needs `surface-sweep`; `execute-task-cycles` needs `execute-task`. Resolve installed skills through the host catalog if they are not adjacent.
+- Preserve the portable Agent Skills subset documented in [host compatibility](docs/host-compatibility.md): local skills must remain consumable by Codex, Claude Code, Cursor, and Antigravity, while Grok Bot uses the same content through a different account-level transport.
+- Install dependencies explicitly when working manually: `surface-sweep-showcase` needs `surface-sweep`; `execute-task-cycles` needs `execute-task`. Package tooling may resolve `prerequisites[].skillId` automatically, but do not remove or weaken those manifest relationships.
 - Keep public methods separate from personal preferences, machine paths, account identifiers, and credentials. Do not copy local preference files into the public collection.
 - Preserve existing public skills. Do not vendor upstream skill bundles just because they are installed locally.
 - Keep source attribution and snapshot versions for adapted resources. Starter Pack remains authoritative for curriculum requirements; Quick Build's standalone mode does not certify curriculum completion.
