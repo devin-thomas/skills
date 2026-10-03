@@ -121,7 +121,7 @@ The initial release includes six hosts, with distinct Grok Bot and Grok CLI cont
 
 | Evidence | Check and responsible person/agent | Result and provenance |
 |---|---|---|
-| Build/type checks | Implementer: Node/TypeScript checks, repository validators, dependency tests | Passed in [Skills CLI CI](https://github.com/devin-thomas/skills/actions/runs/37141685304); see [implementation checkpoint](IMPLEMENTATION-STATUS-2026-10-03.md) |
+| Build/type checks | Implementer: Node/TypeScript checks, repository validators, dependency tests | Passed in [Skills CLI CI](https://github.com/devin-thomas/skills/actions/runs/37142266205); see [implementation checkpoint](IMPLEMENTATION-STATUS-2026-10-03.md) |
 | Terminal accessibility | Implementer: non-TTY JSON, narrow terminal, no-color, spaces/Unicode paths | JSON and packed-consumer paths tested; complete terminal matrix pending |
 | Release availability | Release owner: exact npm artifact after separate publication approval | Not published by this pack |
 | Primary behavior | Implementer: external tarball installation, add/update/remove, closure and conflicts | Packed-consumer smoke passed on Windows/macOS/Linux; mixed-channel combined update and shared-dependency conflict passed focused tests |
