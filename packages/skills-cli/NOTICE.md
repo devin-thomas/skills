@@ -1,6 +1,6 @@
 # Bundled content and attribution
 
-`@uppercut-labs/skills@0.1.0` is Copyright (c) 2026 Devin Thomas and is
+`@uppercut-labs/skills` is Copyright (c) 2026 Devin Thomas and is
 distributed under the accompanying [MIT License](LICENSE). This grant covers
 the installer and the 15 skill snapshots included in this npm package. Each
 skill's source repository, path, and pinned commit are recorded in the bundled

@@ -1,6 +1,6 @@
 # Uppercut Skills CLI
 
-`@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies. This checkout is the `0.1.0` release candidate; publishing is verified separately.
+`@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies. This checkout is a `0.1.0` release candidate; the `next` preview precedes the final `latest` release.
 
 ## Run from this checkout
 
@@ -15,7 +15,7 @@ node bin/uppercut-skills.js add execute-task-cycles --host codex --project /path
 node bin/uppercut-skills.js doctor --host codex --project /path/to/project
 ```
 
-After the first public npm release, the equivalent consumer commands will be:
+The npm preview can be exercised with `@uppercut-labs/skills@next`. After the final public release, the equivalent consumer commands will be:
 
 ```sh
 npx @uppercut-labs/skills@0.1.0 list

@@ -1,7 +1,7 @@
 # Source and attribution
 
 Copyright (c) 2026 Devin Thomas. The approved installer and 15 bundled skill
-snapshots in `@uppercut-labs/skills@0.1.0` are released under the package's
+snapshots in `@uppercut-labs/skills` are released under the package's
 [MIT license](packages/skills-cli/LICENSE).
 
 `quick-build` adapts material from Devin Thomas's Starter Pack. The npm bundle

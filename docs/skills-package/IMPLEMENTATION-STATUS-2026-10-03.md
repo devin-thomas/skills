@@ -1,12 +1,12 @@
 # Skills package implementation checkpoint
 
 Branch: `skills-package-v1-plan` (draft PR #1).
-This is a local `0.1.0` release candidate, not an npm release. `@uppercut-labs/skills` is packageable under MIT; native host and final artifact release gates are tracked below.
+This is the `0.1.0-rc.0` npm preview candidate. `@uppercut-labs/skills` is packageable under MIT; native host and final `0.1.0` release gates are tracked below.
 
 | Ticket | Current state | Evidence or remaining gate |
 | --- | --- | --- |
 | SKP-001 | Implemented | Reused the 15-entry manifest and portable skill sources; repository validators pass. |
-| SKP-002 | Implemented | Public npm candidate metadata, bin, list/show, and packed consumer start; the candidate is versioned `0.1.0`. |
+| SKP-002 | Implemented | Public npm candidate metadata, bin, list/show, and packed consumer start; the preview is versioned `0.1.0-rc.0`. |
 | SKP-003 | Implemented locally | Six filesystem host routes and the guarded Grok Bot account-library route are implemented; native discovery remains unqualified. |
 | SKP-004 | Implemented | Complete 74-file stable bundle at pinned commits, dependency closure, and verified GitHub source adapter. |
 | SKP-005 | Implemented locally | Packed consumer installed `execute-task-cycles` and `execute-task` with no dependency prompt; native discovery remains SKP-011. |
@@ -16,7 +16,7 @@ This is a local `0.1.0` release candidate, not an npm release. `@uppercut-labs/s
 | SKP-009 | Partial | Reviewed bundle and installable tarball built; candidate version, MIT license, source notices, and npm links prepared. Final artifact review remains open. |
 | SKP-010 | Automated verification complete | Node 22 on Windows/macOS/Linux and Node 24 on Linux passed source tests and installed-tarball CLI/MCP smoke. Native host acceptance remains SKP-011. |
 | SKP-011 | Pending native acceptance | No complete add/discovery/invocation/update/remove evidence across all six hosts. Grok Bot account scope is accepted only on its qualified Linux runtime; real Bot discovery and invocation remain unverified. |
-| SKP-012 | Pending | MIT and public-release authority granted; native acceptance and final artifact verification remain open. |
+| SKP-012 | Pending final | MIT and public-release authority granted; the `next` preview enables real host acceptance before a final `latest` release. |
 | SKP-013 | Implemented locally | Opt-in loopback `serve-mcp` mounts only catalog list/show through Agent Native; no writers. |
 | SKP-014 | Automated verification complete | Clean tarball consumer passed legacy `2025-11-25`, sessionless one-POST `2026-07-28`, and the CLI launcher on Windows/macOS/Linux CI. |
 
