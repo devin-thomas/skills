@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { catalogBundle } from '../../dist/generated/bundle.js';
 import { parseArgs } from '../../dist/cli/args.js';
@@ -50,8 +50,32 @@ test('install conflict returns the safe path guidance and conflict exit code', a
   const result = await runCli(parseArgs(['add', 'quick-build', '--host', 'codex', '--project', project, '--json']), { catalogBundle });
   assert.equal(result.exitCode, 5);
   assert.equal(result.result.error.code, 'local-conflict');
-  assert.match(result.result.error.message, /Destination is not owned by this installer/);
-  assert.match(result.result.error.message, /quick-build[\\/]SKILL\.md/);
+  assert.match(result.result.error.message, /Existing skill files do not exactly match the planned bundle/);
+  assert.match(result.result.error.message, /quick-build/);
+});
+
+test('CLI adopts an exact existing skill tree and doctor recognizes its receipts', async (t) => {
+  const project = await mkdtemp(join(tmpdir(), 'uppercut-skills-adopt-'));
+  t.after(() => rm(project, { recursive: true, force: true }));
+  const skill = catalogBundle.skills['no-useless-copy'];
+  const skillDirectory = join(project, '.agents', 'skills', 'no-useless-copy');
+  for (const file of skill.files) {
+    const destination = join(skillDirectory, ...file.path.split('/'));
+    await mkdir(dirname(destination), { recursive: true });
+    await writeFile(destination, Buffer.from(file.contentBase64, 'base64'));
+  }
+
+  const options = ['--host', 'codex', '--project', project, '--json'];
+  const result = await runCli(parseArgs(['add', 'no-useless-copy', ...options]), { catalogBundle });
+  assert.equal(result.exitCode, 0);
+  assert.deepEqual(Object.keys(result.result.data.state.skills['no-useless-copy'].files).length, skill.files.length);
+  for (const file of skill.files) {
+    const destination = join(skillDirectory, ...file.path.split('/'));
+    assert.deepEqual(await readFile(destination), Buffer.from(file.contentBase64, 'base64'));
+  }
+  const doctor = await runCli(parseArgs(['doctor', ...options]), { catalogBundle });
+  assert.equal(doctor.exitCode, 0);
+  assert.equal(doctor.result.data.healthy, true);
 });
 
 test('implicit project install targets the Git root from a nested directory', async (t) => {

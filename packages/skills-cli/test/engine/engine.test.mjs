@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { join, resolve, sep } from 'node:path';
 import test from 'node:test';
 import { installSkills, removeSkills, updateSkills } from '../../dist/engine/index.js';
 
@@ -24,6 +25,7 @@ function fixture() {
   const ports = {
     fs: {
       readFile: async (path) => files.get(path),
+      listFiles: async (directory) => [...files.keys()].filter((path) => path.startsWith(`${resolve(directory)}${sep}`)),
       assertSafePath: async () => {},
       writeFile: async (path, bytes) => files.set(path, Uint8Array.from(bytes)),
       mkdir: async () => {},
@@ -40,6 +42,86 @@ function fixture() {
   const request = { requestedIds: ['surface-sweep-showcase'], snapshot, bundle, target: { id: 'cursor', scope: 'project', rootPath: '/project', installDir: '/project/.agents/skills' }, stateKey: '/project/.uppercut-skills' };
   return { request, ports, files, states, journals };
 }
+
+function seedBundledFiles(request, files, ids = ['surface-sweep', 'surface-sweep-showcase']) {
+  for (const id of ids) {
+    for (const file of request.bundle.skills[id].files) {
+      files.set(join(resolve(request.target.installDir), id, ...file.path.split('/')), Buffer.from(file.contentBase64, 'base64'));
+    }
+  }
+}
+
+test('install adopts a complete byte-identical bundle without rewriting files', async () => {
+  const { request, ports, files, states, journals } = fixture();
+  seedBundledFiles(request, files);
+  let writes = 0;
+  const write = ports.fs.writeFile;
+  ports.fs.writeFile = async (...args) => { writes += 1; await write(...args); };
+  const before = new Map([...files].map(([path, bytes]) => [path, Uint8Array.from(bytes)]));
+
+  const result = await installSkills(request, ports);
+
+  assert.equal(result.outcome, 'complete');
+  assert.deepEqual(result.changes.map(({ skillId }) => skillId), ['surface-sweep', 'surface-sweep-showcase']);
+  assert.equal(writes, 0);
+  assert.deepEqual([...files.keys()], [...before.keys()]);
+  for (const [path, bytes] of before) assert.deepEqual(Uint8Array.from(files.get(path)), bytes);
+  assert.deepEqual(states.get(request.stateKey), result.state);
+  assert.equal(journals.has(request.stateKey), false);
+  assert.deepEqual(Object.keys(result.state.skills), ['surface-sweep', 'surface-sweep-showcase']);
+});
+
+test('install refuses adoption when an existing skill has different bytes', async () => {
+  const { request, ports, files, states, journals } = fixture();
+  seedBundledFiles(request, files);
+  files.set(join(resolve(request.target.installDir), 'surface-sweep-showcase', 'SKILL.md'), Buffer.from('local edit'));
+
+  await assert.rejects(installSkills(request, ports), /differs from the planned bundle/i);
+
+  assert.equal(states.has(request.stateKey), false);
+  assert.equal(journals.has(request.stateKey), false);
+});
+
+test('install refuses partial and extra-file skill trees during adoption', async (t) => {
+  await t.test('partial bundle', async () => {
+    const { request, ports, files, states } = fixture();
+    const extraBytes = Buffer.from('extra planned file');
+    request.bundle.skills['surface-sweep'].files.push({
+      path: 'README.md',
+      contentBase64: extraBytes.toString('base64'),
+      sha256: digest(extraBytes),
+    });
+    files.set(join(resolve(request.target.installDir), 'surface-sweep', 'SKILL.md'), Buffer.from('# surface-sweep\n'));
+
+    await assert.rejects(installSkills({ ...request, requestedIds: ['surface-sweep'] }, ports), /do not exactly match/i);
+    assert.equal(states.has(request.stateKey), false);
+  });
+
+  await t.test('extra unowned file', async () => {
+    const { request, ports, files, states } = fixture();
+    seedBundledFiles(request, files);
+    const notePath = join(resolve(request.target.installDir), 'surface-sweep-showcase', 'NOTES.md');
+    files.set(notePath, Buffer.from('keep me'));
+
+    await assert.rejects(installSkills(request, ports), /do not exactly match/i);
+    assert.equal(states.has(request.stateKey), false);
+    assert.equal(files.get(notePath).toString(), 'keep me');
+  });
+});
+
+test('install refuses adoption when listing detects a symlinked entry', async () => {
+  const { request, ports, files, states } = fixture();
+  seedBundledFiles(request, files);
+  const listFiles = ports.fs.listFiles;
+  ports.fs.listFiles = async (directory) => {
+    if (directory.endsWith(`${sep}surface-sweep`)) throw new Error('Managed path is a symlink');
+    return listFiles(directory);
+  };
+
+  await assert.rejects(installSkills(request, ports), /symlink/i);
+
+  assert.equal(states.has(request.stateKey), false);
+});
 
 test('install resolves dependencies, repeats as unchanged, and remove retains promoted roots', async () => {
   const { request, ports, files } = fixture();

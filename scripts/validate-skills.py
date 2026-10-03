@@ -50,8 +50,9 @@ for document in sorted(root.rglob('*.md')):
     if {'.git', 'node_modules', 'dist', 'build', 'coverage'} & set(document.parts):
         continue
     text = document.read_text(encoding='utf-8')
-    # Grok Bot reports this fixed account-library path as part of its host contract.
-    portable_text = text.replace('/home/box/agent-data/workflows', '<grokbot-library>')
+    # Grok Bot reports these logical and physical roots as part of its host contract.
+    portable_text = text.replace('/home/box/agent-data', '<grokbot-logical-root>')
+    portable_text = portable_text.replace('/home/box/sand-data', '<grokbot-physical-root>')
     if re.search(r'/Users/[^/\s]+/|/home/[^/\s]+/', portable_text):
         errors.append(f'{document.relative_to(root)}: machine-specific home path')
     for target in re.findall(r'\[[^\]]*\]\(([^)]+)\)', text):

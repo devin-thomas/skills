@@ -1,12 +1,12 @@
 # Skills package implementation checkpoint
 
 Branch: `skills-package-v1-plan` (draft PR #1).
-The `0.1.0-rc.0` npm preview is published from commit `f3fd49a`. Native host acceptance and the final `0.1.0` release remain open.
+The `0.1.0-rc.0` npm preview was published from commit `f3fd49a`. The `0.1.0-rc.1` candidate fixes the Bot-reported account path and existing-skill conflict. Native host acceptance and the final `0.1.0` release remain open.
 
 | Ticket | Current state | Evidence or remaining gate |
 | --- | --- | --- |
 | SKP-001 | Implemented | Reused the 15-entry manifest and portable skill sources; repository validators pass. |
-| SKP-002 | Implemented | Public npm candidate metadata, bin, list/show, and packed consumer start; the preview is versioned `0.1.0-rc.0`. |
+| SKP-002 | Implemented | Public npm candidate metadata, bin, list/show, and packed consumer start; the repair candidate is versioned `0.1.0-rc.1`. |
 | SKP-003 | Implemented locally | Six filesystem host routes and the guarded Grok Bot account-library route are implemented; native discovery remains unqualified. |
 | SKP-004 | Implemented | Complete 74-file stable bundle at pinned commits, dependency closure, and verified GitHub source adapter. |
 | SKP-005 | Implemented locally | Packed consumer installed `execute-task-cycles` and `execute-task` with no dependency prompt; native discovery remains SKP-011. |
