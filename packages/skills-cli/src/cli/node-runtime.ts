@@ -282,7 +282,7 @@ async function diagnose(catalog: ReturnType<typeof readBundledCatalog>, target: 
     }
     if (!catalog.skills.some((entry) => entry.id === id)) problems.push(`Unknown installed skill: ${id}`);
   }
-  return { healthy: problems.length === 0, roots: state.roots, problems, target, discovery: { status: 'unverified' } };
+  return { healthy: problems.length === 0, installed: Object.keys(state.skills), roots: state.roots, problems, target, discovery: { status: 'unverified' } };
 }
 
 async function selectHost(
