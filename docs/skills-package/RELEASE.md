@@ -6,8 +6,10 @@ publisher, not the GitHub repository owner.
 
 ## Native acceptance preview
 
-Publish `0.1.0-rc.0` from a reviewed, retained tarball under the npm `next`
-dist-tag. Do not move `latest` or merge the draft PR for this preview. On the
+The reviewed `0.1.0-rc.0` tarball was published under the npm `next` dist-tag.
+npm also assigned `latest` to this first package version automatically; an
+attempt to remove that tag returned 403. Treat both tags as prerelease pointers
+until the final version is qualified. Do not merge the draft PR for this preview. On the
 Bot's own execution computer, install `@uppercut-labs/skills@next` globally,
 confirm that lifecycle scripts were permitted, and run
 `uppercut-skills doctor --host grokbot --global`. Verify native skill discovery,

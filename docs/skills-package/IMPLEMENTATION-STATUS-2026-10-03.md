@@ -1,7 +1,7 @@
 # Skills package implementation checkpoint
 
 Branch: `skills-package-v1-plan` (draft PR #1).
-This is the `0.1.0-rc.0` npm preview candidate. `@uppercut-labs/skills` is packageable under MIT; native host and final `0.1.0` release gates are tracked below.
+The `0.1.0-rc.0` npm preview is published from commit `f3fd49a`. Native host acceptance and the final `0.1.0` release remain open.
 
 | Ticket | Current state | Evidence or remaining gate |
 | --- | --- | --- |
@@ -13,10 +13,10 @@ This is the `0.1.0-rc.0` npm preview candidate. `@uppercut-labs/skills` is packa
 | SKP-006 | Implemented locally | Update/remove, ownership hashes, locks, and recovery journal work; disjoint bundled/GitHub roots update together in one transaction, while shared-dependency channel conflicts stop before writes. |
 | SKP-007 | Implemented locally | Read-only doctor checks managed hashes and required skill presence. |
 | SKP-008 | Implemented locally | Agent Native 0.1.0 registry, scoped capabilities, CLI path, and authorization denial tests. |
-| SKP-009 | Partial | Reviewed bundle and installable tarball built; candidate version, MIT license, source notices, and npm links prepared. Final artifact review remains open. |
+| SKP-009 | Preview artifact verified | The 74-file MIT tarball matches the downloaded npm archive byte-for-byte. Final `0.1.0` artifact review remains open. |
 | SKP-010 | Automated verification complete | Node 22 on Windows/macOS/Linux and Node 24 on Linux passed source tests and installed-tarball CLI/MCP smoke. Native host acceptance remains SKP-011. |
 | SKP-011 | Pending native acceptance | No complete add/discovery/invocation/update/remove evidence across all six hosts. Grok Bot account scope is accepted only on its qualified Linux runtime; real Bot discovery and invocation remain unverified. |
-| SKP-012 | Pending final | MIT and public-release authority granted; the `next` preview enables real host acceptance before a final `latest` release. |
+| SKP-012 | Pending final | MIT and public-release authority granted; the preview is published under `next`. npm also assigned `latest` to this first version and refused its removal with 403. Final promotion awaits native acceptance. |
 | SKP-013 | Implemented locally | Opt-in loopback `serve-mcp` mounts only catalog list/show through Agent Native; no writers. |
 | SKP-014 | Automated verification complete | Clean tarball consumer passed legacy `2025-11-25`, sessionless one-POST `2026-07-28`, and the CLI launcher on Windows/macOS/Linux CI. |
 
@@ -30,6 +30,7 @@ This is the `0.1.0-rc.0` npm preview candidate. `@uppercut-labs/skills` is packa
 - Clean installed tarball: live `--latest` add and later update followed the saved GitHub channel; the source adapter verified pinned tree/blob IDs.
 - Clean installed tarball with `@modelcontextprotocol/server@2.3.0`: both protocol request shapes and the `serve-mcp` launcher passed with exactly two catalog tools.
 - The draft PR's `Skills CLI` workflow run [37142266205](https://github.com/devin-thomas/skills/actions/runs/37142266205) passed Node 22 on Windows/macOS/Linux, Node 24 on Linux, source validation, and installed-tarball CLI/MCP smoke on every package job after the mixed-channel change.
+- The preview commit [f3fd49a](https://github.com/devin-thomas/skills/commit/f3fd49ac3ab8652eb0a163644dc3633d3b017ec9) passed all five jobs in [run 37151866864](https://github.com/devin-thomas/skills/actions/runs/37151866864). npm accepted `0.1.0-rc.0`; a fresh registry install listed 15 skills. The registry download matched SHA-256 `8e49bc1959dedad2928ee976622c9e67a672113a6117ed922227485151da768d`. The same tarball and checksum are attached to the [GitHub prerelease](https://github.com/devin-thomas/skills/releases/tag/v0.1.0-rc.0).
 
 ## Release gates
 
