@@ -1,6 +1,7 @@
 # Implementation tickets
 
 All six hosts are in the initial release. Statuses describe installer work; none is marked implemented by the planning ZIP.
+The [implementation checkpoint](../IMPLEMENTATION-STATUS-2026-10-03.md) records verified local work and open release gates.
 
 | ID | Result | Depends on |
 |---|---|---|
