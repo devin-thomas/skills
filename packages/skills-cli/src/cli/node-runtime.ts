@@ -76,7 +76,7 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
   let projectRoot: string;
   let physicalHomeDir: string;
   try {
-    projectRoot = await realpath(invocation.options.project ? resolve(invocation.options.project) : projectRootFromGit(cwd));
+    projectRoot = await realpath(invocation.options.project ? resolve(invocation.options.project) : scope === 'global' ? resolve(cwd) : projectRootFromGit(cwd));
     physicalHomeDir = await realpath(homeDir);
   } catch (error) {
     return failed(invocation, 'invalid-scope', error instanceof Error ? error.message : String(error), 2);

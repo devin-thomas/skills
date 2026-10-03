@@ -46,15 +46,14 @@ recheck those expectations. Source selection must never change between dependenc
 
 ## Host adapter contract
 
-An adapter resolves an execution environment, install destination, native registration requirements, and a read-only
-verification procedure. File-copy hosts, including Grok CLI and Grok Bot repository scope, share code. The Grok Bot
-account-library route additionally manages a native registration receipt.
-Use proposed internal methods `detect`, `resolveTarget`, `prepare`, `register`, `inspect`, and `removeRegistration`;
-these are internal abstractions, not vendor commands. Implement only against observed supported host mechanisms.
+An adapter resolves an execution environment, install destination, host-specific guards, and a read-only
+verification procedure. File-copy hosts, including Grok CLI and both Grok Bot scopes, share the managed transaction
+engine. Grok Bot account scope is limited to the reported `/home/box/agent-data/workflows` library on its qualified
+Linux execution computer; a global npm postinstall installs the bundled catalog there on a fresh managed state.
 
-Native registration IDs remain private local state. Host evidence records version, surface, execution computer,
-scope, discovery mechanism, invocation check, and timestamp. Do not treat a local application executable or a writable
-folder as evidence that registration worked.
+Host evidence records version, surface, execution computer, scope, discovery mechanism, invocation check, and
+timestamp. A guarded write and its ownership receipt establish installation, while native Bot discovery and
+invocation require a separate real-session check.
 
 ## Filesystem transaction
 

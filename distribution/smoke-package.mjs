@@ -18,13 +18,19 @@ mkdirSync(project);
 
 try {
   const packed = JSON.parse(npm(['pack', '--json', '--pack-destination', scratch], packageRoot));
-  assert.equal(packed.length, 1);
-  const artifact = packed[0];
-  assert.ok(artifact.files.every(({ path }) => path === 'README.md' || path === 'package.json' || path.startsWith('bin/') || path.startsWith('dist/')));
+  const artifact = Array.isArray(packed) ? packed[0] : packed['@uppercut-labs/skills'];
+  assert.ok(artifact && Array.isArray(artifact.files), 'npm pack did not return the expected package metadata');
+  assert.ok(artifact.files.every(({ path }) => ['LICENSE', 'NOTICE.md', 'README.md', 'package.json'].includes(path) || path.startsWith('bin/') || path.startsWith('dist/')));
   const tarball = join(scratch, artifact.filename);
   npm(['install', '--prefix', consumer, '--no-audit', '--no-fund', tarball], packageRoot);
 
   const bin = join(consumer, 'node_modules', '@uppercut-labs', 'skills', 'bin', 'uppercut-skills.js');
+  const postinstall = join(consumer, 'node_modules', '@uppercut-labs', 'skills', 'bin', 'grokbot-postinstall.js');
+  const outsideBot = execFileSync(process.execPath, [postinstall], {
+    cwd: consumer, encoding: 'utf8', timeout: 30_000,
+    env: { ...process.env, npm_config_global: 'true', npm_lifecycle_event: 'postinstall' },
+  });
+  assert.match(outsideBot, /account library untouched/);
   const run = (...args) => JSON.parse(execFileSync(process.execPath, [bin, ...args, '--json'], {
     cwd: consumer, encoding: 'utf8', timeout: 30_000, maxBuffer: 2 * 1024 * 1024,
   }));

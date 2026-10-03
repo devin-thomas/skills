@@ -60,4 +60,4 @@ git diff --check
 
 The skill validator enforces the portable frontmatter subset used by the supported hosts in addition to local-link and machine-path checks. The PWA tests require Node.js 22+ and use temporary local fixtures. They do not prove installability or physical-device behavior. Browser-probe validation needs a permitted real browser. See [validation notes](docs/validation.md) for observed publication checks.
 
-Keep project evidence, credentials, private preferences, local runtimes, and generated artifacts out of this repository. Preserve attribution and source revisions. This repository currently has no LICENSE file; a collection-wide license has not yet been selected.
+Keep project evidence, credentials, private preferences, local runtimes, and generated artifacts out of this repository. Preserve attribution and source revisions. The approved `@uppercut-labs/skills` bundle is [MIT licensed](packages/skills-cli/LICENSE); see the [source notice](NOTICE.md) for its scope and attribution. This repository as a whole has no blanket license.

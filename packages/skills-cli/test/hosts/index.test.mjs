@@ -5,6 +5,7 @@ import {
   getCompatibleDiscoveryPaths,
   hostAdapters,
   HostAdapterError,
+  qualifiesGrokBotAccountRuntime,
   resolveHostTarget,
   resolveHostTargetResult,
 } from '../../dist/hosts/index.js';
@@ -73,16 +74,33 @@ test('Cursor reuses shared project skills only when the caller confirms existing
   );
 });
 
-test('Grok Bot account scope is an explicit unsupported result, never a filesystem path', () => {
+test('Grok Bot account scope refuses to write outside the Bot execution user', () => {
   const result = resolveHostTargetResult('grokbot', options('global'));
   assert.equal(result.status, 'unsupported');
   if (result.status === 'unsupported') {
     assert.equal(result.code, 'unsupported-account-scope');
-    assert.match(result.message, /native Bot transport/i);
+    assert.match(result.message, /Bot's Linux execution computer/i);
     assert.match(result.message, /No files were written/);
   }
   assert.equal(resolveHostTarget('grokbot', options('project')).installDir, path.join(project, '.agents/skills'));
   assert.equal(resolveHostTarget('grokcli', options('global')).installDir, path.join(home, '.grok/skills'));
+});
+
+test('Grok Bot account route requires matching Linux home, real library path, and ownership', () => {
+  const valid = {
+    platform: 'linux', uid: 1000, selectedHome: '/home/box', processHome: '/home/box',
+    actualHome: '/home/box', actualLibrary: '/home/box/agent-data/workflows',
+    libraryIsDirectory: true, libraryIsSymlink: false, libraryOwnerUid: 1000,
+  };
+  assert.equal(qualifiesGrokBotAccountRuntime(valid), true);
+  for (const changed of [
+    { platform: 'win32' }, { uid: 0 }, { selectedHome: '/home/alice' },
+    { processHome: '/home/alice' }, { actualHome: '/mnt/box' },
+    { actualLibrary: '/tmp/workflows' }, { libraryIsDirectory: false },
+    { libraryIsSymlink: true }, { libraryOwnerUid: 1001 },
+  ]) {
+    assert.equal(qualifiesGrokBotAccountRuntime({ ...valid, ...changed }), false);
+  }
 });
 
 test('Grok CLI compatibility paths are reported without creating duplicate destinations', () => {

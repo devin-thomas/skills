@@ -57,6 +57,11 @@ contracts were checked against primary documentation. Native applications were n
 - **H11 — User-supplied Grok Bot repository observation, October 3, 2026:** the user's Bot reported that repo work
   discovers `.agents/skills/<id>/SKILL.md` with supporting files. This is a direct report, not a public native test
   by this implementation and not an account-library installation contract.
+- **H12 — User-supplied Grok Bot account-library report, October 3, 2026:** the user's Bot identified its execution
+  computer library as `/home/box/agent-data/workflows/<skill-id>/SKILL.md`, with `scripts/`, `references/`, and
+  `assets/` beside the entrypoint. It said Node's global modules are not scanned and proposed running a global npm
+  install on that computer to copy complete skill directories into the library. This is a direct Bot report from a
+  screenshot, not a public filesystem contract or confirmation that the Bot discovers this package's output.
 
 ## Limits
 

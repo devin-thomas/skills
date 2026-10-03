@@ -1,3 +1,5 @@
+import { lstatSync, realpathSync } from "node:fs";
+import { homedir } from "node:os";
 import path from "node:path";
 import type { InstallTarget } from "../engine/types.js";
 import {
@@ -25,6 +27,49 @@ function target(
     rootPath,
     installDir: join(relativeInstallDir),
   };
+}
+
+const GROKBOT_HOME = "/home/box";
+const GROKBOT_LIBRARY = "/home/box/agent-data/workflows";
+
+export interface GrokBotRuntimeEvidence {
+  readonly platform: NodeJS.Platform;
+  readonly uid: number | undefined;
+  readonly selectedHome: string;
+  readonly processHome: string;
+  readonly actualHome: string;
+  readonly actualLibrary: string;
+  readonly libraryIsDirectory: boolean;
+  readonly libraryIsSymlink: boolean;
+  readonly libraryOwnerUid: number;
+}
+
+export function qualifiesGrokBotAccountRuntime(evidence: GrokBotRuntimeEvidence): boolean {
+  return evidence.platform === "linux" && evidence.uid !== undefined && evidence.uid !== 0 &&
+    evidence.selectedHome === GROKBOT_HOME && evidence.processHome === GROKBOT_HOME &&
+    evidence.actualHome === GROKBOT_HOME && evidence.actualLibrary === GROKBOT_LIBRARY &&
+    evidence.libraryIsDirectory && !evidence.libraryIsSymlink && evidence.libraryOwnerUid === evidence.uid;
+}
+
+/** The Bot account library is local to its Linux execution user, not the npm install machine. */
+function isGrokBotAccountRuntime(homeDir: string): boolean {
+  if (process.platform !== "linux" || typeof process.getuid !== "function") return false;
+  try {
+    const library = lstatSync(GROKBOT_LIBRARY);
+    return qualifiesGrokBotAccountRuntime({
+      platform: process.platform,
+      uid: process.getuid(),
+      selectedHome: homeDir,
+      processHome: homedir(),
+      actualHome: realpathSync(GROKBOT_HOME),
+      actualLibrary: realpathSync(GROKBOT_LIBRARY),
+      libraryIsDirectory: library.isDirectory(),
+      libraryIsSymlink: library.isSymbolicLink(),
+      libraryOwnerUid: library.uid,
+    });
+  } catch {
+    return false;
+  }
 }
 
 const adapters: Record<HostId, HostAdapter> = {
@@ -73,13 +118,16 @@ const adapters: Record<HostId, HostAdapter> = {
     id: "grokbot",
     resolveTarget: (options) => {
       if (options.scope === "global") {
-        throw new HostAdapterError({
-          code: "unsupported-account-scope",
-          host: "grokbot",
-          scope: "global",
-          message:
-            "Grok Bot account-library registration is unsupported from this filesystem adapter. The account library requires a native Bot transport; no transport is configured. No files were written.",
-        });
+        if (!isGrokBotAccountRuntime(options.homeDir)) {
+          throw new HostAdapterError({
+            code: "unsupported-account-scope",
+            host: "grokbot",
+            scope: "global",
+            message:
+              "Grok Bot account skills must be installed on the Bot's Linux execution computer as its box user, where /home/box/agent-data/workflows already exists. Run add --host grokbot --global there. No files were written.",
+          });
+        }
+        return target("grokbot", options, "agent-data/workflows");
       }
       return target("grokbot", options, ".agents/skills");
     },
@@ -100,7 +148,7 @@ export function resolveHostTarget(
   return hostAdapters[host].resolveTarget(options);
 }
 
-/** Return unsupported Grok Bot account scope as data for JSON and programmatic callers. */
+/** Return an unsupported result when this is not the Bot's account-library runtime. */
 export function resolveHostTargetResult(
   host: HostId,
   options: ResolveHostTargetOptions,

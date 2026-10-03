@@ -41,6 +41,10 @@ dependencies, complete bundle resources, absent private files, correct notices, 
 installation. Run Node 22+ on Windows, macOS, and Linux in CI. Validate the minimum supported Node version independently
 from the newest development environment. Avoid shell-only commands in the installed runtime.
 
+Exercise Grok Bot postinstall with fresh managed state, existing managed state, unowned or edited destinations, and
+wrong-user, wrong-home, symlink, root, and non-global installs. Assert that an eligible global install places the
+complete 15-skill bundle with receipts and that other environments do not write the account library.
+
 Continue existing repository checks: `python3 scripts/validate-skills.py`, `python tests/test-manifest.py`,
 `node --test tests/pwa-helpers.test.mjs`, and `git diff --check`. Discover and honor additional current checks.
 These command names were found in repository instructions; their success is not claimed by this planning pack.
@@ -49,8 +53,9 @@ These command names were found in repository instructions; their success is not 
 
 All six are mandatory. Record version, OS, execution computer, scope, actual discovery UI/tool output, resource access,
 and a safe invocation. Prove update and removal in each native context. In Grok Bot prove both the reported repository
-route and, for account scope, that the native library changed rather than merely staging files; test partial native
-registration failure. Test Grok CLI separately through its documented `.grok/skills` route. In Antigravity explicitly
+route and, for account scope, that global npm installation on the Bot computer changes the account library and is
+discoverable by the Bot. Test complete support files, dependencies, guarded failure, and existing-state preservation.
+Test Grok CLI separately through its documented `.grok/skills` route. In Antigravity explicitly
 qualify IDE/CLI surface and global route. In Cursor distinguish local discovery from cloud sync.
 
 ## Release gates

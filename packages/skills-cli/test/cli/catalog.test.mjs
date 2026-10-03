@@ -28,6 +28,18 @@ test('ambiguous non-interactive host selection returns host-required without wri
   assert.equal(result.result.error.code, 'host-required');
 });
 
+test('Grok Bot global install outside its execution user reports unsupported without writes', async (t) => {
+  const home = await mkdtemp(join(tmpdir(), 'uppercut-skills-not-bot-'));
+  t.after(() => rm(home, { recursive: true, force: true }));
+  const result = await runCli(
+    parseArgs(['add', 'execute-task-cycles', '--host', 'grokbot', '--global', '--json']),
+    { catalogBundle }, home, home,
+  );
+  assert.equal(result.exitCode, 2);
+  assert.equal(result.result.error.code, 'unsupported-account-scope');
+  assert.equal(existsSync(join(home, 'agent-data', 'workflows')), false);
+});
+
 test('install conflict returns the safe path guidance and conflict exit code', async (t) => {
   const project = await mkdtemp(join(tmpdir(), 'uppercut-skills-cli-'));
   t.after(() => rm(project, { recursive: true, force: true }));

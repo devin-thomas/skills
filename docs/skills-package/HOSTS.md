@@ -8,7 +8,7 @@ These are researched routing contracts, not a claim that the new installer has r
 | `claude` | `.claude/skills/<id>/` | `~/.claude/skills/<id>/` | Claude Code filesystem skills; cloud/Cowork are different surfaces. [H2] |
 | `cursor` | `.cursor/skills/<id>/`, or reuse an already-managed shared `.agents/skills/<id>/` | `~/.cursor/skills/<id>/` | Cursor also discovers shared and compatibility directories; local globals do not imply cloud sync. [H3] |
 | `antigravity` | Current shared `.agents/skills/<id>/`; legacy `.agent/skills` is documented as compatible | IDE/2.0: `~/.gemini/config/skills/<id>/`; CLI: `~/.gemini/antigravity-cli/skills/<id>/` | Current docs distinguish surfaces; qualify the installed version before global writes. [H4, H5] |
-| `grokbot` | `.agents/skills/<id>/` when the Bot works in a repository, per direct Bot report | Native account skill library, separate from repository files | Verify the repository route in a real Bot session; account registration still needs its actual native mechanism. See [GROKBOT](GROKBOT.md). [H6, H7, H11] |
+| `grokbot` | `.agents/skills/<id>/` when the Bot works in a repository, per direct Bot report | `/home/box/agent-data/workflows/<id>/` on the Bot's own qualified Linux runtime | The account path is a second direct Bot report. Global npm postinstall can populate it only when the runtime and existing library pass strict checks; native discovery still needs a real Bot session. See [GROKBOT](GROKBOT.md). [H6, H7, H11, H12] |
 | `grokcli` | `.grok/skills/<id>/` | `~/.grok/skills/<id>/` | xAI documents both CLI locations and Claude/user `.agents` compatibility. Use the explicit Grok CLI route by default. See [GROK-CLI](GROK-CLI.md). [H10] |
 
 `~` means the execution machine's home, not a hard-coded Devin machine path. Never infer that a remote Bot or
@@ -18,8 +18,9 @@ cloud agent reads skills installed on the user's desktop.
 
 All six adapters and real-host acceptance are mandatory for the initial release. A global-path or registration
 uncertainty is resolved in the early host-contract ticket, not hidden in an "unsupported for now" final product.
-Until a path is verified, an implementation must stop rather than write a guessed path. A staged Grok Bot account
-bundle is not a passing registration. A desktop mock does not qualify the Bot host; Grok CLI acceptance is separate.
+Outside the qualified Bot execution context, the account adapter stops rather than writing a guessed path. Copying
+skills into the reported library is installation evidence, not proof that the Bot discovers or invokes them. A desktop
+mock does not qualify the Bot host; Grok CLI acceptance is separate.
 
 For each host, record the actual version, OS, selected surface, explicit project/global semantics, discovery location,
 refresh behavior, invocation syntax, required-resource access, update behavior, and deletion behavior.
