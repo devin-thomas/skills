@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { join, resolve, sep } from 'node:path';
-import { materializeSkill, resolveClosure, resolveSkill, validateCatalog } from '../catalog/index.js';
-import type { CatalogEntry, SourceChannel } from '../catalog/types.js';
+import { materializeSkill, resolveClosure, validateCatalog } from '../catalog/index.js';
+import type { CatalogBundle, CatalogEntry, CatalogSnapshot, SourceChannel } from '../catalog/types.js';
 import type {
   EnginePorts,
   InstallRequest,
@@ -90,28 +90,27 @@ async function applyDesiredRoots(
   rootsBeingChanged: string[],
   includeDependencies = true,
 ): Promise<OperationResult> {
+  const assignments = resolveChannelAssignments(request, roots, rootChannels);
   const closure = includeDependencies
-    ? resolveClosure(request.snapshot, roots)
-    : uniqueEntries([
-      ...resolveClosure(request.snapshot, previous.roots),
-      ...roots.filter((id) => !previous.roots.includes(id)).map((id) => resolveSkill(request.snapshot, id)),
-      ...Object.keys(previous.skills).map((id) => resolveSkill(request.snapshot, id)),
-    ]);
-  const desiredIds = new Set(closure.map((entry) => entry.id));
-  const channels = resolveChannelAssignments(request, roots, rootChannels);
+    ? [...assignments.values()]
+    : [...assignments.values()].filter(({ entry }) => roots.includes(entry.id) || !!previous.skills[entry.id]);
+  const desiredIds = new Set(closure.map(({ entry }) => entry.id));
   const newSkills: Record<string, ManagedSkillReceipt> = {};
   const writes = new Map<string, { bytes: Uint8Array | undefined; executable?: boolean }>();
   const changes: OperationResult['changes'] = [];
 
-  for (const entry of closure) {
+  for (const { entry, channel, source } of closure) {
     const prior = previous.skills[entry.id];
-    const shouldRefresh = rootsBeingChanged.some((root) => root === entry.id || dependsOn(request.snapshot.skills, root, entry.id));
+    const shouldRefresh = rootsBeingChanged.some((root) => {
+      const rootChannel = rootChannels[root] ?? request.channel ?? 'bundled';
+      if (rootChannel !== channel) return false;
+      return root === entry.id || dependsOn(source.snapshot.skills, root, entry.id);
+    });
     if (prior && !shouldRefresh && desiredIds.has(entry.id)) {
       newSkills[entry.id] = prior;
       continue;
     }
-    const channel = channels.get(entry.id) ?? prior?.channel ?? 'bundled';
-    const materialized = materializeSkill(entry, request.bundle);
+    const materialized = materializeSkill(entry, source.bundle);
     const files: Record<string, ManagedFileReceipt> = {};
     let changed = !prior;
     for (const file of materialized.files) {
@@ -164,7 +163,7 @@ async function applyDesiredRoots(
   }
   const next: InstallState = { version: 1, roots, rootChannels, skills: newSkills };
   await commitFilesAndState([...writes].map(([path, change]) => ({ path, ...change })), ports, request.stateKey, previous, next, request.target.installDir);
-  return result(request, previous, next, changes, closure.map((entry) => entry.id));
+  return result(request, previous, next, changes, closure.map(({ entry }) => entry.id));
 }
 
 async function commitFilesAndState(
@@ -294,32 +293,36 @@ async function loadState(ports: EnginePorts, key: string): Promise<InstallState>
 function validateRequest(request: InstallRequest): void {
   validateCatalog(request.snapshot);
   if (request.bundle.manifest.version !== request.snapshot.version) throw new Error('Catalog and bundled content snapshots differ');
+  for (const source of Object.values(request.sources ?? {})) {
+    if (!source) continue;
+    validateCatalog(source.snapshot);
+    if (source.bundle.manifest.version !== source.snapshot.version) throw new Error('Catalog and bundled content snapshots differ');
+  }
   if (request.target.scope !== 'project' && request.target.scope !== 'global') throw new Error('Invalid installation scope');
   if (!request.target.installDir || !request.stateKey) throw new Error('Installation target and state key are required');
 }
 
-function resolveChannelAssignments(request: InstallRequest, roots: string[], rootChannels: Record<string, SourceChannel>): Map<string, SourceChannel> {
-  const channels = new Map<string, SourceChannel>();
+type AssignedSkill = {
+  entry: CatalogEntry;
+  channel: SourceChannel;
+  source: { snapshot: CatalogSnapshot; bundle: CatalogBundle };
+};
+
+function resolveChannelAssignments(request: InstallRequest, roots: string[], rootChannels: Record<string, SourceChannel>): Map<string, AssignedSkill> {
+  const assignments = new Map<string, AssignedSkill>();
   for (const root of roots) {
     const channel = rootChannels[root] ?? request.channel ?? 'bundled';
-    for (const entry of resolveClosure(request.snapshot, [root])) {
-      const existing = channels.get(entry.id);
-      if (existing && existing !== channel) {
-        throw new Error(`Conflicting content channels for shared skill ${entry.id}: ${existing} and ${channel}`);
+    const source = request.sources?.[channel] ?? (request.sources ? undefined : { snapshot: request.snapshot, bundle: request.bundle });
+    if (!source) throw new Error(`Missing content source for ${channel} root ${root}`);
+    for (const entry of resolveClosure(source.snapshot, [root])) {
+      const existing = assignments.get(entry.id);
+      if (existing && existing.channel !== channel) {
+        throw new Error(`Conflicting content channels for shared skill ${entry.id}: ${existing.channel} and ${channel}`);
       }
-      channels.set(entry.id, channel);
+      if (!existing) assignments.set(entry.id, { entry, channel, source });
     }
   }
-  return channels;
-}
-
-function uniqueEntries(entries: CatalogEntry[]): CatalogEntry[] {
-  const seen = new Set<string>();
-  return entries.filter((entry) => {
-    if (seen.has(entry.id)) return false;
-    seen.add(entry.id);
-    return true;
-  });
+  return assignments;
 }
 
 function resolveManagedStateClosure(roots: string[], skills: Record<string, ManagedSkillReceipt>): Set<string> {
@@ -375,12 +378,14 @@ function result(
   changes: OperationResult['changes'],
   resolvedIds: string[],
 ): OperationResult {
+  const channels = new Set(resolvedIds.map((id) => state.skills[id]?.channel).filter((channel): channel is SourceChannel => channel !== undefined));
+  const channel = request.channel ?? (channels.size === 1 ? [...channels][0] : undefined);
   return {
     outcome: changes.length ? 'complete' : 'unchanged',
     requestedIds: [...request.requestedIds],
     resolvedIds,
     target: request.target,
-    ...(request.channel ? { channel: request.channel } : {}),
+    ...(channel ? { channel } : {}),
     changes,
     state,
   };

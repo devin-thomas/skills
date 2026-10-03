@@ -3,7 +3,7 @@ import { chmod, lstat, mkdir, open, readFile, realpath, rename, rm, writeFile } 
 import { homedir } from 'node:os';
 import { createInterface } from 'node:readline/promises';
 import { dirname, isAbsolute, join, parse, relative, resolve } from 'node:path';
-import type { CatalogBundle } from '../catalog/types.js';
+import type { CatalogBundle, SourceChannel } from '../catalog/types.js';
 import { readBundledCatalog, resolveSkill, resolveClosure } from '../catalog/index.js';
 import { loadGitHubBundle, loadGitHubCatalog } from '../catalog/github.js';
 import { installSkills, removeSkills, updateSkills } from '../engine/index.js';
@@ -96,20 +96,35 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
   const statePath = statePathFor(target, physicalHomeDir);
   const ports = createNodePorts(statePath, target.installDir, target.scope === 'project');
   const stateKey = statePath;
-  let channel: 'bundled' | 'github' = invocation.options.latest ? 'github' : invocation.options.channel ?? 'bundled';
+  const bundledBundle = bundle;
+  const bundledCatalog = catalog;
+  const overrideChannel = invocation.options.latest ? 'github' : invocation.options.channel;
+  const channel: SourceChannel | undefined = invocation.command === 'update' ? overrideChannel : overrideChannel ?? 'bundled';
   const currentState = invocation.command === 'add' || invocation.command === 'update' ? await ports.state.load(stateKey) : undefined;
-  if (invocation.command === 'update' && !githubSelected && invocation.options.channel === undefined) {
-    const selectedRoots = invocation.ids.length ? invocation.ids : currentState?.roots ?? [];
-    const savedChannels = new Set(selectedRoots.map((id) => currentState?.rootChannels[id] ?? 'bundled'));
-    if (savedChannels.size > 1) return failed(invocation, 'source-conflict', 'Selected managed roots use different content channels; update compatible roots separately.', 4, { host, scope });
-    channel = [...savedChannels][0] ?? 'bundled';
-  }
-  if (channel === 'github' && (invocation.command === 'add' || invocation.command === 'update')) {
-    const roots = invocation.command === 'add'
-      ? [...new Set([...(currentState?.roots ?? []), ...invocation.ids])]
-      : invocation.ids.length ? [...new Set([...(currentState?.roots ?? []), ...invocation.ids])] : [...(currentState?.roots ?? [])];
-    try { bundle = await loadGitHubBundle(roots); catalog = structuredClone(bundle.manifest); }
-    catch (error) { return failed(invocation, 'source-failure', error instanceof Error ? error.message : String(error), 4, { host, scope }); }
+  const sources: Partial<Record<SourceChannel, { snapshot: typeof catalog; bundle: CatalogBundle }>> = {
+    bundled: { snapshot: bundledCatalog, bundle: bundledBundle },
+  };
+  if (invocation.command === 'add' || invocation.command === 'update') {
+    const roots = [...new Set([...(currentState?.roots ?? []), ...invocation.ids])];
+    const rootChannels = { ...currentState?.rootChannels };
+    const selectedRoots = invocation.command === 'update' && !invocation.ids.length ? roots : invocation.ids;
+    for (const id of selectedRoots) {
+      if (channel) rootChannels[id] = channel;
+      else rootChannels[id] ??= 'bundled';
+    }
+    const githubRoots = roots.filter((id) => rootChannels[id] === 'github');
+    if (githubRoots.length) {
+      try {
+        const githubBundle = await loadGitHubBundle(githubRoots);
+        sources.github = { snapshot: structuredClone(githubBundle.manifest), bundle: githubBundle };
+      } catch (error) {
+        return failed(invocation, 'source-failure', error instanceof Error ? error.message : String(error), 4, { host, scope });
+      }
+    }
+    if (channel === 'github' && sources.github) {
+      bundle = sources.github.bundle;
+      catalog = sources.github.snapshot;
+    }
   }
   try {
     const capByCommand: Record<'add' | 'update' | 'remove' | 'doctor', SkillsCapabilityName> = {
@@ -121,7 +136,7 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
       scope: { host, kind: scope, rootPath: target.rootPath },
       caller: { kind: 'authenticated', subject: 'local-cli', scopes: ['skills:read', 'skills:write', 'skills:remove'] },
       authorization: { authorize: (request) => request.identity.name === allowedCapability && request.access.kind === 'protected' },
-      sourcePolicy: { channel, bundleSchema: bundle.schemaVersion },
+      sourcePolicy: { ...(channel ? { channel } : { channels: Object.keys(sources) }), bundleSchema: bundle.schemaVersion },
       nativeRegistration: { evidence: 'unverified' },
       operations: {
         'installation.plan': async (input) => {
@@ -132,16 +147,34 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
               : invocation.command === 'remove' ? (state?.roots ?? []).filter((id) => !ids.includes(id))
                 : [...ids];
           const prior = new Set(Object.keys(state?.skills ?? {}));
-          const closure = resolveClosure(catalog, roots).map((entry) => entry.id);
+          const desiredChannels = { ...state?.rootChannels };
+          if (invocation.command === 'add' || invocation.command === 'update') {
+            for (const id of invocation.command === 'update' && !ids.length ? roots : ids) {
+              if (channel) desiredChannels[id] = channel;
+              else desiredChannels[id] ??= 'bundled';
+            }
+          }
+          const assignments = new Map<string, SourceChannel>();
+          for (const root of roots) {
+            const rootChannel = desiredChannels[root] ?? 'bundled';
+            const source = sources[rootChannel];
+            if (!source) throw new Error(`Missing content source for ${rootChannel} root ${root}`);
+            for (const entry of resolveClosure(source.snapshot, [root])) {
+              const priorChannel = assignments.get(entry.id);
+              if (priorChannel && priorChannel !== rootChannel) throw new Error(`Conflicting content channels for shared skill ${entry.id}: ${priorChannel} and ${rootChannel}`);
+              assignments.set(entry.id, rootChannel);
+            }
+          }
+          const closure = [...assignments.keys()];
           const resolvedIds = invocation.command === 'add' && invocation.options.noDependencies
             ? [...new Set([...roots, ...prior])]
             : closure;
-          return { requestedIds: ids, resolvedIds, target, channel, changes: [], dryRun: true };
+          return { requestedIds: ids, resolvedIds, target, ...(channel ? { channel } : {}), changes: [], dryRun: true };
         },
         'installation.inspect': async () => diagnose(catalog, target, stateKey, ports),
         'installation.doctor': async () => diagnose(catalog, target, stateKey, ports),
-        'installation.add': (input) => captureOperation(() => installSkills({ requestedIds: readIds(input), snapshot: catalog, bundle, target, stateKey, channel, includeDependencies: !invocation.options.noDependencies }, ports)),
-        'installation.update': (input) => captureOperation(() => updateSkills({ requestedIds: readIds(input), snapshot: catalog, bundle, target, stateKey, channel }, ports)),
+        'installation.add': (input) => captureOperation(() => installSkills({ requestedIds: readIds(input), snapshot: catalog, bundle, sources, target, stateKey, ...(channel ? { channel } : {}), includeDependencies: !invocation.options.noDependencies }, ports)),
+        'installation.update': (input) => captureOperation(() => updateSkills({ requestedIds: readIds(input), snapshot: catalog, bundle, sources, target, stateKey, ...(channel ? { channel } : {}) }, ports)),
         'installation.remove': (input) => captureOperation(() => removeSkills({ requestedIds: readIds(input), snapshot: catalog, bundle, target, stateKey }, ports)),
       },
     };
@@ -161,12 +194,12 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
     if (invocation.options.dryRun) {
       return complete(invocation, {
         requestedIds: operation.requestedIds, resolvedIds: operation.resolvedIds, host, scope,
-      channel, outcome: 'complete', data: operation, discovery: { status: 'unverified' },
+        ...(channel ? { channel } : {}), outcome: 'complete', data: operation, discovery: { status: 'unverified' },
       });
     }
     return complete(invocation, {
       command: invocation.command, requestedIds: operation.requestedIds ?? invocation.ids,
-      resolvedIds: operation.resolvedIds ?? [], host, scope, channel: operation.channel ?? 'bundled',
+      resolvedIds: operation.resolvedIds ?? [], host, scope, ...(operation.channel ? { channel: operation.channel } : {}),
       outcome: 'healthy' in operation && operation.healthy === false ? 'degraded' : operation.outcome ?? 'complete', data: operation,
       discovery: { status: 'unverified' },
     });

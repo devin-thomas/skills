@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import test from 'node:test';
-import { installSkills, removeSkills } from '../../dist/engine/index.js';
+import { installSkills, removeSkills, updateSkills } from '../../dist/engine/index.js';
 
 const revision = 'b'.repeat(40);
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -139,4 +139,61 @@ test('recovery preserves bytes that do not match either the before or planned re
   await assert.rejects(installSkills(request, ports), /preserving it for manual recovery/i);
   assert.equal(files.get(path).toString(), unexpected.toString());
   assert.equal(journals.has(request.stateKey), true);
+});
+
+function channelSource(revision, label, githubRootDependsOnBundled = false) {
+  const entries = [
+    skill('surface-sweep'),
+    skill('quick-build', githubRootDependsOnBundled ? [{ skillId: 'surface-sweep' }] : []),
+  ].map((entry) => ({ ...entry, sourceRevision: revision }));
+  const snapshot = { version: '1.0.0', categories: ['plan', 'build', 'specialized', 'fun'], skills: entries };
+  const skills = Object.fromEntries(entries.map((entry) => {
+    const bytes = Buffer.from(`# ${entry.id} ${label}\n`);
+    return [entry.id, { sourceRevision: revision, files: [{ path: 'SKILL.md', contentBase64: bytes.toString('base64'), sha256: digest(bytes) }] }];
+  }));
+  return { snapshot, bundle: { schemaVersion: '1.0.0', manifest: snapshot, skills } };
+}
+
+test('one update refreshes disjoint bundled and GitHub roots from their own sources', async () => {
+  const { request, ports, files, states } = fixture();
+  const bundledV1 = channelSource('b'.repeat(40), 'bundled-v1');
+  const githubV1 = channelSource('c'.repeat(40), 'github-v1');
+  const sourcesV1 = { bundled: bundledV1, github: githubV1 };
+  await installSkills({ ...request, requestedIds: ['surface-sweep'], ...bundledV1, sources: sourcesV1, channel: 'bundled' }, ports);
+  await installSkills({ ...request, requestedIds: ['quick-build'], ...githubV1, sources: sourcesV1, channel: 'github' }, ports);
+
+  const bundledV2 = channelSource('d'.repeat(40), 'bundled-v2');
+  const githubV2 = channelSource('e'.repeat(40), 'github-v2');
+  const updated = await updateSkills({ ...request, requestedIds: [], ...bundledV2, sources: { bundled: bundledV2, github: githubV2 } }, ports);
+  assert.deepEqual(updated.changes.map(({ skillId }) => skillId), ['surface-sweep', 'quick-build']);
+  assert.equal(updated.state.rootChannels['surface-sweep'], 'bundled');
+  assert.equal(updated.state.rootChannels['quick-build'], 'github');
+  assert.equal(updated.state.skills['surface-sweep'].sourceRevision, 'd'.repeat(40));
+  assert.equal(updated.state.skills['quick-build'].sourceRevision, 'e'.repeat(40));
+  assert.equal(updated.state.skills['surface-sweep'].channel, 'bundled');
+  assert.equal(updated.state.skills['quick-build'].channel, 'github');
+  const bundledPath = Object.keys(updated.state.skills['surface-sweep'].files)[0];
+  const githubPath = Object.keys(updated.state.skills['quick-build'].files)[0];
+  assert.equal(Buffer.from(files.get(bundledPath)).toString(), '# surface-sweep bundled-v2\n');
+  assert.equal(Buffer.from(files.get(githubPath)).toString(), '# quick-build github-v2\n');
+  assert.deepEqual(states.get(request.stateKey), updated.state);
+});
+
+test('mixed-channel shared dependency conflict stops before any writes', async () => {
+  const { request, ports, files, states, journals } = fixture();
+  const bundled = channelSource('b'.repeat(40), 'bundled');
+  const github = channelSource('c'.repeat(40), 'github');
+  const sources = { bundled, github };
+  await installSkills({ ...request, requestedIds: ['surface-sweep'], ...bundled, sources, channel: 'bundled' }, ports);
+  await installSkills({ ...request, requestedIds: ['quick-build'], ...github, sources, channel: 'github' }, ports);
+  const beforeFiles = new Map([...files].map(([path, bytes]) => [path, Uint8Array.from(bytes)]));
+  const beforeState = structuredClone(states.get(request.stateKey));
+  const conflictingGithub = channelSource('d'.repeat(40), 'github-next', true);
+  await assert.rejects(
+    updateSkills({ ...request, requestedIds: [], ...bundled, sources: { bundled, github: conflictingGithub } }, ports),
+    /Conflicting content channels for shared skill surface-sweep/,
+  );
+  assert.deepEqual(files, beforeFiles);
+  assert.deepEqual(states.get(request.stateKey), beforeState);
+  assert.equal(journals.has(request.stateKey), false);
 });
