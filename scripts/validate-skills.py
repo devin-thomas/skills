@@ -11,7 +11,7 @@ skill_name_pattern = re.compile(r'^[a-z][a-z0-9-]*$')
 xml_tag_pattern = re.compile(r'</?[A-Za-z][^>]*>')
 
 for entry in skills:
-    text = entry.read_text()
+    text = entry.read_text(encoding='utf-8')
     match = re.match(r'\A---\n(.*?)\n---\n', text, re.S)
     if not match:
         errors.append(f'{entry.relative_to(root)}: missing frontmatter')
@@ -47,9 +47,9 @@ for entry in skills:
         errors.append(f'{entry.relative_to(root)}: entry point needs progressive disclosure')
 
 for document in sorted(root.rglob('*.md')):
-    if '.git' in document.parts:
+    if {'.git', 'node_modules', 'dist', 'build', 'coverage'} & set(document.parts):
         continue
-    text = document.read_text()
+    text = document.read_text(encoding='utf-8')
     if re.search(r'/Users/[^/\s]+/|/home/[^/\s]+/', text):
         errors.append(f'{document.relative_to(root)}: machine-specific home path')
     for target in re.findall(r'\[[^\]]*\]\(([^)]+)\)', text):
