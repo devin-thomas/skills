@@ -6,9 +6,9 @@ Grok Bot repository work discovers `.agents/skills/<id>/SKILL.md` with sibling r
 user's direct Bot report. Its chat-wide library is on the Bot execution computer at
 `/home/box/agent-data/workflows/<id>/SKILL.md`, with `scripts/`, `references/`, and `assets/` beside the entrypoint.
 The Bot later reported that `agent-data` is a symlink to `/home/box/sand-data`, so the library's physical path is
-`/home/box/sand-data/workflows`. The `workflows` directory itself is not a symlink and belongs to `box`. These are
-direct Bot reports, not a public API or completed native acceptance run. Grok CLI remains a separate host with
-`.grok/skills` routes. [H11-H14 in SOURCES.md]
+`/home/box/sand-data/workflows`. The `workflows` directory itself is not a symlink and belongs to `box`. These path
+details came from direct Bot reports, not a public API. Grok CLI remains a separate host with
+`.grok/skills` routes. [H11-H15 in SOURCES.md]
 
 ## Install on the Bot computer
 
@@ -55,3 +55,9 @@ On a real Grok Bot session, verify `add`, visibility in the Bot's skill selector
 sibling support file, dependency loading, `update`, and managed `remove`. Record the Bot version, execution user,
 selected scope, and evidence without putting private account data in this repository. Unit tests prove path gating
 and installer behavior; they do not prove that Bot discovers a copied skill in its native library.
+
+The user's `rc.2` Bot screenshots establish a successful global install, healthy managed `starter-pack` and
+`computer-setup` in the account library, preservation of the differing `grill-to-build`, and an actual
+`starter-pack` invocation from that library. Starter Pack inspected existing progress and did not begin Quick Build.
+Doctor's `discovery` field still says `unverified` because the CLI receives no native invocation callback; the
+separate Bot report is the invocation evidence. The full lifecycle and the other hosts remain open. [H15 in SOURCES.md]
