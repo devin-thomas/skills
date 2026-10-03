@@ -72,6 +72,12 @@ contracts were checked against primary documentation. Native applications were n
   and accepted the physical library path, but `grill-to-build` differed from the bundled copy. The all-catalog add
   aborted, npm rolled back its package install, and no skill files changed. Doctor reached the library with an empty
   installed list; the Bot did not discover or invoke a skill. This screenshot is runtime feedback, not native acceptance.
+- **H15 — User-supplied `rc.2` Grok Bot acceptance screenshots, October 3, 2026:** the Bot reported a successful
+  global `0.1.0-rc.2` install. Doctor exited clean with `starter-pack` and `computer-setup` managed in
+  `/home/box/sand-data/workflows`; pre-existing skills were left alone and `grill-to-build` remained unmanaged.
+  The Bot then loaded and invoked `starter-pack` from that library. It located an existing Phase 2 progress file
+  and private progress repository, recognized Computer Setup as complete, and did not start Quick Build without
+  a request. The screenshot does not show a complete Starter Pack run, lifecycle update/remove, or other host checks.
 
 ## Limits
 
