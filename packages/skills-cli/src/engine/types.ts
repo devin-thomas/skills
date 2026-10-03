@@ -33,6 +33,7 @@ export interface InstallRequest {
   target: InstallTarget;
   stateKey: string;
   channel?: SourceChannel;
+  sources?: Partial<Record<SourceChannel, { snapshot: CatalogSnapshot; bundle: CatalogBundle }>>;
   includeDependencies?: boolean;
 }
 
