@@ -1,6 +1,6 @@
 # Uppercut Skills CLI
 
-`@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies. This checkout is a private development preview; it is not an npm release.
+`@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies. This checkout is the `0.1.0` release candidate; publishing is verified separately.
 
 ## Run from this checkout
 
@@ -25,7 +25,7 @@ npx @uppercut-labs/skills@0.1.0 doctor --host codex --project /path/to/project
 
 `add execute-task-cycles` also installs its required `execute-task` skill. The default bundled channel uses the reviewed content snapshot inside this package and needs no network after installation. `--latest` selects the current allowed GitHub source revisions and remembers that channel for subsequent updates. `--no-dependencies` (or `-nd`) is an expert option that reports a degraded install if required skills are missing.
 
-Use `--host codex|claude|cursor|antigravity|grokbot|grokcli` to select one host. Grok Bot's project route writes `.agents/skills`; its account-wide private library requires a native registration transport and is not claimed by a file copy. Grok CLI is a separate host with a `.grok/skills` route. `--global` selects user scope. Antigravity global installs also require `--surface ide|cli`.
+Use `--host codex|claude|cursor|antigravity|grokbot|grokcli` to select one host. Grok Bot's project route writes `.agents/skills`. On the Bot's own Linux execution computer, an allowed global npm postinstall places the bundled catalog in `/home/box/agent-data/workflows` when that existing library belongs to the active `box` user. Elsewhere, npm install never writes that library. This machine's npm configuration blocked the package postinstall during consumer smoke; where scripts are blocked, use the explicit `add <id> --host grokbot --global` route on the Bot computer. Native Bot discovery still needs live acceptance. Grok CLI is a separate host with a `.grok/skills` route. `--global` selects user scope. Antigravity global installs also require `--surface ide|cli`.
 
 `update`, `remove`, `show`, `list`, and `doctor` use the same CLI. Add `--json` for one machine-readable result or `--dry-run` to inspect an intended write. The installer refuses changed or unowned files by default.
 
@@ -44,4 +44,4 @@ For package consumers, the `./agent-native` export supplies a scoped capability 
 
 ## Source and release boundary
 
-The catalog is authored in the repository's `manifest/skills.json`. The bundled snapshot is compiled from pinned commits in three reviewed public source repositories. The package remains private until the collection license, bundled-content rights, and native host release scope are settled.
+The catalog is authored in the repository's `manifest/skills.json`. The bundled snapshot is compiled from pinned commits in three reviewed public source repositories. The package and approved bundled skill snapshots use [MIT](LICENSE); the [notice](NOTICE.md) records Starter Pack and VidChopper sources and the limits of the Starter Pack permission. Native host release scope and final artifact checks remain release gates.

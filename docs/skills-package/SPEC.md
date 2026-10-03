@@ -112,8 +112,11 @@ It uses Agent Native 0.1.0 and peer `@modelcontextprotocol/server@2.3.0`; see [S
 and [SKP-014](tickets/SKP-014.md). The mount has no installation writes or local-state reads.
 
 The original ZIP delivery made no GitHub or npm writes. The implemented CLI writes only its selected local
-scope and, for Grok Bot account scope when expressly requested, the verified native skill-registration surface.
-It does not publish a Bot template, grant new permissions, or enable a remote MCP service.
+scope. For Grok Bot account scope, explicit CLI operations and a global npm postinstall on the Bot's own qualified
+Linux runtime write the reported existing `/home/box/agent-data/workflows` library. A fresh global install places
+the bundled catalog there; an existing managed installation is preserved for an explicit update. This does not
+publish a Bot template, grant new permissions, or enable a remote MCP service. See [GROKBOT](GROKBOT.md) for the
+runtime checks and the separate native-discovery gate.
 The initial release includes six hosts, with distinct Grok Bot and Grok CLI contracts. See
 [GROKBOT](GROKBOT.md) and [GROK-CLI](GROK-CLI.md).
 

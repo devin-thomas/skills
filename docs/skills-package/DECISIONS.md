@@ -76,12 +76,12 @@ Consequences: changes do not claim any native host has been tested.
 Revisit when: a real host test exposes a concrete incompatibility.
 
 ## D10 — License and publication authority
-Status: existing license unresolved; the original ZIP delivery was planning-only.
-Context: README currently states no collection-wide license has been selected.
-Decision: preserve attribution and make explicit license approval a publication gate. Prepare release assets without publishing.
-Reason: package availability does not settle rights to redistribute every resource.
-Consequences: do not relabel adapted content MIT or publish to npm without the owner's license decision and release authority.
-Revisit when: Devin chooses the license and authorizes the actual public release.
+Status: MIT selected by Devin on October 3, 2026; public release authorized subject to qualification.
+Context: the Starter Pack repository retains a restrictive rights notice, while this package bundles two pinned skill snapshots from it. VidChopper is MIT upstream.
+Decision: release the approved `@uppercut-labs/skills` installer and bundled skill snapshots under MIT. Preserve explicit source attribution and pinned revisions in the package notice. Do not relicense the rest of this repository or Starter Pack.
+Reason: Devin owns the original material and expressly approved MIT for this package after the two Starter Pack skills were identified.
+Consequences: include LICENSE and NOTICE in the npm tarball. Real host acceptance and final artifact checks remain release gates.
+Revisit when: the package includes new third-party content or later upstream snapshots with different terms.
 
 ## D11 — Grok Bot and Grok CLI are separate surfaces
 Status: added from the user's direct Grok Bot explanation after the second ZIP.
