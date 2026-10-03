@@ -34,6 +34,10 @@ Use $skill-installer to install surface-sweep and surface-sweep-showcase from ht
 
 Each skill is a directory whose entry point is `SKILL.md`. Keep its references, templates, scripts, and agent metadata together. Install paired dependencies together. Native discovery varies by host: verify it through the host's supported mechanism instead of treating a copied file as proof of activation. If native installation is unavailable, supply the selected entry point and references as context without claiming installation.
 
+The portable skill content is maintained for **Codex, Claude Code, Cursor, Google Antigravity, and Grok Bot**. The first four consume ordinary Agent Skills directories; Grok Bot keeps saved skills at account level, so its installation transport is different. See [host compatibility](docs/host-compatibility.md) for the current paths, evidence rules, and portability boundary.
+
+A focused npm distribution layer, `@uppercut-labs/skills`, is planned in [docs/skills-package](docs/skills-package/PLAN.md). It will use this repository's manifest as the owned catalog, install skill prerequisites automatically, and keep stable npm releases separate from the faster-moving live GitHub catalog.
+
 No skill requires the author's global AGENTS.md, account memory, or private setup. [Grill to Build preferences](grill-to-build/references/preferences-and-diagrams.md) travel in explicit files; the default diagram format is Markdown/Mermaid. External services still require the user's own access and authorization.
 
 ## Starter Pack relationship
@@ -54,6 +58,6 @@ node --test tests/pwa-helpers.test.mjs
 git diff --check
 ```
 
-The PWA tests require Node.js 22+ and use temporary local fixtures. They do not prove installability or physical-device behavior. Browser-probe validation needs a permitted real browser. See [validation notes](docs/validation.md) for observed publication checks.
+The skill validator enforces the portable frontmatter subset used by the supported hosts in addition to local-link and machine-path checks. The PWA tests require Node.js 22+ and use temporary local fixtures. They do not prove installability or physical-device behavior. Browser-probe validation needs a permitted real browser. See [validation notes](docs/validation.md) for observed publication checks.
 
 Keep project evidence, credentials, private preferences, local runtimes, and generated artifacts out of this repository. Preserve attribution and source revisions. This repository currently has no LICENSE file; a collection-wide license has not yet been selected.
