@@ -1,10 +1,6 @@
 ---
 name: long-horizon-dashboard
-description: >-
-  Maintain a durable dashboard for long-running, multi-phase agent work so the
-  user can return and see current activity, progress, blockers, actions, decisions,
-  outputs, and the next safe step. Default to localhost with verified ports;
-  native Claude artifacts and private Tailscale access are optional delivery modes.
+description: Maintain a durable dashboard for long-running, multi-phase agent work so the user can return and see current activity, progress, blockers, actions, decisions, outputs, and the next safe step. Default to localhost with verified ports; native Claude artifacts and private Tailscale access are optional delivery modes.
 ---
 
 # Long Horizon Dashboard

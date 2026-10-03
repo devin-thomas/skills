@@ -43,7 +43,7 @@ Capture start evidence before task selection and include start/end/elapsed evide
 Resolve `TASK-EXECUTION-PROMPT.md` in this order:
 
 1. Use a path explicitly supplied by the user.
-2. Read every applicable `AGENTS.md` and `CODEX.md`; use a prompt they designate.
+2. Read the active host's applicable repository instructions and enabled rules; use a prompt they designate. Include scoped `AGENTS.md`, `CLAUDE.md`, documented host rule files, and any repository-designated instruction files such as `CODEX.md` when applicable. Respect the host's scope and precedence; do not assume every host automatically loads every filename.
 3. Search the repository for exact filename matches. Prefer `rg --files -g TASK-EXECUTION-PROMPT.md` when available.
 4. If multiple matches remain, search README files, runner documentation, implementation plans, agent documentation, and other repository docs for canonical-path or source-of-truth guidance.
 5. Ask the user only when repository documentation cannot resolve multiple plausible canonical prompts.
