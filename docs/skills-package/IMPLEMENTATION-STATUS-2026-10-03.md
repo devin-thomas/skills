@@ -31,6 +31,7 @@ The `0.1.0-rc.0` npm preview is published from commit `f3fd49a`. Native host acc
 - Clean installed tarball with `@modelcontextprotocol/server@2.3.0`: both protocol request shapes and the `serve-mcp` launcher passed with exactly two catalog tools.
 - The draft PR's `Skills CLI` workflow run [37142266205](https://github.com/devin-thomas/skills/actions/runs/37142266205) passed Node 22 on Windows/macOS/Linux, Node 24 on Linux, source validation, and installed-tarball CLI/MCP smoke on every package job after the mixed-channel change.
 - The preview commit [f3fd49a](https://github.com/devin-thomas/skills/commit/f3fd49ac3ab8652eb0a163644dc3633d3b017ec9) passed all five jobs in [run 37151866864](https://github.com/devin-thomas/skills/actions/runs/37151866864). npm accepted `0.1.0-rc.0`; a fresh registry install listed 15 skills. The registry download matched SHA-256 `8e49bc1959dedad2928ee976622c9e67a672113a6117ed922227485151da768d`. The same tarball and checksum are attached to the [GitHub prerelease](https://github.com/devin-thomas/skills/releases/tag/v0.1.0-rc.0).
+- On the `research` Mac, isolated installs of the exact npm preview into Codex and Claude project roots passed add, doctor, unchanged update, and managed remove; both installed the sibling `README.md`. Native Codex explicitly read the installed skill and README. Automatic discovery was not established because Codex reported a global skill-description budget warning. Claude's native invocation stopped at `Not logged in` before a model turn.
 
 ## Release gates
 
