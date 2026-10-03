@@ -113,8 +113,10 @@ and [SKP-014](tickets/SKP-014.md). The mount has no installation writes or local
 
 The original ZIP delivery made no GitHub or npm writes. The implemented CLI writes only its selected local
 scope. For Grok Bot account scope, explicit CLI operations and a global npm postinstall on the Bot's own qualified
-Linux runtime write the reported existing `/home/box/agent-data/workflows` library. A fresh global install places
-the bundled catalog there; an existing managed installation is preserved for an explicit update. This does not
+Linux runtime write the reported existing `/home/box/agent-data/workflows` library through its owned physical path.
+A fresh global install places the bundled catalog there, adopting complete byte-identical existing skills and
+rejecting differing or extra files; an existing managed installation is preserved for an explicit update. npm must
+permit this package's postinstall script. This does not
 publish a Bot template, grant new permissions, or enable a remote MCP service. See [GROKBOT](GROKBOT.md) for the
 runtime checks and the separate native-discovery gate.
 The initial release includes six hosts, with distinct Grok Bot and Grok CLI contracts. See

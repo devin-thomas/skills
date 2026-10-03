@@ -39,6 +39,8 @@ export interface InstallRequest {
 
 export interface FileSystemPort {
   readFile(path: string): Promise<Uint8Array | undefined>;
+  /** List every descendant regular file using absolute paths; throw on symlinks or non-file entries. */
+  listFiles(directory: string): Promise<readonly string[]>;
   assertSafePath(path: string, boundary: string): Promise<void>;
   writeFile(path: string, bytes: Uint8Array, options?: { executable?: boolean }): Promise<void>;
   mkdir(path: string): Promise<void>;

@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { chmod, lstat, mkdir, open, readFile, realpath, rename, rm, writeFile } from 'node:fs/promises';
+import { chmod, lstat, mkdir, open, readFile, readdir, realpath, rename, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { createInterface } from 'node:readline/promises';
 import { dirname, isAbsolute, join, parse, relative, resolve } from 'node:path';
@@ -239,7 +239,7 @@ function readOperationFailure(value: unknown): { code: string; message: string }
 
 function classifyOperationError(message: string): string {
   if (/source|github|catalog|manifest|revision|integrity/i.test(message)) return 'source-failure';
-  if (/modified|not owned|unmanaged|conflicting content channels|lock|manual recovery/i.test(message)) return 'local-conflict';
+  if (/modified|not owned|unmanaged|existing skill files?|symlink|non-regular|conflicting content channels|lock|manual recovery/i.test(message)) return 'local-conflict';
   if (/registration/i.test(message)) return 'registration-required';
   if (/unknown skill|prerequisite|skill ID is required|no managed roots/i.test(message)) return 'invalid-skill';
   return 'operation-failed';
@@ -372,6 +372,31 @@ function createNodePorts(statePath: string, installDir: string, projectScoped: b
     return absolute;
   };
   const fsPort = {
+    async listFiles(directory: string): Promise<readonly string[]> {
+      const root = await assertSafePath(directory);
+      let rootMetadata;
+      try { rootMetadata = await lstat(root); }
+      catch (error) {
+        if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') return [];
+        throw error;
+      }
+      if (!rootMetadata.isDirectory() || rootMetadata.isSymbolicLink()) {
+        throw new Error(`Managed skill directory is not a regular directory: ${root}`);
+      }
+      const files: string[] = [];
+      const walk = async (directoryPath: string): Promise<void> => {
+        for (const entry of await readdir(directoryPath, { withFileTypes: true })) {
+          const child = await assertSafePath(join(directoryPath, entry.name));
+          const metadata = await lstat(child);
+          if (metadata.isSymbolicLink()) throw new Error(`Managed skill contains a symlink: ${child}`);
+          if (metadata.isDirectory()) await walk(child);
+          else if (metadata.isFile()) files.push(child);
+          else throw new Error(`Managed skill contains a non-regular entry: ${child}`);
+        }
+      };
+      await walk(root);
+      return files;
+    },
     async readFile(path: string) {
       const absolute = await assertSafePath(path);
       try {

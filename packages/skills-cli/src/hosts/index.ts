@@ -45,30 +45,34 @@ export interface GrokBotRuntimeEvidence {
 }
 
 export function qualifiesGrokBotAccountRuntime(evidence: GrokBotRuntimeEvidence): boolean {
+  const libraryRelativeToHome = path.posix.relative(GROKBOT_HOME, evidence.actualLibrary);
   return evidence.platform === "linux" && evidence.uid !== undefined && evidence.uid !== 0 &&
     evidence.selectedHome === GROKBOT_HOME && evidence.processHome === GROKBOT_HOME &&
-    evidence.actualHome === GROKBOT_HOME && evidence.actualLibrary === GROKBOT_LIBRARY &&
+    evidence.actualHome === GROKBOT_HOME && libraryRelativeToHome !== "" &&
+    libraryRelativeToHome !== ".." && !libraryRelativeToHome.startsWith("../") &&
+    path.posix.basename(evidence.actualLibrary) === "workflows" &&
     evidence.libraryIsDirectory && !evidence.libraryIsSymlink && evidence.libraryOwnerUid === evidence.uid;
 }
 
 /** The Bot account library is local to its Linux execution user, not the npm install machine. */
-function isGrokBotAccountRuntime(homeDir: string): boolean {
-  if (process.platform !== "linux" || typeof process.getuid !== "function") return false;
+function grokBotAccountLibraryPath(homeDir: string): string | undefined {
+  if (process.platform !== "linux" || typeof process.getuid !== "function") return undefined;
   try {
     const library = lstatSync(GROKBOT_LIBRARY);
+    const actualLibrary = realpathSync(GROKBOT_LIBRARY);
     return qualifiesGrokBotAccountRuntime({
       platform: process.platform,
       uid: process.getuid(),
       selectedHome: homeDir,
       processHome: homedir(),
       actualHome: realpathSync(GROKBOT_HOME),
-      actualLibrary: realpathSync(GROKBOT_LIBRARY),
+      actualLibrary,
       libraryIsDirectory: library.isDirectory(),
       libraryIsSymlink: library.isSymbolicLink(),
       libraryOwnerUid: library.uid,
-    });
+    }) ? actualLibrary : undefined;
   } catch {
-    return false;
+    return undefined;
   }
 }
 
@@ -118,7 +122,8 @@ const adapters: Record<HostId, HostAdapter> = {
     id: "grokbot",
     resolveTarget: (options) => {
       if (options.scope === "global") {
-        if (!isGrokBotAccountRuntime(options.homeDir)) {
+        const accountLibrary = grokBotAccountLibraryPath(options.homeDir);
+        if (!accountLibrary) {
           throw new HostAdapterError({
             code: "unsupported-account-scope",
             host: "grokbot",
@@ -127,7 +132,7 @@ const adapters: Record<HostId, HostAdapter> = {
               "Grok Bot account skills must be installed on the Bot's Linux execution computer as its box user, where /home/box/agent-data/workflows already exists. Run add --host grokbot --global there. No files were written.",
           });
         }
-        return target("grokbot", options, "agent-data/workflows");
+        return { ...target("grokbot", options, "agent-data/workflows"), installDir: accountLibrary };
       }
       return target("grokbot", options, ".agents/skills");
     },

@@ -42,8 +42,11 @@ installation. Run Node 22+ on Windows, macOS, and Linux in CI. Validate the mini
 from the newest development environment. Avoid shell-only commands in the installed runtime.
 
 Exercise Grok Bot postinstall with fresh managed state, existing managed state, unowned or edited destinations, and
-wrong-user, wrong-home, symlink, root, and non-global installs. Assert that an eligible global install places the
-complete 15-skill bundle with receipts and that other environments do not write the account library.
+wrong-user, wrong-home, a symlinked `workflows` leaf, root, and non-global installs. Include the reported symlinked
+`agent-data` parent and verify writes use the owned physical `workflows` directory. Test adoption of a complete
+byte-identical skill without rewriting it, and rejection of differing, extra, and unsafe entries. Assert that an
+eligible global install places the complete 15-skill bundle with receipts and that other environments do not write
+the account library.
 
 Continue existing repository checks: `python3 scripts/validate-skills.py`, `python tests/test-manifest.py`,
 `node --test tests/pwa-helpers.test.mjs`, and `git diff --check`. Discover and honor additional current checks.

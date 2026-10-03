@@ -111,6 +111,34 @@ async function applyDesiredRoots(
       continue;
     }
     const materialized = materializeSkill(entry, source.bundle);
+    let adopting = false;
+    if (!prior) {
+      const skillDirectory = resolve(request.target.installDir, entry.id);
+      assertWithinBoundary(skillDirectory, request.target.installDir);
+      await ports.fs.assertSafePath(skillDirectory, request.target.installDir);
+      const existingPaths = [...await ports.fs.listFiles(skillDirectory)];
+      if (existingPaths.length) {
+        const plannedByPath = new Map(materialized.files.map((file) => [
+          destinationFor(request.target.installDir, entry.id, file.path),
+          file,
+        ]));
+        const existingSet = new Set(existingPaths);
+        if (existingSet.size !== existingPaths.length || existingPaths.some((path) => !plannedByPath.has(path))
+          || plannedByPath.size !== existingPaths.length) {
+          throw new Error(`Existing skill files do not exactly match the planned bundle: ${skillDirectory}`);
+        }
+        for (const path of existingPaths) {
+          assertWithinBoundary(path, skillDirectory);
+          await ports.fs.assertSafePath(path, request.target.installDir);
+          const existing = await ports.fs.readFile(path);
+          const planned = plannedByPath.get(path)!;
+          if (existing === undefined || !equalBytes(existing, planned.bytes)) {
+            throw new Error(`Existing skill file differs from the planned bundle: ${path}`);
+          }
+        }
+        adopting = true;
+      }
+    }
     const files: Record<string, ManagedFileReceipt> = {};
     let changed = !prior;
     for (const file of materialized.files) {
@@ -119,11 +147,14 @@ async function applyDesiredRoots(
       await ports.fs.assertSafePath(destination, request.target.installDir);
       const existing = await ports.fs.readFile(destination);
       const oldReceipt = prior?.files[destination];
-      if (existing !== undefined && !oldReceipt) throw new Error(`Destination is not owned by this installer: ${destination}`);
+      if (existing !== undefined && !oldReceipt && !adopting) throw new Error(`Destination is not owned by this installer: ${destination}`);
       if (existing !== undefined && oldReceipt && hash(existing) !== oldReceipt.sha256) {
         throw new Error(`Managed file was modified; refusing update: ${destination}`);
       }
-      const fileChanged = existing === undefined || hash(existing) !== file.sha256 || oldReceipt?.executable !== file.executable;
+      if (existing !== undefined && adopting && !equalBytes(existing, file.bytes)) {
+        throw new Error(`Existing skill file differs from the planned bundle: ${destination}`);
+      }
+      const fileChanged = existing === undefined || hash(existing) !== file.sha256 || (!!oldReceipt && oldReceipt.executable !== file.executable);
       if (fileChanged) writes.set(destination, { bytes: file.bytes, executable: file.executable });
       files[destination] = { sha256: file.sha256, executable: file.executable };
       changed ||= fileChanged;
@@ -395,6 +426,14 @@ function hash(bytes: Uint8Array): string {
   const copy = new Uint8Array(bytes.byteLength);
   copy.set(bytes);
   return createHash('sha256').update(copy).digest('hex');
+}
+
+function equalBytes(left: Uint8Array, right: Uint8Array): boolean {
+  if (left.byteLength !== right.byteLength) return false;
+  for (let index = 0; index < left.byteLength; index += 1) {
+    if (left[index] !== right[index]) return false;
+  }
+  return true;
 }
 
 function isInstallState(value: unknown): value is InstallState {

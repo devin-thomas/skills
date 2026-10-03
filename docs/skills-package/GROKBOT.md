@@ -5,38 +5,42 @@
 Grok Bot repository work discovers `.agents/skills/<id>/SKILL.md` with sibling resources, according to the
 user's direct Bot report. Its chat-wide library is on the Bot execution computer at
 `/home/box/agent-data/workflows/<id>/SKILL.md`, with `scripts/`, `references/`, and `assets/` beside the entrypoint.
-This account path comes from a second direct Bot report supplied by the user, not a public API or native acceptance
-run. Grok CLI remains a separate host with `.grok/skills` routes. [H11, H12 in SOURCES.md]
+The Bot later reported that `agent-data` is a symlink to `/home/box/sand-data`, so the library's physical path is
+`/home/box/sand-data/workflows`. The `workflows` directory itself is not a symlink and belongs to `box`. These are
+direct Bot reports, not a public API or completed native acceptance run. Grok CLI remains a separate host with
+`.grok/skills` routes. [H11-H13 in SOURCES.md]
 
 ## Install on the Bot computer
 
 The Bot must run the package on its own execution computer as the `box` user. For example:
 
 ```sh
-npm install -g @uppercut-labs/skills
+npm install -g @uppercut-labs/skills@0.1.0-rc.1 --allow-scripts=@uppercut-labs/skills
 uppercut-skills doctor --host grokbot --global
 ```
 
 On a fresh, qualified Bot runtime, the global npm postinstall copies all bundled curated skills and their support
 files. An ordinary local install or an install on another machine leaves the library untouched. If a managed Bot
 installation already exists, postinstall preserves it and prints an explicit update command, retaining saved source
-channels and local edits. Unowned destination files or changed managed files cause the transaction to fail.
+channels and local edits. A pre-existing skill is adopted only when its complete file set and bytes match the
+reviewed bundle; differing or extra files cause a conflict without replacement.
 `update` and `remove` use the same receipts. `--global` does not copy from the user's computer to the Bot computer.
 The lifecycle refuses root writes rather than silently installing files with the wrong owner.
 
-Some npm configurations block package install scripts. If npm reports that this package's postinstall was blocked,
-run `uppercut-skills add <id> --host grokbot --global` explicitly on the Bot computer, or approve the package's
+The Bot reported npm 11 blocks package postinstall unless the install allows `@uppercut-labs/skills` scripts, as in
+the command above, or the user npm config already allows them. If npm still reports that postinstall was blocked,
+run `uppercut-skills add <id> --host grokbot --global` explicitly on the Bot computer, or allow the package's
 postinstall through that npm installation's normal policy and rerun it. A successful npm package install alone does
 not prove the skills were copied; use `uppercut-skills doctor --host grokbot --global` and inspect the Bot skill selector.
 
 The explicit CLI route remains available for selected skills, for example
 `uppercut-skills add execute-task-cycles --host grokbot --global`.
 
-The adapter accepts account scope only on Linux when the process runs as a non-root user with home `/home/box`, the
-existing library resolves to `/home/box/agent-data/workflows` without a symlink, and that directory belongs to the
-process user. Outside that context it returns `unsupported-account-scope` before writing. This is a conservative
-path check, not cryptographic proof of Bot identity. An existing directory is required; the package will not create
-a guessed account library on another computer.
+The adapter accepts account scope only on Linux when the process runs as a non-root user with home `/home/box`, and
+the existing `workflows` directory is a normal directory owned by that user. It resolves the library's physical path
+inside `/home/box` before writing, so a symlinked `agent-data` parent is supported without following an unchecked
+path during file operations. Outside that context it returns `unsupported-account-scope` before writing. This is a
+conservative path check, not cryptographic proof of Bot identity. An existing directory is required.
 
 Project scope continues to use `.agents/skills/<id>/` in the selected repository. Do not use `.grok/skills`,
 `.claude/skills`, `.cursor/skills`, or Node's global module directory as the Bot account library.

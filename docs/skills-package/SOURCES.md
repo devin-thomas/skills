@@ -62,6 +62,12 @@ contracts were checked against primary documentation. Native applications were n
   `assets/` beside the entrypoint. It said Node's global modules are not scanned and proposed running a global npm
   install on that computer to copy complete skill directories into the library. This is a direct Bot report from a
   screenshot, not a public filesystem contract or confirmation that the Bot discovers this package's output.
+- **H13 — User-supplied Grok Bot account-install diagnosis, October 3, 2026:** the Bot reported that
+  `/home/box/agent-data` resolves to `/home/box/sand-data`, while `workflows` itself is an owned normal directory.
+  It reported npm 11 requires `--allow-scripts=@uppercut-labs/skills` or an equivalent user npm config for postinstall.
+  It also reported existing skills in the library and asked that exact byte matches be adopted into managed state
+  without replacing differing files. This is a direct Bot report from a screenshot; native discovery remains to be
+  verified after installation.
 
 ## Limits
 

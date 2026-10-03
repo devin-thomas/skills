@@ -86,17 +86,19 @@ test('Grok Bot account scope refuses to write outside the Bot execution user', (
   assert.equal(resolveHostTarget('grokcli', options('global')).installDir, path.join(home, '.grok/skills'));
 });
 
-test('Grok Bot account route requires matching Linux home, real library path, and ownership', () => {
+test('Grok Bot account route accepts a symlinked parent but requires an owned workflows directory under its Linux home', () => {
   const valid = {
     platform: 'linux', uid: 1000, selectedHome: '/home/box', processHome: '/home/box',
-    actualHome: '/home/box', actualLibrary: '/home/box/agent-data/workflows',
+    actualHome: '/home/box', actualLibrary: '/home/box/sand-data/workflows',
     libraryIsDirectory: true, libraryIsSymlink: false, libraryOwnerUid: 1000,
   };
   assert.equal(qualifiesGrokBotAccountRuntime(valid), true);
+  assert.equal(qualifiesGrokBotAccountRuntime({ ...valid, actualLibrary: '/home/box/agent-data/workflows' }), true);
   for (const changed of [
     { platform: 'win32' }, { uid: 0 }, { selectedHome: '/home/alice' },
     { processHome: '/home/alice' }, { actualHome: '/mnt/box' },
-    { actualLibrary: '/tmp/workflows' }, { libraryIsDirectory: false },
+    { actualLibrary: '/tmp/workflows' }, { actualLibrary: '/home/box/sand-data/other' },
+    { libraryIsDirectory: false },
     { libraryIsSymlink: true }, { libraryOwnerUid: 1001 },
   ]) {
     assert.equal(qualifiesGrokBotAccountRuntime({ ...valid, ...changed }), false);
