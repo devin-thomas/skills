@@ -1,113 +1,102 @@
-# Uppercut Skills package decisions
+# Uppercut Skills decisions
 
-## Scoped npm identity
+## D01 — Product and ownership
+Status: accepted by user.
+Context: a catalog of portable workflows needs a distribution layer, not another application.
+Decision: `@uppercut-labs/skills`; source stays in `devin-thomas/skills`; CLI-first, project-local by default.
+Reason: gives Uppercut a coherent package identity without moving canonical skill authoring.
+Consequences: add distribution code beneath the existing repository, not a mandatory new repo.
+Revisit when: ownership or a genuine independent release boundary changes.
 
-Status: accepted
+## D02 — Six initial hosts
+Status: accepted by user.
+Context: the prior two-host proposal omitted tools Devin already uses.
+Decision: Codex, Claude Code, Cursor, Antigravity, Grok Bot, and the separate Grok CLI are initial-release requirements.
+Reason: portability must cover the actual workflow now.
+Consequences: Grok Bot project and account-library routes, Grok CLI routes, and Antigravity surface-specific paths are early qualification work.
+Revisit when: the user changes scope; do not defer a host merely to claim release completion.
 
-Context: The package distributes a specific owned catalog, not the entire Agent Skills ecosystem.
+## D03 — Automatic host choice
+Status: accepted by user; resolution order is a derived implementation default.
+Context: most users should not have to know directory layouts.
+Decision: explicit selection, saved selection, active host, then a unique detected installation; ask only when unresolved.
+Reason: avoids both repeated setup and silent wrong-target writes.
+Consequences: noninteractive ambiguity returns an actionable error, never a prompt or arbitrary default.
+Revisit when: a host provides a stronger documented detection mechanism.
 
-Decision: Publish as `@uppercut-labs/skills`. Keep `devin-thomas/skills` as the canonical source repository for now.
+## D04 — Automatic dependencies, no approval step
+Status: accepted by user, emphatic.
+Context: users should not know which workflows delegate to which required inner skill.
+Decision: install the required closure automatically. Do not ask about dependencies and do not require accepting a preview.
+Reason: a requested workflow should arrive usable.
+Consequences: optional `--no-dependencies` / `-nd` is recorded as degraded; unrelated tools/accounts are not auto-installed.
+Revisit when: only the user explicitly changes this behavior.
 
-Reason: The Uppercut Labs scope communicates a reusable product while the source repository already contains the manifest and maintained skills.
+## D05 — Owned catalog only
+Status: accepted by user; current catalog reuse is a derived implementation default.
+Context: the repository already contains a 15-entry owned manifest spanning three approved source repositories.
+Decision: reuse `manifest/skills.json`; no arbitrary third-party repo/URL installation and no private sources.
+Reason: avoids duplicate catalogs and scope inflation.
+Consequences: referenced owned product/curriculum entries need full resource and licensing audits, not silent omission.
+Revisit when: the user asks for a general-purpose installer.
 
-Consequences: Package metadata must make the source repository explicit. A repository transfer is not required for v1.
+## D06 — Bundled stable plus remembered GitHub channel
+Status: accepted by user; precise channel semantics are derived here.
+Context: skill text can change much faster than installer code.
+Decision: default to a packaged stable snapshot; `--latest` / `--channel github` resolves allowed source refs to immutable
+revisions once, installs that snapshot, and saves the channel. Subsequent update follows it.
+Reason: GitHub-channel users get content updates without daily npm CLI releases, while bundled installs remain reproducible.
+Consequences: moving refs are never recorded as the installed version; explicit network failure does not silently downgrade.
+Revisit when: a separately validated stable content channel is genuinely needed; do not add one speculatively.
 
-Revisit when: The source repository itself is intentionally moved into the Uppercut Labs organization.
+## D07 — Use Agent Native without making setup harder
+Status: requested by user when feasible; implementation approach derived from current library docs.
+Context: Agent Native has shipped and supports local capability contracts, validation, binding, and execution.
+Decision: use its published library for the common capability surface; a small friendly CLI normalizes user commands.
+Expose a programmatic integration entry point. No MCP/server setup is required for add/update/remove.
+Reason: dogfood the shared contracts without imposing generated-runner syntax on beginners.
+Consequences: preserve the library's explicit authorization boundary and test the exact published API; no fictional stdio API.
+Revisit when: a specific remote consumer needs a separately authorized server deployment.
 
-## Do not compete with the generic skills CLI
+## D08 — Safe ownership instead of force-overwrite
+Status: derived implementation default.
+Context: copied skills are often edited locally or also discovered by other hosts.
+Decision: hash and track owned files; preflight the complete transaction; block conflicts; journal rollback.
+Reason: updates must not destroy a user's modifications or leave half a dependency set installed.
+Consequences: no blanket force flag; idempotency and shared-reference tests are required.
+Revisit when: evidence supports an explicit merge/recovery workflow.
 
-Status: accepted
+## D09 — Preserve portable skill content
+Status: user authorized necessary repository fixes; exact fixes are supplied in this pack.
+Context: task workflows explicitly enumerate only AGENTS.md and CODEX.md; the catalog already has the required edges.
+Decision: broaden instruction discovery to the active host's scoped rules, preserve workflow behavior and optional host metadata,
+and clarify automatic sibling dependency installation. Do not clone six divergent versions of every skill.
+Reason: scope-preserving fixes are smaller than rewriting the collection around one host.
+Consequences: changes do not claim any native host has been tested.
+Revisit when: a real host test exposes a concrete incompatibility.
 
-Context: The existing `skills` npm package already supports many agents and generic repositories.
+## D10 — License and publication authority
+Status: existing license unresolved; the original ZIP delivery was planning-only.
+Context: README currently states no collection-wide license has been selected.
+Decision: preserve attribution and make explicit license approval a publication gate. Prepare release assets without publishing.
+Reason: package availability does not settle rights to redistribute every resource.
+Consequences: do not relabel adapted content MIT or publish to npm without the owner's license decision and release authority.
+Revisit when: Devin chooses the license and authorizes the actual public release.
 
-Decision: Uppercut Skills is a curated catalog/package manager for this owned manifest. It does not become a general skill marketplace or arbitrary-source installer in v1.
+## D11 — Grok Bot and Grok CLI are separate surfaces
+Status: added from the user's direct Grok Bot explanation after the second ZIP.
+Context: the ZIP described only Grok Bot's account library and warned against inventing `.grok/skills` for it.
+Decision: Grok Bot repository work uses the observed `.agents/skills` route; its chat-wide private library still
+needs native account registration. Grok CLI is a sixth host with documented project/user `.grok/skills` routes.
+Reason: a project copy, an account-library install, and a CLI filesystem install have different acceptance evidence.
+Consequences: `--host grokbot` routes by selected scope, `--host grokcli` is independent, and both need real-host tests.
 
-Reason: The value is automatic owned-skill dependencies, stable/latest revisions, host-aware receipts, Grok Bot, and Agent Native integration.
+## D12 - Read-only loopback MCP mount
 
-Consequences: Host path conventions may be cross-checked against the generic ecosystem, but the package has its own small five-host adapter layer and no added telemetry.
+Decision: Mount opt-in Streamable HTTP `POST /mcp` on loopback using Agent Native 0.1.0 and peer
+`@modelcontextprotocol/server@2.3.0`. Expose only `catalog.list` and `catalog.show`. Test protocol `2025-11-25`
+and sessionless `2026-07-28` one-POST clients.
 
-Revisit when: Maintaining host adapters becomes materially more expensive than consuming a stable public library API from the generic installer.
-
-## Automatic dependencies
-
-Status: accepted
-
-Context: Users should not need to know that `execute-task-cycles` requires `execute-task` or that `surface-sweep-showcase` requires `surface-sweep`.
-
-Decision: Resolve and install skill dependencies automatically and transitively without confirmation.
-
-Reason: Dependency knowledge is package-manager responsibility, not user complexity.
-
-Consequences: `--no-dependencies` / `-nd` is the deliberate escape hatch. Dependency cycles and unavailable dependencies are preflight failures.
-
-Revisit when: Never for ordinary dependencies; only if a future dependency performs a separate privileged external action at install time.
-
-## Stable package plus live catalog
-
-Status: accepted
-
-Context: Skill content can change much more frequently than installer code.
-
-Decision: Bundle stable catalog metadata with each npm release, but fetch skill payloads from their canonical repositories at pinned revisions. `--latest` fetches the current GitHub manifest.
-
-Reason: Stable installs remain reproducible without requiring daily npm releases.
-
-Consequences: First install normally needs network access. A future cache may improve offline reuse without changing channel semantics.
-
-Revisit when: A trustworthy packaged-content release pipeline becomes preferable to source-revision fetching.
-
-## Portable project path where hosts agree
-
-Status: accepted
-
-Context: Codex, Cursor, and Antigravity all support project skills under `.agents/skills/`.
-
-Decision: Use `.agents/skills/` for their project-level projection rather than creating three copies.
-
-Reason: One portable skill installation can serve all three hosts.
-
-Consequences: Global locations remain host-specific. Claude Code retains its native `.claude/skills/` project destination.
-
-Revisit when: A host stops honoring the portable Agent Skills path.
-
-## Grok Bot is not a filesystem adapter
-
-Status: accepted
-
-Context: Grok Bot's skills are account-level and available across Bots. Official documentation exposes the library/plugin concept, not a local skills directory contract.
-
-Decision: Treat Grok Bot as a remote/account-library adapter. Prefer a verified programmatic transport when available; the current viable v1 bridge is optional `grok-bot-cli` support. Never claim installation from a local copy.
-
-Reason: This keeps support honest and matches the product's actual persistence model.
-
-Consequences: The adapter may have an optional third-party integration until Cursor exposes a documented programmatic import surface. Missing transport yields an actionable blocked state, not fake success.
-
-Revisit when: Cursor documents an official Grok Bot skill import API or CLI.
-
-## Agent Native underneath, custom UX above
-
-Status: accepted
-
-Context: Agent Native 0.1.0 is now published and can define typed local capabilities, authorization, diagnostics, and future MCP/HTTP projections. Its generated CLI is contract-oriented, while this package needs concise commands such as `add quick-build`.
-
-Decision: Define installer operations with `@uppercut-labs/agent-native`, but keep a thin custom CLI parser that maps ergonomic commands to those capabilities.
-
-Reason: This dogfoods Agent Native and prevents CLI, programmatic, and future MCP behavior from diverging without forcing Agent Native's generic command grammar on beginners.
-
-Consequences: Node.js 22+ is the baseline. Normal use remains local; no server is required.
-
-Revisit when: Agent Native gains a first-class application-command layer that exactly fits this CLI.
-
-## No automatic dependency removal
-
-Status: accepted
-
-Context: A prerequisite may be shared by several installed skills.
-
-Decision: `remove` deletes requested package-owned skills only. It does not garbage-collect dependencies in v1.
-
-Reason: Conservative removal avoids destroying a still-needed skill.
-
-Consequences: A future `prune` command can use the receipt graph explicitly.
-
-Revisit when: Install receipts have enough field evidence for safe orphan detection and there is a clear user need.
+Consequences: Installation and local-state capabilities stay outside this mount. Ordinary CLI installs need no server.
+No new Agent Native release or unauthenticated writer is introduced.
+Revisit when: vendor documentation or native tests change these contracts.

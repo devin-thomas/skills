@@ -1,164 +1,128 @@
-# Uppercut Skills package specification
+# Uppercut Skills specification
 
 ## Audience and purpose
 
-This package is for people and agents who want one of Devin Thomas's public skills without learning repository layout, dependency relationships, or host-specific installation paths first.
-
-The package turns the existing owned-skill manifest into an installable product while preserving the source repositories as canonical authoring locations.
+People and coding agents who want a selected Devin/Uppercut-owned public skill installed correctly.
+Hide dependency and path machinery; keep the action and its result understandable.
 
 ## Primary flow
 
-Starting state: the user has Node.js 22+ and at least one supported host, but no selected Uppercut skill installed.
+1. The user runs `add <skill-id...>` in a project or explicitly selects `--global`.
+2. Resolve a known host, the catalog snapshot, and the complete required skill closure.
+3. Verify all source files and destinations before mutation. Install the transaction with no dependency prompt.
+4. Report the requested skill, destination, source channel/revision, and the actual discovery evidence state.
 
-Primary command:
-
-```sh
-npx @uppercut-labs/skills add <skill-id>
-```
-
-The CLI:
-
-1. resolves the stable catalog snapshot, or the live catalog when `--latest` is supplied;
-2. validates the requested skill;
-3. expands transitive `skillId` prerequisites automatically unless `--no-dependencies` / `-nd` is present;
-4. detects the active host or uses `--host`;
-5. resolves the host's project/global destination or account-library transport;
-6. fetches each complete skill directory at the catalog's immutable source revision;
-7. validates every fetched bundle before mutation;
-8. installs requested skills and dependencies as one planned operation;
-9. writes provenance/ownership receipts;
-10. reports installation and host-discovery evidence separately.
+A normal result can be one sentence: `Installed execute-task-cycles and its required skill for Cursor.`
+Do not label native activation verified when only bytes were installed. More detail belongs behind `--verbose`
+or in JSON. Do not print an interactive package-plan screen that requires accepting dependencies.
 
 ## Required behavior
 
-### Catalog channels
+### CLI surface
 
-**Stable** is the default. The npm package includes a snapshot of `manifest/skills.json`. Skill content is fetched from each entry's canonical repository at its pinned `sourceRevision`. The npm package therefore does not need a release for every skill edit.
+| Command | Behavior |
+|---|---|
+| `list` | Show the selected catalog; include installed status. No host required for catalog-only reads. |
+| `show <id>` | Show purpose, included resources, content provenance, and any external runtime/access requirements. |
+| `add <id...>` | Install explicit roots plus transitive skill dependencies. Repeated identical add is a no-op. |
+| `update [id...]` | Update selected managed roots, or all managed roots at the selected scope, using saved channels. |
+| `remove <id...>` | Remove selected explicit roots and unmodified, owned dependencies no longer required anywhere in scope. |
+| `doctor` | Read-only diagnosis of managed files, conflicts, dependencies, host evidence, and source receipts. |
 
-**Latest** is explicit through `--latest` and may also be represented internally as `--channel latest`. It fetches the current manifest from `devin-thomas/skills` and follows that manifest's current source metadata.
+Shared flags: `--host codex|claude|cursor|antigravity|grokbot|grokcli`, `--project <directory>`, `--global`,
+`--latest`, `--channel bundled|github`, `--json`, `--verbose`, `--dry-run`, and `--help`.
+`--latest` is an alias for `--channel github`; contradictory channel flags fail before writes.
+`--project` and `--global` conflict. Bare project scope resolves to the current Git worktree root, or CWD
+outside Git; an explicit `--project` directory is used exactly. Do not initialize Git.
 
-A fetched manifest or skill that fails validation aborts before installation.
+`--no-dependencies` and the exact whole-token alias `-nd` apply to `add` only. They suppress adding missing
+required skills, leave a clearly recorded degraded result, and never remove existing dependencies.
+Do not interpret `-nd` as two grouped short options. Normal installs need neither `--yes` nor `--apply`.
+The package does not control npm/npx's own first-use install prompt or a host's security permissions.
 
-### Dependency behavior
+### Host selection
 
-`prerequisites[].skillId` forms the install graph.
+An explicit host wins, then a saved selection for this target, then an unambiguous active-host signal,
+then one positively detected supported installation. A shared `.agents` directory alone does not identify a host.
+When zero or multiple plausible hosts remain, ask one host-selection question in a terminal; remember the choice.
+In noninteractive/JSON mode, return `host-required` with candidates and an example `--host` command, with no writes.
+Do not install to every detected host unless separately requested. A host identity is not authorization.
 
-- Resolve transitively.
-- Deduplicate.
-- Detect cycles before mutation.
-- Install prerequisites before dependents.
-- Never prompt for confirmation because prerequisites were added.
-- `--no-dependencies` and `-nd` install only the explicitly requested skill IDs.
-- Platform/application prerequisites are reported by `doctor`; the package does not install unrelated applications.
+### Dependencies
 
-### Commands
+Read only `prerequisites[].skillId` as required skill edges. `relatedSkills`, optional delegation, and
+platform/application prerequisites are not edges. Detect missing IDs and cycles before copying anything.
+Install a deduplicated, dependency-first closure automatically. `execute-task-cycles -> execute-task` and
+`surface-sweep-showcase -> surface-sweep` are mandatory positive controls. Do not turn execute-task's optional
+handoff to cycles into a reverse dependency cycle. Do not add an upstream `grilling` package from an analogy.
 
-```text
-list
-add <skill...>
-update [skill...]
-remove <skill...>
-doctor
-```
+Do not install Python, browsers, Spotify credentials, MCP servers, or other applications just because a skill
+mentions them. They remain runtime requirements reported by `show`/`doctor` where relevant.
 
-Common options:
+### Sources and channels
 
-```text
---host <codex|claude|cursor|antigravity|grokbot>
---global
---latest
---json
---dry-run
---no-dependencies, -nd
-```
+Use [CHANNELS](CHANNELS.md). A new default install uses the packaged stable snapshot; a GitHub-channel install
+pins current allowed source revisions and remembers that choice. A later `update` follows the saved channel.
+A content-only change must not require a new npm installer release for GitHub-channel consumers.
+No arbitrary URL, repo, branch, filesystem source, or private repository is accepted as skill input in v1.
 
-`remove` does not automatically remove prerequisite skills because another installed skill may still depend on them.
+### Files, ownership, and state
 
-### Host projections
+Copy complete declared resource closures, not just `SKILL.md`. Preserve bytes and executable-mode intent;
+never execute downloaded skill scripts during installation. Reject escaping paths, archive links, case-fold
+collisions, Windows reserved names, malicious archives, unsupported manifest versions, and missing resources.
 
-| Host | Project | Global/account |
-| --- | --- | --- |
-| Codex | `.agents/skills/<skill>/` | `~/.codex/skills/<skill>/` |
-| Claude Code | `.claude/skills/<skill>/` | `~/.claude/skills/<skill>/` |
-| Cursor | `.agents/skills/<skill>/` | `~/.cursor/skills/<skill>/` |
-| Antigravity | `.agents/skills/<skill>/` | active IDE/CLI global skill location |
-| Grok Bot | not filesystem-scoped | account skill library / packaged-skill transport |
+Stage and verify first, acquire a scope lock, recheck the plan, then use a journaled transaction. Store originals
+for rollback outside host discovery paths. Restore on failure and recover interrupted transactions on restart.
+Never promise a single atomic rename across several host directories or filesystems.
 
-For Antigravity global installs, the adapter distinguishes the IDE and CLI global locations documented by Google. If both relevant surfaces are installed, the operation may project the same canonical skill to both rather than asking a dependency-style confirmation.
+Store project state under `.uppercut-skills/`, not in the source catalog. Keep portable source locks separate
+from machine-local absolute paths and native-registration IDs. Use OS-appropriate user data directories for
+user-global installer state. The default filesystem policy refuses unowned or changed destinations without
+altering them. No destructive `--force` shortcut in v1. Recovery guidance can ask the user to move or preserve a
+conflicting file; that is not a dependency question.
 
-For Grok Bot, v1 may use the established `grok-bot-cli` `gbot skills` transport when present, but it must remain optional and identified as third-party. The package must not copy or extract Grok Bot session credentials. If no verified programmatic transport is available, `doctor` and `add` return an actionable account-library/plugin path rather than claiming success.
+Track explicit roots, automatically installed dependencies, each physical destination, owners, and source hashes.
+A shared destination used by two host selections is one owned artifact with multiple references. Removal never
+breaks a remaining root or deletes user-added files. An add of an automatic dependency promotes it to an explicit root.
 
-### Host detection
+### Results and errors
 
-Resolution order:
+JSON stdout contains one versioned `uppercut.skills.result/v1` envelope; progress goes to stderr.
+Fields include command, outcome, requested IDs, resolved closure, host/scope, channel and source receipts,
+changes, warnings, error code, and discovery evidence. No tokens, environment dump, or private source contents.
+Outcome values include `complete`, `unchanged`, `degraded`, `registration-required`, and `failed`.
 
-1. explicit `--host`;
-2. reliable active-host runtime/environment evidence;
-3. repository-local host markers;
-4. installed supported host executables;
-5. interactive choice only when remaining candidates require different destinations.
-
-Codex, Cursor, and Antigravity project installs collapse to one `.agents/skills/` destination, so their coexistence alone is not an ambiguity.
-
-Non-interactive ambiguity fails with a compact list of valid `--host` values.
-
-### Ownership and updates
-
-Each package-managed installation has a receipt containing at least:
-
-- skill ID
-- requested vs dependency role
-- package version
-- catalog channel
-- source repository
-- source path
-- source revision
-- installed file inventory/hash
-- host adapter
-- destination
-- install timestamp/version marker suitable for diagnostics
-
-Update refuses to overwrite files that differ from the last package-owned hashes unless an explicit replacement policy is introduced later. Remove deletes only package-owned files and leaves unrelated user files intact.
-
-### Agent Native integration
-
-The package depends on `@uppercut-labs/agent-native` and defines versioned local capabilities for:
-
-- catalog/list
-- skill/add
-- skill/update
-- skill/remove
-- doctor
-
-A thin user-facing parser keeps the ergonomic commands above and invokes those capabilities. Agent Native supplies schemas, registry/executor behavior, authorization boundaries, diagnostics, and programmatic reuse.
-
-Normal CLI use remains local and requires no HTTP or MCP server. The package exports its definitions/registry so the same operations can later be projected through Agent Native's MCP or HTTP adapters without duplicating business logic.
+Exit 0: requested operation complete or unchanged; 2: usage/unknown skill/host selection; 3: denied authorization;
+4: source/integrity/compatibility failure; 5: local conflict or lock; 6: native registration still required;
+7: explicit no-dependency degraded installation; 1: other operational failure. `doctor` uses 0 for a healthy
+managed state, 7 for degraded content, and 6 when required native registration is incomplete.
+Pending optional manual discovery evidence is reported as unverified, not silently treated as a file-copy failure.
 
 ## Content and presentation
 
-The CLI should be understandable without knowledge of Agent Skills internals.
-
-Normal success output names the explicitly requested skill first and may note automatically installed dependencies afterward. Dependency expansion is informational, never a permission question.
-
-`--json` produces stable machine-readable results. Human output does not expose credentials, session locations, raw auth material, or unnecessary internal paths.
+No UI application is needed. Support plain terminals, redirected output, narrow widths, Windows path quoting,
+Unicode filenames, keyboard-only selection, and `NO_COLOR`. Do not require color, animated spinners, or browser login.
+Skill descriptions and shared resource references stay portable; optional host metadata stays optional.
 
 ## Boundaries
 
-- Public catalog only.
-- No `private-skills`.
-- No arbitrary repositories in v1.
-- No account creation or credential prompts.
-- No shell-string execution for installer operations.
-- No telemetry added by Uppercut Skills.
-- No hidden delegation to a third-party installer that changes the package's privacy contract.
-- Existing generic `skills` tooling may be used as a compatibility reference, but Uppercut Skills owns its five adapters and curated-catalog semantics.
+An opt-in local MCP listener mounts loopback `POST /mcp` for public `catalog.list` and `catalog.show` only.
+It uses Agent Native 0.1.0 and peer `@modelcontextprotocol/server@2.3.0`; see [SKP-013](tickets/SKP-013.md)
+and [SKP-014](tickets/SKP-014.md). The mount has no installation writes or local-state reads.
+
+The original ZIP delivery made no GitHub or npm writes. The implemented CLI writes only its selected local
+scope and, for Grok Bot account scope when expressly requested, the verified native skill-registration surface.
+It does not publish a Bot template, grant new permissions, or enable a remote MCP service.
+The initial release includes six hosts, with distinct Grok Bot and Grok CLI contracts. See
+[GROKBOT](GROKBOT.md) and [GROK-CLI](GROK-CLI.md).
 
 ## Acceptance
 
 | Evidence | Check and responsible person/agent | Result and provenance |
-| --- | --- | --- |
-| Build/type checks | TypeScript build, tests, repository validators, `npm pack --dry-run` | pending |
-| Layout/accessibility | CLI help remains readable at ordinary terminal widths; no interactive prompt for dependencies | pending |
-| Package availability | npm package `@uppercut-labs/skills` and provenance inspected after publish | pending |
-| Primary behavior | Install a skill with a transitive prerequisite, stable and latest channels | pending |
-| Host-specific promise | Real discovery checks in Codex, Claude Code, Cursor, Antigravity, and Grok Bot | pending |
+|---|---|---|
+| Build/type checks | Implementer: Node/TypeScript checks, repository validators, dependency tests | Pending implementation |
+| Terminal accessibility | Implementer: non-TTY JSON, narrow terminal, no-color, spaces/Unicode paths | Pending implementation |
+| Release availability | Release owner: exact npm artifact after separate publication approval | Not published by this pack |
+| Primary behavior | Implementer: external tarball installation, add/update/remove, closure and conflicts | Pending implementation |
+| Native host behavior | Implementer plus Devin where needed: all six real hosts, versions and evidence | Pending; cannot be inferred from mocks |

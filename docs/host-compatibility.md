@@ -1,45 +1,46 @@
-# Agent Skills host compatibility
+# Skill host compatibility
 
-This repository keeps its public skills inside the portable Agent Skills shape: one directory per skill, a required `SKILL.md` with YAML `name` and `description`, and optional references/scripts/assets kept beside it.
+The canonical unit is a `SKILL.md` directory with its required references, templates, scripts, assets, and optional
+host metadata. Do not make six authored copies of the same workflow. Resolve required sibling skills by stable ID.
+Installing a requested skill includes its declared required skill dependencies automatically, without a separate
+dependency confirmation. Installing a skill does not authorize installing external applications or adding credentials.
 
-The content contract targets five initial hosts. Installation transport is separate from content compatibility.
+When reading repository policy, follow the active host's applicable, scoped instructions and enabled rules.
+Include repository-designated instruction files, including a CODEX.md when the repository designates it, without
+assuming every host discovers that filename automatically. Preserve instruction precedence and ignored-file boundaries.
 
-| Host | Project/workspace location | Global/account location | Discovery evidence |
-| --- | --- | --- | --- |
-| Codex | `.agents/skills/<skill>/` | `~/.codex/skills/<skill>/` | skill appears in the host's available-skill surface or is explicitly resolved by Codex |
-| Claude Code | `.claude/skills/<skill>/` | `~/.claude/skills/<skill>/` | Claude Code lists/resolves the skill |
-| Cursor | `.agents/skills/<skill>/` | `~/.cursor/skills/<skill>/` | Customize/Skills or slash menu shows the skill |
-| Antigravity | `.agents/skills/<skill>/` | IDE: `~/.gemini/config/skills/<skill>/`; CLI: `~/.gemini/antigravity-cli/skills/<skill>/` | Customizations or slash-command discovery shows the skill |
-| Grok Bot | account library, not a project filesystem contract | account library / packaged skills | the skill appears in Grok Bot's saved/private skills surface and can be invoked |
+## Researched routes, October 3, 2026
+
+| Host | Local project skill route | Scope notes |
+|---|---|---|
+| Codex | `.agents/skills/` | User-global `.agents/skills` in the execution machine's home. |
+| Claude Code | `.claude/skills/` | User-global `.claude/skills`; this does not establish Cowork/cloud installation. |
+| Cursor | `.cursor/skills/` or shared `.agents/skills/` | Cursor can discover several compatibility locations; avoid duplicate copies. |
+| Antigravity | Current `.agents/skills/`; legacy `.agent/skills/` compatible | Verify the actual IDE/CLI/2.0 surface and its global route. |
+| Grok Bot | `.agents/skills/` for repository work, based on a direct Bot report | Chat-wide private skills use the account library; a project copy does not install into that library. Verify both surfaces natively. |
+| Grok CLI | `.grok/skills/` | User-global `~/.grok/skills/`; the CLI also reads Claude and user `.agents` skills. Do not substitute this route for Grok Bot's account library. |
+
+Sources: [Codex](https://developers.openai.com/codex/skills/),
+[Claude Code](https://code.claude.com/docs/en/skills), [Cursor](https://cursor.com/docs/skills),
+[Antigravity](https://antigravity.google/docs/skills),
+[Grok Bot](https://docs.x.ai/grok-bot/skills-routines-and-automations), and
+[Grok CLI](https://docs.x.ai/build/features/skills-plugins-marketplaces).
+
+The Grok Bot project route is a direct report from the user's Bot working in a repository; its public account-library
+documentation does not establish that route. Keep real project discovery and invocation as an acceptance gate.
+The Grok CLI `.grok/skills` route is documented by xAI and is a separate host contract.
 
 ## Portable authoring subset
 
-Local skills in this repository should satisfy the common strict subset:
+Local skill entry points retain the first plan's verified subset: folder and frontmatter `name` match, names use
+lowercase letters, digits, and hyphens within 64 characters, and a present description stays on one line and within
+1,024 characters. Keep entry points below 500 lines and required scripts, references, templates, and assets together.
+Optional host metadata, including `agents/openai.yaml`, remains optional and must not make other hosts unusable.
 
-- folder and frontmatter `name` match;
-- name uses lowercase letters, digits, and hyphens and stays within 64 characters;
-- `description` is present, single-line for this repository, and no more than 1024 characters;
-- the entry point stays below 500 lines and links to supporting material rather than loading everything eagerly;
-- no skill assumes a host-specific tool exists merely because a model or product name is present;
-- scripts, references, templates, and assets needed by the workflow travel with the skill directory.
+These researched routes are not native acceptance results. Verify discovery and a safe invocation in the actual host,
+including resource access. A copied directory is not proof of native discovery, and a staged Grok Bot account-library
+request is not proof of registration.
+Keep private account details and machine-specific receipts outside this public collection.
 
-Host-specific metadata such as `agents/openai.yaml` may be present as an optional enhancement. A skill must remain understandable without it.
-
-## Installation is not activation
-
-A successful copy proves only that files reached the intended destination. Package tooling and documentation must report host discovery separately.
-
-For local coding hosts, the installer may validate the destination and then ask the host's own discovery surface for evidence when automation is available.
-
-For Grok Bot, do not treat `~/.grok/skills` or another local directory as the Grok Bot saved-skill library. Grok Bot skills are account-level. A programmatic installer needs a verified account-library/plugin transport; otherwise it must report the remaining manual/plugin step.
-
-## Primary references
-
-- OpenAI Agent Skills: https://developers.openai.com/api/docs/guides/tools-skills
-- OpenAI Codex skill examples and migration guidance: https://developers.openai.com/cookbook/examples/agents_sdk/migrate-from-claude-agent-sdk/readme
-- Claude Agent Skills authoring: https://docs.claude.com/docs/agents-and-tools/agent-skills/
-- Cursor Agent Skills: https://cursor.com/docs/skills
-- Google Antigravity Agent Skills: https://antigravity.google/docs/skills
-- Grok Bot skills and routines: https://cursor.com/docs/grok-bot/work
-
-The package implementation should re-check these references before changing host paths or claiming a new activation mechanism.
+The proposed npm distribution is specified in [skills-package/PLAN.md](skills-package/PLAN.md).
+That plan is not a claim that the CLI is already implemented or published.

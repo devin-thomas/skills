@@ -15,7 +15,7 @@ Read [references/authoring-checklist.md](references/authoring-checklist.md) comp
 
 Discover facts from the repository and configured task source before asking questions:
 
-- applicable `AGENTS.md` and `CODEX.md` files;
+- the active host's applicable repository instructions and enabled rules, including scoped `AGENTS.md`, `CLAUDE.md`, documented host rule files, and repository-designated instruction files such as `CODEX.md` when applicable; preserve host scope and precedence;
 - README and agent/runner documentation;
 - `CONTEXT-MAP.md` and every applicable `CONTEXT.md`;
 - relevant ADRs, product contracts, specifications, and implementation plans;
