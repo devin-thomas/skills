@@ -25,18 +25,18 @@ Quick Build and Grill to Build are alternative starting points, not mandatory co
 
 ## Install and invoke
 
-Ask a skill-capable agent to install only the needed directories. For Codex with skill-installer available:
+Ask the active skill-capable agent to install the selected skill for its own supported host. Include declared required sibling skills automatically; do not ask the user to identify or approve each dependency. For example:
 
 ```text
-Use $skill-installer to install quick-build and no-useless-copy from https://github.com/devin-thomas/skills.
-Use $skill-installer to install surface-sweep and surface-sweep-showcase from https://github.com/devin-thomas/skills.
+Install quick-build from https://github.com/devin-thomas/skills for this host.
+Install surface-sweep-showcase from https://github.com/devin-thomas/skills for this host, including its required skills.
 ```
 
-Each skill is a directory whose entry point is `SKILL.md`. Keep its references, templates, scripts, and agent metadata together. Install paired dependencies together. Native discovery varies by host: verify it through the host's supported mechanism instead of treating a copied file as proof of activation. If native installation is unavailable, supply the selected entry point and references as context without claiming installation.
+Use the host's supported installation mechanism; for Codex, skill-installer is one available route when installed. Each skill is a directory whose entry point is `SKILL.md`. Keep its references, templates, scripts, and agent metadata together. Required skill dependencies belong to the same installation operation; external applications and service access remain separate prerequisites. Native discovery varies by host: verify it through the host's supported mechanism instead of treating a copied file as proof of activation.
 
-The portable skill content is maintained for **Codex, Claude Code, Cursor, Google Antigravity, and Grok Bot**. The first four consume ordinary Agent Skills directories; Grok Bot keeps saved skills at account level, so its installation transport is different. See [host compatibility](docs/host-compatibility.md) for the current paths, evidence rules, and portability boundary.
+The portable skill content targets **Codex, Claude Code, Cursor, Google Antigravity, Grok Bot, and Grok CLI**. Grok Bot can load project skills while working in a repository; its chat-wide private library is a separate account surface. Grok CLI has its own local skill directories. See [host compatibility](docs/host-compatibility.md) for researched paths and the native acceptance boundary.
 
-A focused npm distribution layer, `@uppercut-labs/skills`, is planned in [docs/skills-package](docs/skills-package/PLAN.md). It will use this repository's manifest as the owned catalog, install skill prerequisites automatically, and keep stable npm releases separate from the faster-moving live GitHub catalog.
+A focused npm distribution layer, `@uppercut-labs/skills`, is planned in [docs/skills-package](docs/skills-package/PLAN.md). It will use this repository's manifest as the owned catalog, install skill prerequisites automatically, bundle complete stable skill content, and offer an explicit live GitHub channel for faster content updates. The installer is not published yet.
 
 No skill requires the author's global AGENTS.md, account memory, or private setup. [Grill to Build preferences](grill-to-build/references/preferences-and-diagrams.md) travel in explicit files; the default diagram format is Markdown/Mermaid. External services still require the user's own access and authorization.
 

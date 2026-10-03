@@ -5,7 +5,7 @@ Use this workflow only when no canonical repository task execution prompt exists
 ## 1. Preflight
 
 1. Record reporting-clock start evidence.
-2. Read all applicable `AGENTS.md`, `CODEX.md`, README files, context maps and glossaries, ADRs, implementation plans, task-source guidance, and Git/publishing policy.
+2. Read the active host's applicable repository instructions and enabled rules, then README files, context maps and glossaries, ADRs, implementation plans, task-source guidance, and Git/publishing policy. Include scoped `AGENTS.md`, `CLAUDE.md`, documented host rule files, and repository-designated files such as `CODEX.md` when applicable, preserving the host's scope and precedence.
 3. Inspect the current branch, worktree status, remotes, and recent history when the workspace is a Git repository.
 4. Record every pre-existing dirty path as protected. Do not overwrite, stage, revert, delete, or absorb those changes into the task.
 5. Discover protected resources from instructions, ignore files, example environment files, and documentation. Never open a real credential file merely to discover variable names.
