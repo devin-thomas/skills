@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { chmod, lstat, mkdir, open, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { chmod, lstat, mkdir, open, readFile, realpath, rename, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { createInterface } from 'node:readline/promises';
 import { dirname, isAbsolute, join, parse, relative, resolve } from 'node:path';
@@ -27,7 +27,7 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
     try { catalog = await loadGitHubCatalog(); }
     catch (error) { return failed(invocation, 'source-failure', error instanceof Error ? error.message : String(error), 4); }
   } else if (githubSelected && invocation.command === 'show') {
-    try { bundle = await loadGitHubBundle(invocation.ids); catalog = readBundledCatalog(bundle); }
+    try { bundle = await loadGitHubBundle(invocation.ids); catalog = structuredClone(bundle.manifest); }
     catch (error) { return failed(invocation, 'source-failure', error instanceof Error ? error.message : String(error), 4); }
   }
   const publicNames = ['catalog.list', 'catalog.show'] as const;
@@ -72,11 +72,18 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
     return failed(invocation, 'invalid-command', 'This command is handled by the package entrypoint.', 2);
   }
   const scope = invocation.options.global ? 'global' : 'project';
-  const projectRoot = invocation.options.project ? resolve(invocation.options.project) : cwd;
-  const host = await selectHost(invocation.options.host, invocation.options.json, scope, projectRoot, homeDir);
+  let projectRoot: string;
+  let physicalHomeDir: string;
+  try {
+    projectRoot = await realpath(invocation.options.project ? resolve(invocation.options.project) : cwd);
+    physicalHomeDir = await realpath(homeDir);
+  } catch (error) {
+    return failed(invocation, 'invalid-scope', error instanceof Error ? error.message : String(error), 2);
+  }
+  const host = await selectHost(invocation.options.host, invocation.options.json, scope, projectRoot, physicalHomeDir);
   if (!host) return failed(invocation, 'host-required', 'Select a host with --host. Supported hosts: codex, claude, cursor, antigravity, grokbot, grokcli.', 2, { candidates: supportedHosts });
   const targetOptions: ResolveHostTargetOptions = {
-    scope, projectRoot, homeDir,
+    scope, projectRoot, homeDir: physicalHomeDir,
     ...(invocation.options.surface ? { surface: invocation.options.surface } : {}),
   };
   let target: InstallTarget;
@@ -86,7 +93,7 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
     return failed(invocation, error instanceof Error && 'code' in error ? String(error.code) : 'host-target-error', error instanceof Error ? error.message : String(error), 2, { target: { host, scope } });
   }
 
-  const statePath = statePathFor(target, homeDir);
+  const statePath = statePathFor(target, physicalHomeDir);
   const ports = createNodePorts(statePath, target.installDir, target.scope === 'project');
   const stateKey = statePath;
   let channel: 'bundled' | 'github' = invocation.options.latest ? 'github' : invocation.options.channel ?? 'bundled';
@@ -101,7 +108,7 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
     const roots = invocation.command === 'add'
       ? [...new Set([...(currentState?.roots ?? []), ...invocation.ids])]
       : invocation.ids.length ? [...new Set([...(currentState?.roots ?? []), ...invocation.ids])] : [...(currentState?.roots ?? [])];
-    try { bundle = await loadGitHubBundle(roots); catalog = readBundledCatalog(bundle); }
+    try { bundle = await loadGitHubBundle(roots); catalog = structuredClone(bundle.manifest); }
     catch (error) { return failed(invocation, 'source-failure', error instanceof Error ? error.message : String(error), 4, { host, scope }); }
   }
   try {

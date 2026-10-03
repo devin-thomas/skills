@@ -13,3 +13,7 @@ node distribution/build-bundle.mjs \
 Review the generated diff and resource links before including a new snapshot. A changed skill file needs a new recorded source commit in the canonical manifest. The compiler never executes bundled scripts or reads arbitrary source URLs.
 
 The current package remains private while the collection license and native host acceptance are resolved.
+
+For a packed MCP consumer check, install the tarball and `@modelcontextprotocol/server@2.3.0` in a clean directory,
+copy `smoke-mcp-consumer.mjs` into that directory, and run it with Node.js. It verifies both protocol versions and
+the installed package's `serve-mcp` command without exposing installation writers.

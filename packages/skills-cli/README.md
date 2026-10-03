@@ -30,6 +30,7 @@ node bin/uppercut-skills.js serve-mcp
 ```
 
 The command prints the local `http://127.0.0.1:<port>/mcp` URL. It accepts `POST /mcp` and advertises only `catalog.list` and `catalog.show`. It exposes no install, update, remove, doctor, or local installation state. The MCP peer is `@modelcontextprotocol/server@2.3.0`; the ordinary CLI does not start the listener.
+Use `--port <number>` to choose a loopback port; the default selects an available port.
 
 For package consumers, the `./agent-native` export supplies a scoped capability registry factory and `./mcp` supplies the loopback server helper. Importing either starts no listener or install operation.
 
