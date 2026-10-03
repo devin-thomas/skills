@@ -26,6 +26,7 @@ __pycache__/
 .venv/
 venv/
 node_modules/
+.uppercut-skills/
 
 # Generated output
 dist/
