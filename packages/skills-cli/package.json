@@ -1,8 +1,23 @@
 {
   "name": "@uppercut-labs/skills",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Install and manage Uppercut Labs agent skills",
+  "author": "Devin Thomas",
+  "keywords": ["agent-skills", "cli", "uppercut-labs"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devin-thomas/skills.git",
+    "directory": "packages/skills-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/devin-thomas/skills/issues"
+  },
+  "homepage": "https://github.com/devin-thomas/skills/tree/main/packages/skills-cli#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "type": "module",
   "engines": {
     "node": ">=22"
@@ -26,6 +41,7 @@
   },
   "files": ["dist", "bin", "README.md"],
   "scripts": {
+    "prepack": "npm run build",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "npm run build && node --test",
