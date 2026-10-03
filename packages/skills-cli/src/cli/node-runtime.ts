@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { chmod, lstat, mkdir, open, readFile, realpath, rename, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { createInterface } from 'node:readline/promises';
@@ -75,7 +76,7 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
   let projectRoot: string;
   let physicalHomeDir: string;
   try {
-    projectRoot = await realpath(invocation.options.project ? resolve(invocation.options.project) : cwd);
+    projectRoot = await realpath(invocation.options.project ? resolve(invocation.options.project) : projectRootFromGit(cwd));
     physicalHomeDir = await realpath(homeDir);
   } catch (error) {
     return failed(invocation, 'invalid-scope', error instanceof Error ? error.message : String(error), 2);
@@ -205,6 +206,18 @@ export async function runCli(invocation: CliInvocation, bundleModule: BundleModu
     });
   } catch (error) {
     return failed(invocation, 'operation-failed', error instanceof Error ? error.message : String(error), 1, { host, scope });
+  }
+}
+
+function projectRootFromGit(cwd: string): string {
+  try {
+    return execFileSync('git', ['rev-parse', '--show-toplevel'], {
+      cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5_000,
+    }).trim();
+  } catch (error) {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 128) return cwd;
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') return cwd;
+    throw error;
   }
 }
 

@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -38,6 +40,19 @@ test('install conflict returns the safe path guidance and conflict exit code', a
   assert.equal(result.result.error.code, 'local-conflict');
   assert.match(result.result.error.message, /Destination is not owned by this installer/);
   assert.match(result.result.error.message, /quick-build[\\/]SKILL\.md/);
+});
+
+test('implicit project install targets the Git root from a nested directory', async (t) => {
+  const project = await mkdtemp(join(tmpdir(), 'uppercut-skills-git-root-'));
+  t.after(() => rm(project, { recursive: true, force: true }));
+  const nested = join(project, 'src', 'feature');
+  await mkdir(nested, { recursive: true });
+  execFileSync('git', ['init', '--initial-branch=main', project], { stdio: 'ignore' });
+
+  const installed = await runCli(parseArgs(['add', 'execute-task', '--host', 'codex', '--json']), { catalogBundle }, nested);
+  assert.equal(installed.exitCode, 0);
+  assert.ok(existsSync(join(project, '.agents', 'skills', 'execute-task', 'SKILL.md')));
+  assert.equal(existsSync(join(nested, '.agents', 'skills', 'execute-task', 'SKILL.md')), false);
 });
 
 test('CLI updates saved bundled and GitHub roots together without changing their channels', async (t) => {
