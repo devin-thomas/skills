@@ -1,6 +1,6 @@
 # Uppercut Skills CLI
 
-`@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies. This checkout is a `0.1.0` release candidate; the `next` preview precedes the final `latest` release.
+`@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies. This checkout is a `0.1.0` release candidate; the preview precedes the final `0.1.0` release.
 
 ## Run from this checkout
 
@@ -25,7 +25,7 @@ npx @uppercut-labs/skills@0.1.0 doctor --host codex --project /path/to/project
 
 `add execute-task-cycles` also installs its required `execute-task` skill. The default bundled channel uses the reviewed content snapshot inside this package and needs no network after installation. `--latest` selects the current allowed GitHub source revisions and remembers that channel for subsequent updates. `--no-dependencies` (or `-nd`) is an expert option that reports a degraded install if required skills are missing.
 
-Use `--host codex|claude|cursor|antigravity|grokbot|grokcli` to select one host. Grok Bot's project route writes `.agents/skills`. On the Bot's own Linux execution computer, an allowed global npm postinstall places the bundled catalog in `/home/box/agent-data/workflows` when the existing `workflows` directory belongs to the active `box` user. The Bot reports that `agent-data` is a symlink; the installer resolves its physical directory before writing. For the current preview on npm 11, use `npm install -g @uppercut-labs/skills@0.1.0-rc.1 --allow-scripts=@uppercut-labs/skills`. Where scripts are blocked, use the explicit `add <id> --host grokbot --global` route on the Bot computer. Byte-identical pre-existing skill folders can be adopted into managed state; differing files remain conflicts. Native Bot discovery still needs live acceptance. Grok CLI is a separate host with a `.grok/skills` route. `--global` selects user scope. Antigravity global installs also require `--surface ide|cli`.
+Use `--host codex|claude|cursor|antigravity|grokbot|grokcli` to select one host. Grok Bot's project route writes `.agents/skills`. On the Bot's own Linux execution computer, an allowed global npm postinstall places eligible bundled skills in `/home/box/agent-data/workflows` when the existing `workflows` directory belongs to the active `box` user. The Bot reports that `agent-data` is a symlink; the installer resolves its physical directory before writing. For the current preview on npm 11, use `npm install -g @uppercut-labs/skills@0.1.0-rc.2 --allow-scripts=@uppercut-labs/skills`. Where scripts are blocked, use the explicit `add <id> --host grokbot --global` route on the Bot computer. Byte-identical pre-existing skill folders can be adopted into managed state. Postinstall skips differing folders and their dependent skills, reports every skip, and installs the rest in one transaction; explicit `add` still refuses conflicts. Native Bot discovery still needs live acceptance. Grok CLI is a separate host with a `.grok/skills` route. `--global` selects user scope. Antigravity global installs also require `--surface ide|cli`.
 
 `update`, `remove`, `show`, `list`, and `doctor` use the same CLI. Add `--json` for one machine-readable result or `--dry-run` to inspect an intended write. The installer refuses changed or unowned files by default.
 

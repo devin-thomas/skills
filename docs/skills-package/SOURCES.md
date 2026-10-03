@@ -68,6 +68,10 @@ contracts were checked against primary documentation. Native applications were n
   It also reported existing skills in the library and asked that exact byte matches be adopted into managed state
   without replacing differing files. This is a direct Bot report from a screenshot; native discovery remains to be
   verified after installation.
+- **H14 — User-supplied `rc.1` Grok Bot attempt, October 3, 2026:** the Bot reported that global npm postinstall ran
+  and accepted the physical library path, but `grill-to-build` differed from the bundled copy. The all-catalog add
+  aborted, npm rolled back its package install, and no skill files changed. Doctor reached the library with an empty
+  installed list; the Bot did not discover or invoke a skill. This screenshot is runtime feedback, not native acceptance.
 
 ## Limits
 

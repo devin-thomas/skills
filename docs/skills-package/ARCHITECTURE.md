@@ -50,8 +50,9 @@ An adapter resolves an execution environment, install destination, host-specific
 verification procedure. File-copy hosts, including Grok CLI and both Grok Bot scopes, share the managed transaction
 engine. Grok Bot account scope is limited to the reported `/home/box/agent-data/workflows` library on its qualified
 Linux execution computer. The adapter resolves the reported symlinked parent to the owned physical `workflows`
-directory before passing it to the transaction engine. A permitted global npm postinstall installs the bundled
-catalog there on a fresh managed state and adopts pre-existing exact file matches without replacing them.
+directory before passing it to the transaction engine. On a fresh managed state, global npm postinstall preflights
+the bundled catalog, skips conflicting folders and roots that depend on them, and installs eligible skills in one
+transaction. Pre-existing exact file matches are adopted without replacement.
 
 Host evidence records version, surface, execution computer, scope, discovery mechanism, invocation check, and
 timestamp. A guarded write and its ownership receipt establish installation, while native Bot discovery and
