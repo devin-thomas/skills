@@ -41,7 +41,7 @@ jobs:
         working-directory: packages/skills-cli
       - run: npm test
         working-directory: packages/skills-cli
-      - run: npm pack --dry-run
+      - run: npm run smoke
         working-directory: packages/skills-cli
 
   source-validation:
