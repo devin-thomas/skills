@@ -1,6 +1,6 @@
 # Quick Build
 
-For a small meaningful app: one compact design interview, an approved plan, implementation, and verified delivery. For larger or uncertain projects, choose [grill-to-build](../grill-to-build/SKILL.md).
+For a small meaningful app: one compact design interview, an approved plan, implementation, and verified delivery. For larger or uncertain projects, choose [grill-to-build](https://github.com/devin-thomas/skills/blob/main/grill-to-build/SKILL.md).
 
 ```text
 Use $quick-build to build a simple reading log. Keep the data local and deliver a runnable project.
