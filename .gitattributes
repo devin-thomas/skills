@@ -1,0 +1,6 @@
+packages/skills-cli/**/*.ts text eol=lf
+packages/skills-cli/**/*.js text eol=lf
+packages/skills-cli/**/*.mjs text eol=lf
+packages/skills-cli/**/*.json text eol=lf
+packages/skills-cli/**/*.md text eol=lf
+packages/skills-cli/LICENSE text eol=lf
