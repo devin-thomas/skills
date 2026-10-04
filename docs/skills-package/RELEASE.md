@@ -4,29 +4,22 @@ The final public version is `@uppercut-labs/skills@0.1.0` on npmjs.com. The
 source repository is `devin-thomas/skills`; the npm scope identifies the
 publisher, not the GitHub repository owner.
 
-## Native acceptance preview
+## Native acceptance
 
-The reviewed `0.1.0-rc.0` tarball was published under the npm `next` dist-tag.
-npm also assigned `latest` to this first package version automatically; an
-attempt to remove that tag returned 403. Treat both tags as prerelease pointers
-until the final version is qualified. Do not merge the draft PR for this preview. On the
-Bot's own execution computer, install `@uppercut-labs/skills@next` globally,
-confirm that lifecycle scripts were permitted, and run
-`uppercut-skills doctor --host grokbot --global`. Verify native skill discovery,
-invocation by name, and a sibling resource; then test update and managed remove.
-Record the exact preview version, registry integrity, and Bot-side result.
-If the lifecycle was blocked, run the explicit `uppercut-skills add` route on
-that same computer and record that separately. Test the other advertised hosts
-on their own native surfaces before promoting the final release.
+The user's Grok Bot installed `0.1.0-rc.2` globally and invoked `starter-pack`
+from its account library, while leaving a conflicting `grill-to-build` folder
+unmanaged. Devin reports testing the remaining harnesses and has authorized
+merge and final publication. The Bot screenshots are retained in the task;
+detailed versions and results for the other hosts were not supplied. Keep that
+distinction in release notes and future support reports.
 
 ## Candidate gate
 
 1. Confirm the selected collection license and the rights notices for every
    bundled skill. Keep the Starter Pack grant scoped to the bundled skills; its
    upstream repository has its own rights notice.
-2. Record real-host acceptance for every advertised route, including Grok Bot
-   project and account scopes. Filesystem tests and a Bot-reported path are
-   useful evidence but do not prove native discovery or invocation.
+2. Record the owner's acceptance of the remaining advertised hosts separately
+   from the Bot account-library invocation shown in the supplied screenshots.
 3. Confirm the candidate commit is on `main`, the tree is clean, and the
    `Skills CLI` checks passed on that commit.
 4. In a clean checkout of that commit, run `npm ci`, the repository validators,

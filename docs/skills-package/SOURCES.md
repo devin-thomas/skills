@@ -78,6 +78,9 @@ contracts were checked against primary documentation. Native applications were n
   The Bot then loaded and invoked `starter-pack` from that library. It located an existing Phase 2 progress file
   and private progress repository, recognized Computer Setup as complete, and did not start Quick Build without
   a request. The screenshot does not show a complete Starter Pack run, lifecycle update/remove, or other host checks.
+- **H16 — Owner acceptance and publication instruction, October 3, 2026:** Devin reported testing the remaining
+  harnesses and directly instructed the agent to merge and publish. This is owner-reported acceptance; detailed
+  per-host logs or versions were not supplied in this conversation. Do not present those checks as agent-observed.
 
 ## Limits
 
