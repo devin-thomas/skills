@@ -1,7 +1,7 @@
 # Skills package implementation checkpoint
 
-Branch: `skills-package-v1-plan` (draft PR #1).
-The `0.1.0-rc.2` npm preview was published from commit `992fecd`. The Bot confirmed that `rc.2` installed globally, managed `starter-pack` and `computer-setup`, preserved the differing `grill-to-build`, and invoked `starter-pack` from its account library. Devin reports testing the remaining harnesses and has instructed the agent to merge and publish final `0.1.0`; detailed per-host logs were not supplied. Final artifact review and publication are in progress.
+Release: [`@uppercut-labs/skills@0.1.0`](https://www.npmjs.com/package/@uppercut-labs/skills/v/0.1.0), source tag [`v0.1.0`](https://github.com/devin-thomas/skills/releases/tag/v0.1.0) at `c5f4358bfff6c9d97995e19915b15baeea2f2b17`; [PR #1](https://github.com/devin-thomas/skills/pull/1) merged to `main`.
+The `0.1.0-rc.2` preview was published from commit `992fecd`. The Bot confirmed that `rc.2` installed globally, managed `starter-pack` and `computer-setup`, preserved the differing `grill-to-build`, and invoked `starter-pack` from its account library. Devin reports testing the remaining harnesses and authorized final publication; detailed per-host logs were not supplied.
 
 | Ticket | Current state | Evidence or remaining gate |
 | --- | --- | --- |
@@ -13,10 +13,10 @@ The `0.1.0-rc.2` npm preview was published from commit `992fecd`. The Bot confir
 | SKP-006 | Implemented locally | Update/remove, ownership hashes, locks, and recovery journal work; disjoint bundled/GitHub roots update together in one transaction, while shared-dependency channel conflicts stop before writes. |
 | SKP-007 | Implemented locally | Read-only doctor checks managed hashes and required skill presence. |
 | SKP-008 | Implemented locally | Agent Native 0.1.0 registry, scoped capabilities, CLI path, and authorization denial tests. |
-| SKP-009 | Preview artifact verified | The 74-file MIT `rc.2` tarball matches the downloaded npm archive byte-for-byte. Final `0.1.0` artifact review remains open. |
+| SKP-009 | Final artifact verified | The 74-file MIT `0.1.0` tarball matches the downloaded npm archive byte-for-byte at SHA-256 `a86386d38125e978a6b835f184f3a7ed8097e3ac24dd0d5b02f2eb1cd9b48055`. |
 | SKP-010 | Automated verification complete | Node 22 on Windows/macOS/Linux and Node 24 on Linux passed source tests and installed-tarball CLI/MCP smoke. Native host acceptance remains SKP-011. |
 | SKP-011 | Accepted by owner | The Bot confirmed successful `rc.2` global install and a real `starter-pack` invocation. Devin reports testing the remaining harnesses; detailed per-host logs and versions were not supplied. |
-| SKP-012 | Final release in progress | MIT and public-release authority granted; final `0.1.0` artifact review, merge, publication, and registry verification remain. |
+| SKP-012 | Released | MIT and public-release authority granted; `0.1.0` published to npm and the GitHub release with matching archive and checksum. Fresh registry consumer passed. |
 | SKP-013 | Implemented locally | Opt-in loopback `serve-mcp` mounts only catalog list/show through Agent Native; no writers. |
 | SKP-014 | Automated verification complete | Clean tarball consumer passed legacy `2025-11-25`, sessionless one-POST `2026-07-28`, and the CLI launcher on Windows/macOS/Linux CI. |
 
@@ -36,10 +36,11 @@ The `0.1.0-rc.2` npm preview was published from commit `992fecd`. The Bot confir
 - The conflict-selection commit [992fecd](https://github.com/devin-thomas/skills/commit/992fecda0dd3e54f06783b0acdaa6ec68b6c3e42) passed all five jobs in [run 37155782443](https://github.com/devin-thomas/skills/actions/runs/37155782443), including 48 package tests and packed consumer smoke. An isolated conflict test preserved local `grill-to-build`, installed the other 14 skills, and confirmed doctor lists them. A fresh npm registry install listed all 15 catalog entries. The registry download matched the reviewed `0.1.0-rc.2` archive at SHA-256 `8d0f895e2f8f540108e26d19450c9947ef18b44bd2f8f7d920155684437f98b0`; the same archive and checksum are attached to the [GitHub prerelease](https://github.com/devin-thomas/skills/releases/tag/v0.1.0-rc.2). Both npm `next` and `latest` tags resolve to `rc.2`.
 - The user's Bot reported a successful global `rc.2` install. Doctor found healthy managed `starter-pack` and `computer-setup` in `/home/box/sand-data/workflows`, while pre-existing skills and `grill-to-build` remained untouched. The Bot loaded and invoked `starter-pack` from that library, read existing Phase 2 progress, and stopped before Quick Build as requested. This is real account-library invocation evidence, though doctor cannot receive a native discovery callback. It does not establish update/remove or the other native hosts. [H15 in SOURCES.md]
 - Devin reported testing the remaining harnesses and explicitly authorized merge and final publication. This clears the owner acceptance gate without adding agent-observed per-host logs. [H16 in SOURCES.md]
+- The final package candidate passed 48 tests, packed consumer smoke, and all five jobs in [run 37172995973](https://github.com/devin-thomas/skills/actions/runs/37172995973). `main` added a scoped LF checkout rule at `c5f4358` to reproduce the reviewed tarball byte-for-byte; local tests and smoke passed again. The public registry's `0.1.0` download matches the reviewed 74-file archive at SHA-256 `a86386d38125e978a6b835f184f3a7ed8097e3ac24dd0d5b02f2eb1cd9b48055`. A fresh registry install passed list (15 entries), dependency add, doctor, unchanged update, remove, both MCP protocol shapes, and the CLI `POST /mcp` launcher. npm `latest` points to `0.1.0`; `next` remains `0.1.0-rc.2`. The [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v0.1.0) carries that archive and checksum.
 - On the `research` Mac, isolated installs of the `rc.0` npm preview into Codex and Claude project roots passed add, doctor, unchanged update, and managed remove; both installed the sibling `README.md`. Native Codex explicitly read the installed skill and README. Automatic discovery was not established because Codex reported a global skill-description budget warning. Claude's native invocation stopped at `Not logged in` before a model turn.
 
-## Release gates
+## Release outcome
 
-1. MIT is selected for the approved npm bundle and its bundled snapshots, including the two pinned Starter Pack skills; this is not a blanket grant for the source repository. Verify the final tarball includes LICENSE and NOTICE and preserves source attribution.
+1. MIT is selected for the approved npm bundle and its bundled snapshots, including the two pinned Starter Pack skills; this is not a blanket grant for the source repository. The final tarball includes LICENSE and NOTICE and preserves source attribution.
 2. Native acceptance is owner-reported for the remaining harnesses. The Bot account-library invocation is supported by the user's screenshots; doctor cannot independently mark its discovery field verified.
-3. Review the final tarball and metadata, merge the PR, publish exact `0.1.0`, and verify the npm registry artifact and fresh consumer.
+3. PR #1 is merged; exact `0.1.0` is published on npm and attached to the GitHub release. Registry bytes and the fresh consumer were verified.
