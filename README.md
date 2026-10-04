@@ -25,14 +25,18 @@ Quick Build and Grill to Build are alternative starting points, not mandatory co
 
 ## Install and invoke
 
-Ask a skill-capable agent to install only the needed directories. For Codex with skill-installer available:
+Ask the active skill-capable agent to install the selected skill for its own supported host. Include declared required sibling skills automatically; do not ask the user to identify or approve each dependency. For example:
 
 ```text
-Use $skill-installer to install quick-build and no-useless-copy from https://github.com/devin-thomas/skills.
-Use $skill-installer to install surface-sweep and surface-sweep-showcase from https://github.com/devin-thomas/skills.
+Install quick-build from https://github.com/devin-thomas/skills for this host.
+Install surface-sweep-showcase from https://github.com/devin-thomas/skills for this host, including its required skills.
 ```
 
-Each skill is a directory whose entry point is `SKILL.md`. Keep its references, templates, scripts, and agent metadata together. Install paired dependencies together. Native discovery varies by host: verify it through the host's supported mechanism instead of treating a copied file as proof of activation. If native installation is unavailable, supply the selected entry point and references as context without claiming installation.
+Use the host's supported installation mechanism; for Codex, skill-installer is one available route when installed. Each skill is a directory whose entry point is `SKILL.md`. Keep its references, templates, scripts, and agent metadata together. Required skill dependencies belong to the same installation operation; external applications and service access remain separate prerequisites. Native discovery varies by host: verify it through the host's supported mechanism instead of treating a copied file as proof of activation.
+
+The portable skill content targets **Codex, Claude Code, Cursor, Google Antigravity, Grok Bot, and Grok CLI**. Grok Bot can load project skills while working in a repository; its chat-wide private library is a separate account surface. Grok CLI has its own local skill directories. See [host compatibility](docs/host-compatibility.md) for researched paths and the native acceptance boundary.
+
+A focused npm distribution layer, `@uppercut-labs/skills`, is planned in [docs/skills-package](docs/skills-package/PLAN.md). It will use this repository's manifest as the owned catalog, install skill prerequisites automatically, bundle complete stable skill content, and offer an explicit live GitHub channel for faster content updates. The installer is not published yet.
 
 No skill requires the author's global AGENTS.md, account memory, or private setup. [Grill to Build preferences](grill-to-build/references/preferences-and-diagrams.md) travel in explicit files; the default diagram format is Markdown/Mermaid. External services still require the user's own access and authorization.
 
@@ -54,6 +58,6 @@ node --test tests/pwa-helpers.test.mjs
 git diff --check
 ```
 
-The PWA tests require Node.js 22+ and use temporary local fixtures. They do not prove installability or physical-device behavior. Browser-probe validation needs a permitted real browser. See [validation notes](docs/validation.md) for observed publication checks.
+The skill validator enforces the portable frontmatter subset used by the supported hosts in addition to local-link and machine-path checks. The PWA tests require Node.js 22+ and use temporary local fixtures. They do not prove installability or physical-device behavior. Browser-probe validation needs a permitted real browser. See [validation notes](docs/validation.md) for observed publication checks.
 
-Keep project evidence, credentials, private preferences, local runtimes, and generated artifacts out of this repository. Preserve attribution and source revisions. This repository currently has no LICENSE file; a collection-wide license has not yet been selected.
+Keep project evidence, credentials, private preferences, local runtimes, and generated artifacts out of this repository. Preserve attribution and source revisions. The approved `@uppercut-labs/skills` bundle is [MIT licensed](packages/skills-cli/LICENSE); see the [source notice](NOTICE.md) for its scope and attribution. This repository as a whole has no blanket license.

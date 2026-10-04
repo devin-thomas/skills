@@ -1,0 +1,53 @@
+name: Skills CLI
+
+on:
+  pull_request:
+    paths:
+      - 'packages/skills-cli/**'
+      - 'distribution/**'
+      - 'manifest/**'
+      - '.github/workflows/skills-cli.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/skills-cli/**'
+      - 'distribution/**'
+      - 'manifest/**'
+      - '.github/workflows/skills-cli.yml'
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            node: '22'
+          - os: windows-latest
+            node: '22'
+          - os: macos-latest
+            node: '22'
+          - os: ubuntu-latest
+            node: '24'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: packages/skills-cli/package-lock.json
+      - run: npm ci
+        working-directory: packages/skills-cli
+      - run: npm test
+        working-directory: packages/skills-cli
+      - run: npm run smoke
+        working-directory: packages/skills-cli
+
+  source-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/validate-skills.py
+      - run: python3 tests/test-manifest.py
+      - run: node --test tests/pwa-helpers.test.mjs

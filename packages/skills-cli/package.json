@@ -1,0 +1,66 @@
+{
+  "name": "@uppercut-labs/skills",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Install and manage Uppercut Labs agent skills",
+  "author": "Devin Thomas",
+  "license": "MIT",
+  "keywords": ["agent-skills", "cli", "uppercut-labs"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devin-thomas/skills.git",
+    "directory": "packages/skills-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/devin-thomas/skills/issues"
+  },
+  "homepage": "https://github.com/devin-thomas/skills/tree/main/packages/skills-cli#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "uppercut-skills": "./bin/uppercut-skills.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./agent-native": {
+      "types": "./dist/agent-native/index.d.ts",
+      "import": "./dist/agent-native/index.js"
+    },
+    "./mcp": {
+      "types": "./dist/mcp/index.d.ts",
+      "import": "./dist/mcp/index.js"
+    }
+  },
+  "files": ["dist", "bin", "README.md", "LICENSE", "NOTICE.md"],
+  "scripts": {
+    "prepack": "npm run build",
+    "postinstall": "node bin/grokbot-postinstall.js",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "npm run build && node --test",
+    "smoke": "node ../../distribution/smoke-package.mjs"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/server": "2.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/server": { "optional": true }
+  },
+  "dependencies": {
+    "@uppercut-labs/agent-native": "0.1.0"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/server": "2.3.0",
+    "@types/node": "22.20.5",
+    "typescript": "5.8.3"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogRepository": "devin-thomas/skills",
+  "repositories": {
+    "devin-thomas/skills": [
+      "execute-task/",
+      "execute-task-cycles/",
+      "grill-to-build/",
+      "long-horizon-dashboard/",
+      "no-useless-copy/",
+      "perfect-playlist/",
+      "pwa-development/",
+      "quick-build/",
+      "style/",
+      "surface-sweep/",
+      "surface-sweep-showcase/",
+      "task-execution-prompt/"
+    ],
+    "devin-thomas/starter-pack": [
+      "public/skills/starter-pack/",
+      "public/skills/computer-setup/"
+    ],
+    "devin-thomas/vid-chopper": [
+      ".agents/skills/vidchopper-cli/"
+    ]
+  }
+}
