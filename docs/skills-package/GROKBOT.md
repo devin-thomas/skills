@@ -15,7 +15,7 @@ details came from direct Bot reports, not a public API. Grok CLI remains a separ
 The Bot must run the package on its own execution computer as the `box` user. For example:
 
 ```sh
-npm install -g @uppercut-labs/skills@0.1.0-rc.2 --allow-scripts=@uppercut-labs/skills
+npm install -g @uppercut-labs/skills@0.1.0 --allow-scripts=@uppercut-labs/skills
 uppercut-skills doctor --host grokbot --global
 ```
 
