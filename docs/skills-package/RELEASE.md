@@ -4,6 +4,12 @@ The final public version is `@uppercut-labs/skills@0.1.0` on npmjs.com. The
 source repository is `devin-thomas/skills`; the npm scope identifies the
 publisher, not the GitHub repository owner.
 
+Released from source tag `v0.1.0` at `c5f4358bfff6c9d97995e19915b15baeea2f2b17`.
+The reviewed and registry-downloaded 74-file archive has SHA-256
+`a86386d38125e978a6b835f184f3a7ed8097e3ac24dd0d5b02f2eb1cd9b48055`.
+The [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v0.1.0)
+includes that archive and `SHA256SUMS`; npm `latest` points to `0.1.0`.
+
 ## Native acceptance
 
 The user's Grok Bot installed `0.1.0-rc.2` globally and invoked `starter-pack`
