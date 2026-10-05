@@ -1,4 +1,4 @@
-# Skills npm release
+# Skills package releases
 
 The final public version is `@uppercut-labs/skills@0.1.0` on npmjs.com. The
 source repository is `devin-thomas/skills`; the npm scope identifies the
@@ -9,6 +9,12 @@ The reviewed and registry-downloaded 74-file archive has SHA-256
 `a86386d38125e978a6b835f184f3a7ed8097e3ac24dd0d5b02f2eb1cd9b48055`.
 The [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v0.1.0)
 includes that archive and `SHA256SUMS`; npm `latest` points to `0.1.0`.
+
+## 0.1.1 candidate / GitHub distribution
+
+The 0.1.1 candidate contains `programmatic-harness` and is prepared as a pinned GitHub release tarball with an adjacent SHA-256 checksum. The npm 0.1.1 publication is not confirmed; use the exact GitHub asset when the registry does not expose that version. Verify the sidecar before invoking the archive with `npm exec --package=./uppercut-labs-skills-0.1.1.tgz -- uppercut-skills ...`.
+
+The candidate must be cut from the source commit that contains the skill resources, then update the manifest `sourceRevision` to that immutable SHA and regenerate `packages/skills-cli/src/generated/bundle.ts` before building the release tarball.
 
 ## Native acceptance
 

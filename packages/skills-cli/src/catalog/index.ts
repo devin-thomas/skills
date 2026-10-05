@@ -17,7 +17,7 @@ const DEFAULT_POLICY: Required<CatalogPolicy> = {
   approvedPrefixes: {
     'devin-thomas/skills': [
       'execute-task/', 'execute-task-cycles/', 'grill-to-build/', 'long-horizon-dashboard/',
-      'no-useless-copy/', 'perfect-playlist/', 'pwa-development/', 'quick-build/', 'style/',
+      'no-useless-copy/', 'perfect-playlist/', 'programmatic-harness/', 'pwa-development/', 'quick-build/', 'style/',
       'surface-sweep/', 'surface-sweep-showcase/', 'task-execution-prompt/',
     ],
     'devin-thomas/starter-pack': ['public/skills/'],

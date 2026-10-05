@@ -9,6 +9,7 @@ For guided onboarding, start at [Starter Pack](https://starter.devthomas.site). 
 | User's need | Skill | Output / boundary |
 | --- | --- | --- |
 | Build a small meaningful app | [quick-build](quick-build/SKILL.md) | Compact interview, approved plan, working build and requested delivery |
+| Control a coding-agent session from code | [programmatic-harness](programmatic-harness/SKILL.md) | Optional local Codex session proof through Agent Native; no dependency or credentials on skill install |
 | Resolve uncertainty in a larger idea | [grill-to-build](grill-to-build/SKILL.md) | Context, decisions, specification, ordered tickets; implementation when requested |
 | Complete the next scoped task | [execute-task](execute-task/SKILL.md) | One verified task pass from local Markdown, GitHub, or Linear |
 | Establish a repeatable project workflow | [task-execution-prompt](task-execution-prompt/SKILL.md) | Repository execution contract and read-only rehearsal |
