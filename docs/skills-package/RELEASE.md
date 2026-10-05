@@ -1,20 +1,36 @@
 # Skills package releases
 
-The final public version is `@uppercut-labs/skills@0.1.0` on npmjs.com. The
-source repository is `devin-thomas/skills`; the npm scope identifies the
-publisher, not the GitHub repository owner.
+The latest public version is [`@uppercut-labs/skills@0.1.1`](https://www.npmjs.com/package/@uppercut-labs/skills/v/0.1.1),
+published 2026-10-05; npm `latest` resolves to 0.1.1. The source repository is
+`devin-thomas/skills`; the npm scope identifies the publisher, not the GitHub owner.
+
+## 0.1.1 registry and GitHub distribution
+
+Released from source tag `v0.1.1` at `f5d64828ebb915c10b6797199fea4ce5d2e6f84e`.
+The registry-downloaded 74-file archive matches the reviewed GitHub archive exactly:
+SHA-256 `ab9afb090c9ad7081489774e1f2f92e6c3fbb715f21dff050dfff1175123c9f9`,
+217214 bytes. The official compiler pins all six `programmatic-harness` resources
+to source commit `50ce5dce91c49fcf896aa887e11b4c3a529e40e5`.
+
+A fresh public registry consumer ran the pinned CLI to install `programmatic-harness`
+for Codex. Project package.json stayed byte-identical and no project runtime
+node_modules were created. Actual Codex discovery found the enabled repo skill
+with zero errors. Adapter installation and inference remain separate opt-ins.
+The existing installer Agent Native 0.1.0 dependency is unchanged.
+
+The [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v0.1.1)
+archive and adjacent SHA-256 file remain a fallback. Verify the sidecar before
+invoking the archive with `npm exec --package=./uppercut-labs-skills-0.1.1.tgz --
+uppercut-skills ...`. Initial unauthenticated attempts failed; subsequent
+authenticated publication succeeded and registry availability was verified.
+
+## Historical 0.1.0 release
 
 Released from source tag `v0.1.0` at `c5f4358bfff6c9d97995e19915b15baeea2f2b17`.
 The reviewed and registry-downloaded 74-file archive has SHA-256
 `a86386d38125e978a6b835f184f3a7ed8097e3ac24dd0d5b02f2eb1cd9b48055`.
 The [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v0.1.0)
-includes that archive and `SHA256SUMS`; npm `latest` points to `0.1.0`.
-
-## 0.1.1 candidate / GitHub distribution
-
-The 0.1.1 candidate contains `programmatic-harness` and is prepared as a pinned GitHub release tarball with an adjacent SHA-256 checksum. The npm 0.1.1 publication is not confirmed; use the exact GitHub asset when the registry does not expose that version. Verify the sidecar before invoking the archive with `npm exec --package=./uppercut-labs-skills-0.1.1.tgz -- uppercut-skills ...`.
-
-The candidate must be cut from the source commit that contains the skill resources, then update the manifest `sourceRevision` to that immutable SHA and regenerate `packages/skills-cli/src/generated/bundle.ts` before building the release tarball.
+includes that archive and `SHA256SUMS`; npm `latest` pointed to `0.1.0` at that release.
 
 ## Native acceptance
 
@@ -25,7 +41,7 @@ merge and final publication. The Bot screenshots are retained in the task;
 detailed versions and results for the other hosts were not supplied. Keep that
 distinction in release notes and future support reports.
 
-## Candidate gate
+## Historical 0.1.0 candidate gate
 
 1. Confirm the selected collection license and the rights notices for every
    bundled skill. Keep the Starter Pack grant scoped to the bundled skills; its
@@ -40,7 +56,7 @@ distinction in release notes and future support reports.
    notices, and the packed consumer result. Retain the exact `.tgz`, its SHA-256,
    source commit, and Node/npm versions outside the repository.
 
-## Publish the reviewed artifact
+## Historical 0.1.0 publish sequence
 
 1. Check that `@uppercut-labs/skills@0.1.0` is absent from npmjs.com. A network
    or authentication failure is not proof that a version is available.
