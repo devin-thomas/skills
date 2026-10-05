@@ -133,9 +133,9 @@ expected_ids = {
     'starter-pack', 'computer-setup', 'grill-to-build', 'task-execution-prompt', 'long-horizon-dashboard',
     'quick-build', 'execute-task', 'execute-task-cycles',
     'surface-sweep', 'surface-sweep-showcase', 'no-useless-copy', 'style',
-    'pwa-development', 'vidchopper-cli', 'perfect-playlist'
+    'pwa-development', 'vidchopper-cli', 'perfect-playlist', 'programmatic-harness'
 }
-check('all 15 skills present', all_ids == expected_ids,
+check('all 16 skills present', all_ids == expected_ids,
       f'missing={expected_ids - all_ids}, extra={all_ids - expected_ids}')
 check('categories match spec', manifest['categories'] == ['plan', 'build', 'specialized', 'fun'])
 
@@ -146,7 +146,7 @@ build_skills = [s['id'] for s in manifest['skills'] if s['category'] == 'build']
 check('build has correct skills', set(build_skills) == {'quick-build', 'execute-task', 'execute-task-cycles', 'surface-sweep', 'surface-sweep-showcase', 'no-useless-copy', 'style'})
 
 specialized_skills = [s['id'] for s in manifest['skills'] if s['category'] == 'specialized']
-check('specialized has correct skills', set(specialized_skills) == {'pwa-development', 'vidchopper-cli'})
+check('specialized has correct skills', set(specialized_skills) == {'pwa-development', 'vidchopper-cli', 'programmatic-harness'})
 
 fun_skills = [s['id'] for s in manifest['skills'] if s['category'] == 'fun']
 check('fun has correct skills', set(fun_skills) == {'perfect-playlist'})
@@ -154,6 +154,7 @@ check('fun has correct skills', set(fun_skills) == {'perfect-playlist'})
 check('vidchopper-cli source is vid-chopper repo', skills_by_id['vidchopper-cli']['sourceRepo'] == 'devin-thomas/vid-chopper')
 check('starter-pack source is starter-pack repo', skills_by_id['starter-pack']['sourceRepo'] == 'devin-thomas/starter-pack')
 check('grill-to-build source is skills repo', skills_by_id['grill-to-build']['sourceRepo'] == 'devin-thomas/skills')
+check('programmatic-harness source is skills repo', skills_by_id['programmatic-harness']['sourceRepo'] == 'devin-thomas/skills')
 check('no external implementations copied locally',
       not (root / '.agents').exists() and not (root / 'vidchopper-cli').exists())
 

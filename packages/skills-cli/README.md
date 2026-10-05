@@ -15,17 +15,28 @@ node bin/uppercut-skills.js add execute-task-cycles --host codex --project /path
 node bin/uppercut-skills.js doctor --host codex --project /path/to/project
 ```
 
-Install the public package from npm with:
+Use the npm install route when the exact version is visible in the registry:
 
 ```sh
-npx @uppercut-labs/skills@0.1.0 list
-npx @uppercut-labs/skills@0.1.0 add execute-task-cycles --host codex --project /path/to/project
-npx @uppercut-labs/skills@0.1.0 doctor --host codex --project /path/to/project
+npx @uppercut-labs/skills@0.1.1 list
+npx @uppercut-labs/skills@0.1.1 add execute-task-cycles --host codex --project /path/to/project
+npx @uppercut-labs/skills@0.1.1 doctor --host codex --project /path/to/project
 ```
+
+If registry publication is unavailable, use the pinned GitHub release tarball and its adjacent checksum instead:
+
+```sh
+curl -fL -o uppercut-labs-skills-0.1.1.tgz https://github.com/devin-thomas/skills/releases/download/v0.1.1/uppercut-labs-skills-0.1.1.tgz
+curl -fL -o uppercut-labs-skills-0.1.1.tgz.sha256 https://github.com/devin-thomas/skills/releases/download/v0.1.1/uppercut-labs-skills-0.1.1.tgz.sha256
+shasum -a 256 -c uppercut-labs-skills-0.1.1.tgz.sha256
+npm exec --yes --package=./uppercut-labs-skills-0.1.1.tgz -- uppercut-skills add programmatic-harness --host codex --project /path/to/disposable-project
+```
+
+On Linux, replace `shasum -a 256 -c` with `sha256sum -c`. The checksum must verify before running the archive.
 
 `add execute-task-cycles` also installs its required `execute-task` skill. The default bundled channel uses the reviewed content snapshot inside this package and needs no network after installation. `--latest` selects the current allowed GitHub source revisions and remembers that channel for subsequent updates. `--no-dependencies` (or `-nd`) is an expert option that reports a degraded install if required skills are missing.
 
-Use `--host codex|claude|cursor|antigravity|grokbot|grokcli` to select one host. Grok Bot's project route writes `.agents/skills`. On the Bot's own Linux execution computer, an allowed global npm postinstall places eligible bundled skills in `/home/box/agent-data/workflows` when the existing `workflows` directory belongs to the active `box` user. The Bot reports that `agent-data` is a symlink; the installer resolves its physical directory before writing. On npm 11, use `npm install -g @uppercut-labs/skills@0.1.0 --allow-scripts=@uppercut-labs/skills`. Where scripts are blocked, use the explicit `add <id> --host grokbot --global` route on the Bot computer. Byte-identical pre-existing skill folders can be adopted into managed state. Postinstall skips differing folders and their dependent skills, reports every skip, and installs the rest in one transaction; explicit `add` still refuses conflicts. The user's Bot successfully invoked `starter-pack` from the installed account library. Grok CLI is a separate host with a `.grok/skills` route. `--global` selects user scope. Antigravity global installs also require `--surface ide|cli`.
+Use `--host codex|claude|cursor|antigravity|grokbot|grokcli` to select one host. Grok Bot's project route writes `.agents/skills`. On the Bot's own Linux execution computer, an allowed global npm postinstall places eligible bundled skills in `/home/box/agent-data/workflows` when the existing `workflows` directory belongs to the active `box` user. The Bot reports that `agent-data` is a symlink; the installer resolves its physical directory before writing. On npm 11, use `npm install -g @uppercut-labs/skills@0.1.1 --allow-scripts=@uppercut-labs/skills` when that exact version is available from the registry. Where scripts are blocked, use the explicit `add <id> --host grokbot --global` route on the Bot computer. Byte-identical pre-existing skill folders can be adopted into managed state. Postinstall skips differing folders and their dependent skills, reports every skip, and installs the rest in one transaction; explicit `add` still refuses conflicts. The user's Bot successfully invoked `starter-pack` from the installed account library. Grok CLI is a separate host with a `.grok/skills` route. `--global` selects user scope. Antigravity global installs also require `--surface ide|cli`.
 
 `update`, `remove`, `show`, `list`, and `doctor` use the same CLI. Add `--json` for one machine-readable result or `--dry-run` to inspect an intended write. The installer refuses changed or unowned files by default.
 

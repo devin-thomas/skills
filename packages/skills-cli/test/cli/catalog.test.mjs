@@ -13,13 +13,39 @@ import { runCli } from '../../dist/cli/node-runtime.js';
 test('catalog list and show are host-free and return the versioned result envelope', async () => {
   const list = await runCli(parseArgs(['list', '--json']), { catalogBundle });
   assert.equal(list.exitCode, 0);
+  assert.ok(list.result.data.some(({ id }) => id === 'programmatic-harness'));
   assert.equal(list.result.schema, 'uppercut.skills.result/v1');
-  assert.equal(list.result.data.length, 15);
+  assert.equal(list.result.data.length, 16);
 
   const show = await runCli(parseArgs(['show', 'quick-build', '--json']), { catalogBundle });
   assert.equal(show.exitCode, 0);
   assert.equal(show.result.data[0].id, 'quick-build');
   assert.ok(show.result.data[0].resources.includes('SKILL.md'));
+});
+
+test('programmatic harness bundle contains its complete referenced resource closure', () => {
+  const bundle = catalogBundle.skills['programmatic-harness'];
+  assert.ok(bundle);
+  const paths = new Set(bundle.files.map(({ path }) => path));
+  for (const path of [
+    'SKILL.md', 'README.md', 'references/codex.md',
+    'references/proof-and-evidence.md', 'scripts/codex-proof.mjs',
+  ]) assert.ok(paths.has(path), `missing bundled resource ${path}`);
+});
+
+test('installing programmatic harness leaves project dependency metadata untouched', async (t) => {
+  const project = await mkdtemp(join(tmpdir(), 'skills-harness-install-'));
+  t.after(() => rm(project, { recursive: true, force: true }));
+  const packageJson = '{"name":"disposable-proof","private":true}\n';
+  await writeFile(join(project, 'package.json'), packageJson);
+
+  const result = await runCli(parseArgs([
+    'add', 'programmatic-harness', '--host', 'codex', '--project', project,
+  ]), { catalogBundle });
+
+  assert.equal(result.exitCode, 0);
+  assert.equal(await readFile(join(project, 'package.json'), 'utf8'), packageJson);
+  assert.ok(existsSync(join(project, '.agents', 'skills', 'programmatic-harness', 'scripts', 'codex-proof.mjs')));
 });
 
 test('ambiguous non-interactive host selection returns host-required without writes', async () => {
