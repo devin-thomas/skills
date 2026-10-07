@@ -11,7 +11,7 @@
 
 ## Specification discipline
 
-Generate `SPEC.md` from synchronized Context and ADR decisions. The specification must not invent major product behavior. If drafting reveals a high-impact unresolved choice, stop that section, resolve the choice with the user, update Context and ADR when consequential, then continue.
+Generate `SPEC.md` from synchronized `PROJECT.md`, `GLOSSARY.md` (when present), and ADR decisions. The specification must not invent major product behavior. If drafting reveals a high-impact unresolved choice, stop that section, resolve the choice with the user, update `PROJECT.md` and ADR when consequential, plus affected glossary terms, then continue.
 
 Minor, reversible implementation choices may be resolved directly. For every feature, ask whether another capable implementation agent could build it without guessing product behavior.
 
@@ -31,8 +31,8 @@ During implementation, SPEC defines required behavior, Context defines terminolo
 
 ## Feedback routing
 
-- New requirement: update Context and SPEC; adjust ADR/tickets if affected.
-- New architectural decision: update ADR and Context; adjust SPEC/tickets.
+- New requirement: update `PROJECT.md` and SPEC; adjust ADR/tickets if affected, and glossary terms only if they changed.
+- New architectural decision: update ADR and `PROJECT.md`; adjust SPEC/tickets.
 - New future idea: update Ideas only unless promoted.
 - Implementation detail: do not change product documents unless it changes shared understanding.
 
