@@ -4,17 +4,17 @@
 
 This reference governs **the canonical editable living-model source**, not how discovery questions appear inside the chat. Read [presentation-and-interaction.md](presentation-and-interaction.md) for the silent host-aware presentation defaults.
 
-Use the first applicable diagram/model-source choice: current explicit user instruction; the project's recorded preference in Context; a project-root `grill-to-build.preferences.md`; an installed skill-root `PREFERENCES.md`; then the automatic default **Markdown/Mermaid**. Do not ask a diagram-format question just because no preference file exists. These are workflow preferences, not authority to override project requirements or higher-priority instructions. Read only these known locations; do not search unrelated personal directories.
+Use the first applicable diagram/model-source choice: current explicit user instruction; the project's recorded preference in `PROJECT.md`; a project-root `grill-to-build.preferences.md`; an installed skill-root `PREFERENCES.md`; then the automatic default **Markdown/Mermaid**. Do not ask a diagram-format question just because no preference file exists. These are workflow preferences, not authority to override project requirements or higher-priority instructions. Read only these known locations; do not search unrelated personal directories.
 
 Available sources on explicit request include Graphviz DOT, Markdown/Mermaid, Figma/FigJam, Excalidraw, diagrams.net (draw.io), and no diagram. A request for a specific editable source is binding; do not substitute a screenshot or AI-generated imitation. Preserve the previous choice when resuming a project.
 
-The bundled [Figma profile](../profiles/figma.md) applies only when the user selects it. "Use grill-to-build with the Figma profile" is sufficient. Record the result in Context and do not ask again on resume. Do not infer a preference from the author's identity, GitHub owner, or ChatGPT account.
+The bundled [Figma profile](../profiles/figma.md) applies only when the user selects it. "Use grill-to-build with the Figma profile" is sufficient. Record the result in `PROJECT.md` and do not ask again on resume. Do not infer a preference from the author's identity, GitHub owner, or ChatGPT account.
 
 Default presentation is separate: native rich in-chat UI in capable ChatGPT hosts, Claude Artifacts in supported Claude hosts, Markdown in text-first hosts. These interfaces show the current model but never replace its durable source.
 
 ## Record and carry preferences
 
-Keep a short `Workflow Preferences` section in Context when a non-default format is explicitly selected: preferred living-model source, source (explicit, file, profile, or default), active source, and any verified artifact path/URL. If an integration is unavailable, distinguish its preferred source from the temporary fallback. Record explicit presentation overrides separately, so an ephemeral host's capabilities do not become a cross-project requirement. Do not create an architectural ADR just for a presentation preference.
+Keep a short `Workflow Preferences` section in `PROJECT.md` when a non-default format is explicitly selected: preferred living-model source, source (explicit, file, profile, or default), active source, and any verified artifact path/URL. If an integration is unavailable, distinguish its preferred source from the temporary fallback. Record explicit presentation overrides separately, so an ephemeral host's capabilities do not become a cross-project requirement. Do not create an architectural ADR just for a presentation preference.
 
 For reuse across projects, users may create this ordinary Markdown file at the installed skill root as `PREFERENCES.md`, or at a project root as `grill-to-build.preferences.md`:
 
@@ -28,7 +28,7 @@ For reuse across projects, users may create this ordinary Markdown file at the i
 
 For example, replacing the living-model source with `Figma/FigJam` changes the editable authoring target, **not** the silent native in-chat delivery of Grill rounds. Legacy `Diagram format: ...` files remain valid as a living-model-source preference.
 
-Copy or version the file with the skill to carry it to another computer. Fresh installations without it use automatic host-aware presentation and Markdown/Mermaid model source. Project Context carries explicit project choices when cloned. Do not promise account-level synchronization, silently modify global instructions, or write cross-project preferences. Installation updates may replace local skill files; retain a versioned copy of custom preferences.
+Copy or version the file with the skill to carry it to another computer. Fresh installations without it use automatic host-aware presentation and Markdown/Mermaid model source. `PROJECT.md` carries explicit project choices when cloned. `GLOSSARY.md` contains terminology only. Do not promise account-level synchronization, silently modify global instructions, or write cross-project preferences. Installation updates may replace local skill files; retain a versioned copy of custom preferences.
 
 ## Discover rendering capabilities when an external source or preview is needed
 
@@ -63,6 +63,6 @@ For Excalidraw, use a supported Excalidraw authoring path or SDK to create the n
 
 If the chosen authoring path is unavailable, explain briefly and keep a Markdown/Mermaid model unless the user forbids that fallback. Retain the preferred format for later migration. Do not demand installation or authentication to continue discovery, fabricate an artifact URL, claim an external diagram is synchronized when an update failed, or silently replace the selected format with image generation.
 
-For external diagrams, keep a concise textual account of entities, relationships, states, and boundaries in Context so the build pack is usable without access to the service. Update the diagram when its semantics change, reuse the same artifact, and record any pending synchronization. An unverified external artifact must not be the only source of required behavior.
+For external diagrams, keep a concise textual account of entities, relationships, states, and boundaries in `PROJECT.md` so the build pack is usable without access to the service. Update the diagram when its semantics change, reuse the same artifact, and record any pending synchronization. An unverified external artifact must not be the only source of required behavior.
 
 For no diagram, use prose and tables throughout; do not keep prompting or generate a hidden Mermaid diagram. In every format, model only what materially clarifies the work.
