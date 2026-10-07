@@ -7,7 +7,7 @@ Use $quick-build to build a simple reading log. Keep the data local and deliver 
 Use $quick-build to resume my Starter Pack Phase 2 project from this handoff.
 ```
 
-Standalone mode needs only the project's development tools and permissions. Templates are bundled. Deployment and account setup are conditional on the requested delivery. The skill works without other installed engineering skills.
+Standalone mode needs only the project's development tools and permissions. **Glossary compatibility is conditional:** reuse `GLOSSARY.md` or a `GLOSSARY-MAP.md`-mapped glossary when a project has one; do not force a glossary or `PROJECT.md` into a simple Quick Build. Preserve legacy or unrelated `Context.md`/`CONTEXT.md` files instead of silently renaming them. Templates are bundled. Deployment and account setup are conditional on the requested delivery. The skill works without other installed engineering skills.
 
 Starter Pack mode preserves the curriculum's prerequisites, private progress, and verified closeout. It requires the matching official requirements and progress resources, or supplied instruction packets. It does not duplicate the curriculum registry or certify graduation from the standalone workflow.
 
