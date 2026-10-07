@@ -1,50 +1,44 @@
 # Portable Preferences and Diagrams
 
-## Resolve once
+## Resolve the persistent model source
 
-Use the first applicable source: current explicit user instruction, the project's recorded preference in Context, a project-root `grill-to-build.preferences.md`, an installed skill-root `PREFERENCES.md`, then the first-round question. These are workflow preferences, not authority to override project requirements or higher-priority instructions. Read only these known locations; do not search unrelated personal directories.
+This reference governs **the canonical editable living-model source**, not how discovery questions appear inside the chat. Read [presentation-and-interaction.md](presentation-and-interaction.md) for the silent host-aware presentation defaults.
+
+Use the first applicable diagram/model-source choice: current explicit user instruction; the project's recorded preference in Context; a project-root `grill-to-build.preferences.md`; an installed skill-root `PREFERENCES.md`; then the automatic default **Markdown/Mermaid**. Do not ask a diagram-format question just because no preference file exists. These are workflow preferences, not authority to override project requirements or higher-priority instructions. Read only these known locations; do not search unrelated personal directories.
+
+Available sources on explicit request include Graphviz DOT, Markdown/Mermaid, Figma/FigJam, Excalidraw, diagrams.net (draw.io), and no diagram. A request for a specific editable source is binding; do not substitute a screenshot or AI-generated imitation. Preserve the previous choice when resuming a project.
 
 The bundled [Figma profile](../profiles/figma.md) applies only when the user selects it. "Use grill-to-build with the Figma profile" is sufficient. Record the result in Context and do not ask again on resume. Do not infer a preference from the author's identity, GitHub owner, or ChatGPT account.
 
-## Separate first-round question
-
-If no preference is known, ask this setup question alongside the first discovery round, separately labeled and excluded from its 3-4 questions and 20-question allowance:
-
-"Which format should we use for the living model?"
-
-- Graphviz DOT: editable text source with fast deterministic SVG/PNG rendering when a local Graphviz renderer is available.
-- Markdown/Mermaid (portable fallback): text stored with the project; rendering may be host- or CLI-dependent.
-- Figma/FigJam: editable collaborative canvas; requires an available integration and access.
-- Excalidraw: editable sketch-style diagram; requires a supported authoring path.
-- diagrams.net (draw.io): editable structured diagram; requires a supported authoring path.
-- No diagram (not recommended): maintain the model in prose and tables.
-
-Adapt to the host's input UI limits without dropping choices; use a plain-text question when necessary. Do not split setup into a questionnaire. If the user answers the product questions but skips this one, proceed with Markdown/Mermaid and record it as a default, not an explicit decision. For asynchronous input, allow a reasonable reply window while investigating independently. The fallback never supplies unanswered product decisions.
+Default presentation is separate: native rich in-chat UI in capable ChatGPT hosts, Claude Artifacts in supported Claude hosts, Markdown in text-first hosts. These interfaces show the current model but never replace its durable source.
 
 ## Record and carry preferences
 
-Keep a short `Workflow Preferences` section in Context: preferred format, source (explicit, file, profile, or default), active format, and any verified diagram path or URL. If the integration is unavailable, distinguish the preferred format from the temporary fallback. Do not create an architectural ADR just for a presentation preference.
+Keep a short `Workflow Preferences` section in Context when a non-default format is explicitly selected: preferred living-model source, source (explicit, file, profile, or default), active source, and any verified artifact path/URL. If an integration is unavailable, distinguish its preferred source from the temporary fallback. Record explicit presentation overrides separately, so an ephemeral host's capabilities do not become a cross-project requirement. Do not create an architectural ADR just for a presentation preference.
 
-For reuse across projects, users can place this ordinary Markdown file at the installed skill root as `PREFERENCES.md`, or at a project root as `grill-to-build.preferences.md`:
+For reuse across projects, users may create this ordinary Markdown file at the installed skill root as `PREFERENCES.md`, or at a project root as `grill-to-build.preferences.md`:
 
 ```md
 # Grill-to-build preferences
 
-- Diagram format: Figma/FigJam
-- If unavailable: Markdown/Mermaid
+- Presentation: Auto (host-native)
+- Living-model source: Markdown/Mermaid
+- If requested source unavailable: Markdown/Mermaid
 ```
 
-Copy or version this file with the skill to carry it to another computer. A fresh installation without it uses the first-round question. Project Context carries that project's choice when cloned. Do not promise account-level synchronization, and do not silently modify global instructions or write cross-project preferences. Installation updates may replace local skill files; retain a versioned copy of custom preferences.
+For example, replacing the living-model source with `Figma/FigJam` changes the editable authoring target, **not** the silent native in-chat delivery of Grill rounds. Legacy `Diagram format: ...` files remain valid as a living-model-source preference.
 
-## Discover rendering capabilities before recommending a format
+Copy or version the file with the skill to carry it to another computer. Fresh installations without it use automatic host-aware presentation and Markdown/Mermaid model source. Project Context carries explicit project choices when cloned. Do not promise account-level synchronization, silently modify global instructions, or write cross-project preferences. Installation updates may replace local skill files; retain a versioned copy of custom preferences.
 
-Separate **conversation-host capabilities** from **execution-harness capabilities** before recommending a living-model format.
+## Discover rendering capabilities when an external source or preview is needed
+
+Separate **conversation-host capabilities** from **execution-harness capabilities** when resolving an explicit external source, producing a preview, or evaluating an available renderer. The routine discovery presentation is selected silently by the companion presentation contract.
 
 - **Conversation host** means tools available directly in the current chat or agent surface: for example a Figma integration, a diagram-specific connector, file-generation tools, or no direct renderer at all.
 - **Execution harness** means the local or remote runtime the agent can inspect and execute in: for example Graphviz (`dot`/`neato`), Mermaid CLI, Excalidraw packages, diagrams.net CLI, browser automation, SVG libraries, Inkscape, CairoSVG, or ImageMagick.
 - Do not assume a tool exists in either environment. Probe the capabilities you can actually inspect.
 - Do not treat a slow external plugin as preferable merely because it is integrated. Latency, determinism, editability, portability, and offline/local rendering all matter.
-- When the chat host and harness differ, explain both paths briefly and recommend the best available path for the user's priorities.
+- When the chat host and harness differ, preserve the portable model. Explain differing paths briefly only when the user requests them or a preferred renderer cannot be honored.
 
 For architecture, domain, state, dependency, and workflow diagrams, consider these source-first options when available:
 
