@@ -38,7 +38,7 @@ Current explicit user decision
 
 Infer the requested endpoint: discovery, build pack, or implementation. Run only the requested stages; invoking this skill alone does not authorize implementation, publishing, or external sharing. No companion skill, paid service, global `AGENTS.md`, or account memory is required.
 
-Read [preferences-and-diagrams.md](references/preferences-and-diagrams.md) before the first discovery round. Probe both conversation-host and execution-harness rendering capabilities before recommending a format. Reuse an explicit diagram preference; otherwise ask the separate first-round format question described there. It does not consume the discovery question allowance. If unanswered, use Markdown/Mermaid. A user's choice of no diagram is valid.
+Read [presentation-and-interaction.md](references/presentation-and-interaction.md) and [preferences-and-diagrams.md](references/preferences-and-diagrams.md) before the first discovery round. **Silently choose the live Grill presentation based on verified host capabilities**: native, mobile-friendly interactive chat presentation in ChatGPT when supported; Claude Artifacts in Claude when available and useful; otherwise concise Markdown, with Mermaid when supported and useful. Do not ask a separate presentation or diagram-format setup question by default. Reuse explicit user/project preferences and allow overrides at any time. Independently maintain a portable, editable living-model source, defaulting to Markdown/Mermaid unless explicitly changed. A user's choice of no diagram is binding.
 
 Treat the selected diagram format and authoring source as a hard output constraint. Do not substitute an image-generation model for Figma/FigJam, Excalidraw, diagrams.net, Markdown/Mermaid, or no-diagram output. Image generation may be used for a diagram only when the user explicitly selects generated imagery as the diagram source or output method.
 
@@ -58,7 +58,7 @@ Track discovery rounds and question count in Context so resuming does not reset 
 
 Prioritize product boundaries, domain/state semantics, data integrity, user workflow, platform architecture, persistence, external dependencies, destructive behavior, and acceptance criteria. Deprioritize cosmetics, speculative features, and reversible implementation details.
 
-When useful, give concrete options. Clearly label a recommendation and its consequence; never turn a recommendation into a hidden decision. Read [grilling-and-modeling.md](references/grilling-and-modeling.md) for question selection, vocabulary, state, diagram, and completion rules.
+When useful, give concrete options. Clearly label a recommendation and its consequence; never turn a recommendation into a hidden decision. Present questions and visual models through the active host-native surface only when the content merits it; keep controls actionable, responses conversationally answerable, and unsubmitted UI selections non-binding. Read [grilling-and-modeling.md](references/grilling-and-modeling.md) for question selection, vocabulary, state, diagram, and completion rules.
 
 After every round:
 
@@ -66,6 +66,7 @@ After every round:
 2. Append or supersede only consequential ADR entries.
 3. Park useful deferred ideas immediately.
 4. Update the living model when entities, relationships, flows, states, systems, or storage boundaries change.
+5. Refresh any useful in-chat/Artifact visual from canonical understanding; never let a temporary UI become the only copy of a decision.
 
 Continue useful read-only investigation while waiting for answers, but do not guess at choices that materially change the product.
 
