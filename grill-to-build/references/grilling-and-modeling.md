@@ -14,7 +14,7 @@
 
 Use at most 5 rounds and 20 questions by default. Ask roughly 3-4 questions per round and stop early when shared understanding is sufficient. The goal is to expose high-impact unknowns, not collect every conceivable requirement.
 
-The single first-round diagram preference question is separate and does not consume this allowance. Follow [preferences-and-diagrams.md](preferences-and-diagrams.md) for preference precedence, choices, fallback, and persistence. Retain the budget count across resumes. If material uncertainty remains at the limit, mark affected work blocked and resolve it before declaring the pack ready.
+Presentation and editable-model format are selected silently from host capabilities and established preferences; no first-round format question is required. Follow [presentation-and-interaction.md](presentation-and-interaction.md) for native ChatGPT/Claude handling and [preferences-and-diagrams.md](preferences-and-diagrams.md) for durable model source, overrides, fallback, and persistence. Retain the budget count across resumes. If material uncertainty remains at the limit, mark affected work blocked and resolve it before declaring the pack ready.
 
 ## Selecting questions
 
@@ -37,7 +37,7 @@ Keep questions short, concrete, and independently answerable. Offer choices when
 
 ## Round format
 
-After each answer round, integrate answers into canonical Context sections, add or supersede consequential ADR entries, capture deferred value in Ideas, and update the living model if the mental model changed. Never use discovery artifacts as a chronological chat log.
+After each answer round, integrate answers into canonical Context sections, add or supersede consequential ADR entries, capture deferred value in Ideas, and update the living model if the mental model changed. Where supported, refresh the in-chat/Artifact representation from accepted answers. Never treat widget-local selections as decisions until submitted, and never use discovery artifacts as a chronological chat log.
 
 ## Modeling understanding
 
