@@ -1,6 +1,6 @@
 # Grill to Build
 
-Turn an idea into shared terminology, explicit decisions, testable behavior, and ordered work. Discovery updates Context, ADR, and Ideas; a stable understanding becomes SPEC and tickets. Implementation runs when requested.
+Turn an idea into shared terminology, explicit decisions, testable behavior, and ordered work. Discovery updates `PROJECT.md`, applicable `GLOSSARY.md`, ADR, and Ideas; a stable understanding becomes SPEC and tickets. Implementation runs when requested.
 
 ## Install and use
 
@@ -11,7 +11,7 @@ Example prompts:
 ```text
 Use $grill-to-build to turn this idea into a build pack: ...
 Use $grill-to-build with the Figma profile to scope and build: ...
-Resume $grill-to-build from the existing Context and open questions.
+Resume $grill-to-build from PROJECT.md, GLOSSARY.md, and open questions.
 ```
 
 ## Host-native discovery by default
@@ -24,7 +24,7 @@ Without a setup question, Grill chooses the richest **useful** presentation the 
 
 The agent must check actual host capabilities; it cannot assume a Claude Code terminal offers Claude Artifacts or that every ChatGPT client supports identical native controls. If richer presentation is unavailable, fall back silently to the next supported option. Do not ask the user to choose a presentation tool unless they request a non-default path that needs clarification. Short conversational questions remain preferable to needlessly large forms.
 
-**Presentation is not persistence.** The source for the living model stays editable and portable, defaulting to Markdown/Mermaid in Context. Choosing a host-native UI does not change Context, ADR, Ideas, SPEC, or tickets. An explicit user choice of Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, Markdown/Mermaid, or no diagram overrides the model-source default. A choice of no diagram is binding even in a rich host.
+**Presentation is not persistence.** The source for the living model stays editable and portable, defaulting to Markdown/Mermaid in `PROJECT.md`. Choosing a host-native UI does not change `PROJECT.md`, `GLOSSARY.md`, ADR, Ideas, SPEC, or tickets. An explicit user choice of Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, Markdown/Mermaid, or no diagram overrides the model-source default. A choice of no diagram is binding even in a rich host.
 
 For shared preferences, use project-root `grill-to-build.preferences.md` or skill-root `PREFERENCES.md`; overrides in current instructions or Context take priority. Old `Diagram format: ...` settings continue to apply to living-model sources. The selected editable source remains a hard constraint. Do not replace it with an AI-generated look-alike; image generation requires explicit selection as the source/output method. `Excalidraw to PNG` means author the native editable Excalidraw scene, then render it.
 
@@ -42,7 +42,7 @@ External integrations can be appropriate when collaborative editing matters, but
 
 ## Portability boundaries
 
-- Existing artifact layouts and terminology are preserved.
+- Existing project meaning and compatible ADR/ticket layouts are preserved; legacy Context filenames require explicit migration.
 - Product questions stay within five rounds or twenty questions by default; unresolved material choices remain explicit blockers.
 - External diagrams have a textual counterpart, so collaborators can use the pack without service access.
 - Invoking the skill does not itself authorize publishing, deployment, paid tools, or public sharing.
@@ -67,10 +67,17 @@ Before changing the workflow, review these cases against the entry point and ref
 | Explicit no-diagram choice | No diagram visual in chat/Artifact or model source |
 | Explicit Excalidraw + PNG | Editable Excalidraw scene first, PNG export second; no AI-generated imitation |
 | Selected diagram tool unavailable | Disclose limitation and use only an allowed fallback |
-| Existing Context resumed in a different host | Explicit preferences and saved decisions preserved; presentation adapts to host |
+| Existing `PROJECT.md` resumed in a different host | Explicit preferences and saved decisions preserved; presentation adapts to host |
+| Legacy mixed-use `Context.md` | Split scope and preferences into `PROJECT.md`; resolved terminology into `GLOSSARY.md` |
+| Legacy glossary-only `CONTEXT.md` / `CONTEXT-MAP.md` | Git-rename to canonical v1.3 names and update mapped paths |
+| Both legacy and new files exist | Reconcile without overwriting or creating parallel vocabulary |
 | Current instruction overrides saved preference | Current instruction wins |
 | Five rounds end with material uncertainty | Block affected sections; do not invent acceptance rules |
 | Existing ADR directory | Preserve it; no duplicate ADR.md |
 | Build-pack-only request | Produce pack; do not begin implementation |
 
 These are review scenarios, not claims of automated agent execution tests.
+
+## Breaking: compatibility with Matt Pocock skills v1.3
+
+New projects write **`GLOSSARY.md`** (terms only) and **`PROJECT.md`** (scope, constraints, discovery state, models, preferences) instead of the old mixed-use `Context.md`. Mapped domain glossaries use `GLOSSARY-MAP.md`. Do not rename mixed project documentation straight into a glossary. Read the [migration guide](references/migration-from-context.md) before resuming older projects. This is a breaking pre-1.0 artifact contract change; it is not yet published.
