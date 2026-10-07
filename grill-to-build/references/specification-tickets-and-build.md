@@ -27,7 +27,7 @@ Prefer vertical capabilities. Order tickets as an executable dependency graph: f
 
 ## Implementation authority
 
-During implementation, SPEC defines required behavior, Context defines terminology, ADR explains accepted decisions, ticket criteria define work-unit completion, and Ideas remains outside current scope. Start with the first incomplete ticket unless dependencies or repository state require another order.
+During implementation, SPEC defines required behavior, `GLOSSARY.md` (or a mapped domain glossary) defines terminology, `PROJECT.md` preserves accepted project boundaries and discovery state, ADR explains decisions, ticket criteria define completion, and Ideas remains outside current scope. Start with the first incomplete ticket unless dependencies or repository state require another order.
 
 ## Feedback routing
 
