@@ -24,8 +24,8 @@ Treat the first two rows as **silent defaults**, not unconditional mandates to g
 ### Presentation versus source
 
 - **Presentation** is the ephemeral user-facing round: structured question cards, side-by-side tradeoffs, an architecture diagram, or a small interactive selector.
-- **Persistent model source** is the editable artifact in the project: default Markdown/Mermaid in `Context.md` unless an explicit model-format preference selects Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, or no diagram.
-- Native ChatGPT UI and Claude Artifacts do **not** replace Context, ADR, Ideas, SPEC, tickets, or any editable model source.
+- **Persistent model source** is the editable artifact in the project: default Markdown/Mermaid in `PROJECT.md` unless an explicit model-format preference selects Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, or no diagram.
+- Native ChatGPT UI and Claude Artifacts do **not** replace `PROJECT.md`, `GLOSSARY.md`, ADR, Ideas, SPEC, tickets, or any editable model source.
 - An interactive presentation may render a snapshot of the current model; after decisions, update the canonical files and refresh the presentation from them.
 - If the user explicitly requests a different presentation or a diagram source, honor that. A 'no diagram' instruction forbids diagram visualization even if the host can draw one. Do not silently substitute generated images for editable requested sources.
 
@@ -58,15 +58,15 @@ Use native in-chat layout and interaction supported by the **current** ChatGPT s
 
 ## Persistence
 
-Record a non-default presentation preference in Context under `Workflow Preferences`, together with its source (explicit, project file, skill file). It is not necessary to write a host capability probe or default style into every project's Context. Persist the living-model source and any approved external artifact URL in Context as defined by [preferences-and-diagrams.md](preferences-and-diagrams.md). Do not create an ADR for a mere presentation choice.
+Record a non-default presentation preference in `PROJECT.md` under `Workflow Preferences`, together with its source (explicit, project file, skill file). It is not necessary to write a host capability probe or default style into every project's `PROJECT.md`. Persist the living-model source and any approved external artifact URL in `PROJECT.md` as defined by [preferences-and-diagrams.md](preferences-and-diagrams.md). Do not create an ADR for a mere presentation choice.
 
 ## Behavior checks
 
-- ChatGPT rich host, no preference: starts a useful in-chat discovery round without asking which diagram service to use; keeps editable Context source.
+- ChatGPT rich host, no preference: starts a useful in-chat discovery round without asking which diagram service to use; keeps editable `PROJECT.md` model source and separate glossary.
 - Claude chat with Artifacts: creates or updates an Artifact when appropriate; project decisions still get documented.
 - Claude Code terminal with no Artifact support: Markdown questions/model, with no promise of Artifacts.
 - Explicit plain-text or Excalidraw preference: follows the override, not the rich default.
 - A user answers options in ordinary prose: accepts the answer, with no widget dependency.
 - A user changes a selector but does not submit: does not silently record a decision.
 - The user selects 'no diagram': diagrams stay absent even in an otherwise visual host.
-- An interactive session is resumed elsewhere: Context/ADR/Ideas supply the state, not the prior Artifact/widget.
+- An interactive session is resumed elsewhere: `PROJECT.md`/`GLOSSARY.md`/ADR/Ideas supply the state, not the prior Artifact/widget.
