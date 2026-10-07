@@ -41,6 +41,17 @@ class GlossaryContractTests(unittest.TestCase):
             self.assertIn("`GLOSSARY-MAP.md`", text)
             self.assertIn("`PROJECT.md`", text)
 
+    def test_related_skills_do_not_diverge(self):
+        quick = read("quick-build/SKILL.md")
+        execute = read("execute-task/SKILL.md")
+        execution = read("execute-task/references/portable-workflow.md")
+        for content in (quick, execute, execution):
+            self.assertIn("`GLOSSARY.md`", content)
+        self.assertIn("`GLOSSARY-MAP.md`", quick)
+        self.assertIn("`PROJECT.md`", quick)
+        self.assertIn("does not require or create a glossary", quick)
+        self.assertIn("do not automatically", execute)
+
     def test_no_active_context_as_glossary_claims(self):
         files = (
             "grill-to-build/SKILL.md",
