@@ -39,7 +39,7 @@ The portable skill content targets **Codex, Claude Code, Cursor, Google Antigrav
 
 A focused npm distribution layer, `@uppercut-labs/skills`, is planned in [docs/skills-package](docs/skills-package/PLAN.md). It will use this repository's manifest as the owned catalog, install skill prerequisites automatically, bundle complete stable skill content, and offer an explicit live GitHub channel for faster content updates. The installer is not published yet.
 
-No skill requires the author's global AGENTS.md, account memory, or private setup. [Grill to Build preferences](grill-to-build/references/preferences-and-diagrams.md) travel in explicit files; the default diagram format is Markdown/Mermaid. External services still require the user's own access and authorization.
+No skill requires the author's global AGENTS.md, account memory, or private setup. Grill to Build uses [automatic host-native presentation](grill-to-build/references/presentation-and-interaction.md) (rich ChatGPT chat, Claude Artifacts where supported, or text fallback) while preserving an editable Markdown/Mermaid living model by default. [Explicit model preferences](grill-to-build/references/preferences-and-diagrams.md) travel in project or skill files. External services still require the user's own access and authorization.
 
 ## Starter Pack relationship
 
