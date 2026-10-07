@@ -50,7 +50,7 @@ class GlossaryContractTests(unittest.TestCase):
         self.assertIn("`GLOSSARY-MAP.md`", quick)
         self.assertIn("`PROJECT.md`", quick)
         self.assertIn("does not require or create a glossary", quick)
-        self.assertIn("do not automatically", execute)
+        self.assertIn("Do not automatically", execute)
 
     def test_no_active_context_as_glossary_claims(self):
         files = (
