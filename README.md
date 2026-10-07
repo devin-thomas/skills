@@ -55,6 +55,7 @@ Use this table as a routing index, then read the selected entry point and only r
 
 ```sh
 python3 scripts/validate-skills.py
+python3 -m unittest discover -s tests -p 'test_grill_artifact_contract.py'
 node --test tests/pwa-helpers.test.mjs
 git diff --check
 ```
