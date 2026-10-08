@@ -24,10 +24,11 @@ Treat the first two rows as **silent defaults**, not unconditional mandates to g
 ### Presentation versus source
 
 - **Presentation** is the ephemeral user-facing round: structured question cards, side-by-side tradeoffs, an architecture diagram, or a small interactive selector.
-- **Persistent model source** is the editable artifact in the project: default Markdown/Mermaid in `PROJECT.md` unless an explicit model-format preference selects Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, or no diagram.
+- **Persistent model source** is the editable artifact in the project: default Markdown/Mermaid in `PROJECT.md` unless an explicit model-format preference selects Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, or **no separate diagram source** (model retained as structured prose/tables in `PROJECT.md`).
 - Native ChatGPT UI and Claude Artifacts do **not** replace `PROJECT.md`, `GLOSSARY.md`, ADR, Ideas, SPEC, tickets, or any editable model source.
 - An interactive presentation may render a snapshot of the current model; after decisions, update the canonical files and refresh the presentation from them.
-- If the user explicitly requests a different presentation or a diagram source, honor that. A 'no diagram' instruction forbids diagram visualization even if the host can draw one. Do not silently substitute generated images for editable requested sources.
+- **Distinguish source from presentation:** “no diagram file/source; intelligent UI in chat is the diagram” means no persisted Mermaid/DOT/canvas, but an ephemeral native in-chat model visualization is welcome. The canonical entities, states and relationships still live in structured `PROJECT.md` prose/tables.
+- If the user instead says “no diagrams at all, including in chat,” suppress visual diagrams in both surfaces. Do not silently substitute generated images for editable requested sources.
 
 ## Discovery round behavior
 
@@ -68,5 +69,6 @@ Record a non-default presentation preference in `PROJECT.md` under `Workflow Pre
 - Explicit plain-text or Excalidraw preference: follows the override, not the rich default.
 - A user answers options in ordinary prose: accepts the answer, with no widget dependency.
 - A user changes a selector but does not submit: does not silently record a decision.
-- The user selects 'no diagram': diagrams stay absent even in an otherwise visual host.
+- The user selects no persistent diagram but wants intelligent UI in chat: use structured prose/tables in `PROJECT.md`; the in-chat visualization can illustrate current understanding without becoming a second source of truth.
+- The user explicitly excludes any diagrams, including in chat: suppress visual diagrams even in a rich host.
 - An interactive session is resumed elsewhere: `PROJECT.md`/`GLOSSARY.md`/ADR/Ideas supply the state, not the prior Artifact/widget.
