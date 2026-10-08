@@ -14,7 +14,7 @@
 
 Use at most 5 rounds and 20 questions by default. Ask roughly 3-4 questions per round and stop early when shared understanding is sufficient. The goal is to expose high-impact unknowns, not collect every conceivable requirement.
 
-The single first-round diagram preference question is separate and does not consume this allowance. Follow [preferences-and-diagrams.md](preferences-and-diagrams.md) for preference precedence, choices, fallback, and persistence. Retain the budget count across resumes. If material uncertainty remains at the limit, mark affected work blocked and resolve it before declaring the pack ready.
+Presentation and editable-model format are selected silently from host capabilities and established preferences; no first-round format question is required. Follow [presentation-and-interaction.md](presentation-and-interaction.md) for native ChatGPT/Claude handling and [preferences-and-diagrams.md](preferences-and-diagrams.md) for durable model source, overrides, fallback, and persistence. Retain the budget count in `PROJECT.md` across resumes. If material uncertainty remains at the limit, mark affected work blocked and resolve it before declaring the pack ready.
 
 ## Selecting questions
 
@@ -37,19 +37,19 @@ Keep questions short, concrete, and independently answerable. Offer choices when
 
 ## Round format
 
-After each answer round, integrate answers into canonical Context sections, add or supersede consequential ADR entries, capture deferred value in Ideas, and update the living model if the mental model changed. Never use discovery artifacts as a chronological chat log.
+After each answer round, integrate answers into canonical `PROJECT.md` sections, and resolved terminology into `GLOSSARY.md` or the mapped domain glossary, add or supersede consequential ADR entries, capture deferred value in Ideas, and update the living model if the mental model changed. Where supported, refresh the in-chat/Artifact representation from accepted answers. Never treat widget-local selections as decisions until submitted, and never use discovery artifacts as a chronological chat log.
 
 ## Modeling understanding
 
 Choose the smallest visual format that represents the uncertainty being resolved: a system map for boundaries, an entity relationship model for a domain-heavy product, a state model for lifecycle-heavy behavior, or a flow model for workflows. Use Mermaid, FigJam, a design canvas, or another maintainable medium according to user preference and available tools. Do not add diagrams as decoration.
 
-Respect a no-diagram preference by maintaining the same semantics in prose and tables. For external canvases, retain a textual model and verified link in Context and report synchronization failures.
+Respect a no-diagram preference by maintaining the same semantics in prose and tables. For external canvases, retain a textual model and verified link in `PROJECT.md` and report synchronization failures.
 
-Maintain ubiquitous language. Define any entity, role, status, ownership term, lifecycle name, or calculated concept that could be interpreted differently. Reuse the chosen terms in database names, model names, variables, UI labels, tests, and tickets. Avoid synonyms that fracture the model.
+Maintain ubiquitous language in `GLOSSARY.md` (or the mapped domain glossary) rather than in general project notes. Define any entity, role, status, ownership term, lifecycle name, or calculated concept that could be interpreted differently. Reuse the chosen terms in database names, model names, variables, UI labels, tests, and tickets. Avoid synonyms that fracture the model.
 
 ## Derived and stored state
 
-Classify meaningful concepts as stored explicitly, calculated or derived, inferred, or external. Do not persist a derived value as a second source of truth without a documented reason. Record consequential state-model decisions in Context and ADR.
+Classify meaningful concepts as stored explicitly, calculated or derived, inferred, or external. Do not persist a derived value as a second source of truth without a documented reason. Record consequential state-model decisions in `PROJECT.md` and ADR, with terms in `GLOSSARY.md`.
 
 ## Discovery completion
 
@@ -57,4 +57,4 @@ Stop grilling when important entities and relationships, lifecycle behavior, req
 
 ## Scope control
 
-Classify each newly surfaced feature as required now, valuable but deferred, or disposable. Put required behavior in Context and SPEC. Put valuable deferred work in Ideas. Keep current architecture from blocking credible future needs, but do not build deferred capabilities merely because they are plausible.
+Classify each newly surfaced feature as required now, valuable but deferred, or disposable. Put required behavior in `PROJECT.md` and SPEC. Put valuable deferred work in Ideas. Keep current architecture from blocking credible future needs, but do not build deferred capabilities merely because they are plausible.

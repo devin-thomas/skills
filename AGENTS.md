@@ -9,6 +9,6 @@ This repository contains reusable agent instructions, not an application. Use [R
 - Keep public methods separate from personal preferences, machine paths, account identifiers, and credentials. Do not copy local preference files into the public collection.
 - Preserve existing public skills. Do not vendor upstream skill bundles just because they are installed locally.
 - Keep source attribution and snapshot versions for adapted resources. Starter Pack remains authoritative for curriculum requirements; Quick Build's standalone mode does not certify curriculum completion.
-- Before publishing, run `python3 scripts/validate-skills.py`, `node --test tests/pwa-helpers.test.mjs`, and `git diff --check`. Browser probe changes additionally need real-browser verification; syntax checks are insufficient.
+- Before publishing, run `python3 scripts/validate-skills.py`, `python3 -m unittest discover -s tests -p 'test_grill_artifact_contract.py'`, `node --test tests/pwa-helpers.test.mjs`, and `git diff --check`. Browser probe changes additionally need real-browser verification; syntax checks are insufficient.
 
 No global instructions, specific model, paid connector, or personal account setup is assumed. Respect the active host's tool restrictions and the user's existing authorization.

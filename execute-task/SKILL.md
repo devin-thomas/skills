@@ -59,7 +59,7 @@ When no canonical prompt exists:
 
 1. Read [references/portable-workflow.md](references/portable-workflow.md) completely.
 2. Read [references/task-sources.md](references/task-sources.md) completely, select one authoritative source, and use only the relevant source procedure.
-3. Read current repository instructions, domain context, architecture decisions, plans, relevant source and tests, and Git state before selecting work.
+3. Read current repository instructions, the applicable `GLOSSARY.md` files (follow `GLOSSARY-MAP.md` if present), `PROJECT.md` when available, architecture decisions, plans, relevant source and tests, and Git state before selecting work. Do not automatically turn an unrelated `CONTEXT.md` task brief into a glossary.
 4. Execute the portable workflow through one terminal result.
 
 Do not select a tracker merely because its connector is installed or a Git remote exists. Do not invent a task source, lifecycle vocabulary, priority, or task identifier.
