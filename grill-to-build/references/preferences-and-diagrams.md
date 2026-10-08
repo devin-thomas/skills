@@ -6,11 +6,11 @@ This reference governs **the canonical editable living-model source**, not how d
 
 Use the first applicable diagram/model-source choice: current explicit user instruction; the project's recorded preference in `PROJECT.md`; a project-root `grill-to-build.preferences.md`; an installed skill-root `PREFERENCES.md`; then the automatic default **Markdown/Mermaid**. Do not ask a diagram-format question just because no preference file exists. These are workflow preferences, not authority to override project requirements or higher-priority instructions. Read only these known locations; do not search unrelated personal directories.
 
-Available sources on explicit request include Graphviz DOT, Markdown/Mermaid, Figma/FigJam, Excalidraw, diagrams.net (draw.io), and no diagram. A request for a specific editable source is binding; do not substitute a screenshot or AI-generated imitation. Preserve the previous choice when resuming a project.
+Available sources on explicit request include Graphviz DOT, Markdown/Mermaid, Figma/FigJam, Excalidraw, diagrams.net (draw.io), and **no persistent diagram** (model documented in structured `PROJECT.md` prose/tables instead). A request for a specific editable source is binding; do not substitute a screenshot or AI-generated imitation. Preserve the previous choice when resuming a project. A user can separately ask for no diagrams anywhere, including in chat.
 
 The bundled [Figma profile](../profiles/figma.md) applies only when the user selects it. "Use grill-to-build with the Figma profile" is sufficient. Record the result in `PROJECT.md` and do not ask again on resume. Do not infer a preference from the author's identity, GitHub owner, or ChatGPT account.
 
-Default presentation is separate: native rich in-chat UI in capable ChatGPT hosts, Claude Artifacts in supported Claude hosts, Markdown in text-first hosts. These interfaces show the current model but never replace its durable source.
+Default presentation is separate: native rich in-chat UI in capable ChatGPT hosts, Claude Artifacts in supported Claude hosts, Markdown in text-first hosts. A user may choose **in-chat intelligent UI as the living visualization** without creating a persistent diagram artifact. These interfaces illustrate the current model but never replace its durable written semantics.
 
 ## Record and carry preferences
 
@@ -65,4 +65,4 @@ If the chosen authoring path is unavailable, explain briefly and keep a Markdown
 
 For external diagrams, keep a concise textual account of entities, relationships, states, and boundaries in `PROJECT.md` so the build pack is usable without access to the service. Update the diagram when its semantics change, reuse the same artifact, and record any pending synchronization. An unverified external artifact must not be the only source of required behavior.
 
-For no diagram, use prose and tables throughout; do not keep prompting or generate a hidden Mermaid diagram. In every format, model only what materially clarifies the work.
+For **no persistent diagram**, keep canonical model semantics in `PROJECT.md` prose and tables; do not generate a Mermaid, DOT, canvas, or hidden diagram artifact. The current conversation may still use a supported native in-chat visualization as the requested presentation. For **no diagrams anywhere**, also avoid visual diagrams in chat/Artifacts. In every format, model only what materially clarifies the work.
