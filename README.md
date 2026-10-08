@@ -10,7 +10,7 @@ For guided onboarding, start at [Starter Pack](https://starter.devthomas.site). 
 | --- | --- | --- |
 | Build a small meaningful app | [quick-build](quick-build/SKILL.md) | Compact interview, approved plan, working build and requested delivery |
 | Control a coding-agent session from code | [programmatic-harness](programmatic-harness/SKILL.md) | Optional local Codex session proof through Agent Native; no dependency or credentials on skill install |
-| Resolve uncertainty in a larger idea | [grill-to-build](grill-to-build/SKILL.md) | Context, decisions, specification, ordered tickets; implementation when requested |
+| Resolve uncertainty in a larger idea | [grill-to-build](grill-to-build/SKILL.md) | GLOSSARY.md terminology, PROJECT.md brief, decisions, specification and tickets; implementation when requested |
 | Complete the next scoped task | [execute-task](execute-task/SKILL.md) | One verified task pass from local Markdown, GitHub, or Linear |
 | Establish a repeatable project workflow | [task-execution-prompt](task-execution-prompt/SKILL.md) | Repository execution contract and read-only rehearsal |
 | Run several bounded task passes | [execute-task-cycles](execute-task-cycles/SKILL.md) | Sequential passes with stop conditions; requires execute-task |
@@ -39,7 +39,7 @@ The portable skill content targets **Codex, Claude Code, Cursor, Google Antigrav
 
 A focused npm distribution layer, `@uppercut-labs/skills`, is planned in [docs/skills-package](docs/skills-package/PLAN.md). It will use this repository's manifest as the owned catalog, install skill prerequisites automatically, bundle complete stable skill content, and offer an explicit live GitHub channel for faster content updates. The installer is not published yet.
 
-No skill requires the author's global AGENTS.md, account memory, or private setup. [Grill to Build preferences](grill-to-build/references/preferences-and-diagrams.md) travel in explicit files; the default diagram format is Markdown/Mermaid. External services still require the user's own access and authorization.
+No skill requires the author's global AGENTS.md, account memory, or private setup. Grill-to-Build now uses Matt Pocock skills v1.3-compatible `GLOSSARY.md`/`GLOSSARY-MAP.md` for terminology and `PROJECT.md` for broader discovery state. This is a [breaking artifact-contract migration](grill-to-build/references/migration-from-context.md) for existing `Context.md` projects. Grill to Build uses [automatic host-native presentation](grill-to-build/references/presentation-and-interaction.md) (rich ChatGPT chat, Claude Artifacts where supported, or text fallback) while preserving an editable Markdown/Mermaid living model by default. [Explicit model preferences](grill-to-build/references/preferences-and-diagrams.md) travel in project or skill files. External services still require the user's own access and authorization.
 
 ## Starter Pack relationship
 
@@ -55,6 +55,7 @@ Use this table as a routing index, then read the selected entry point and only r
 
 ```sh
 python3 scripts/validate-skills.py
+python3 -m unittest discover -s tests -p 'test_grill_artifact_contract.py'
 node --test tests/pwa-helpers.test.mjs
 git diff --check
 ```
