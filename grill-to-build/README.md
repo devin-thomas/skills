@@ -24,7 +24,7 @@ Without a setup question, Grill chooses the richest **useful** presentation the 
 
 The agent must check actual host capabilities; it cannot assume a Claude Code terminal offers Claude Artifacts or that every ChatGPT client supports identical native controls. If richer presentation is unavailable, fall back silently to the next supported option. Do not ask the user to choose a presentation tool unless they request a non-default path that needs clarification. Short conversational questions remain preferable to needlessly large forms.
 
-**Presentation is not persistence.** The source for the living model stays editable and portable, defaulting to Markdown/Mermaid in `PROJECT.md`. Choosing a host-native UI does not change `PROJECT.md`, `GLOSSARY.md`, ADR, Ideas, SPEC, or tickets. An explicit user choice of Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, Markdown/Mermaid, or no diagram overrides the model-source default. A choice of no diagram is binding even in a rich host.
+**Presentation is not persistence.** The source for the living model stays editable and portable, defaulting to Markdown/Mermaid in `PROJECT.md`. Choosing a host-native UI does not change `PROJECT.md`, `GLOSSARY.md`, ADR, Ideas, SPEC, or tickets. An explicit user choice of Graphviz DOT, Figma/FigJam, Excalidraw, diagrams.net, Markdown/Mermaid, or no persistent diagram overrides the model-source default. **No persistent diagram** can coexist with an intelligent in-chat model visualization; an explicit **no diagrams anywhere** instruction suppresses even in-chat visuals.
 
 For shared preferences, use project-root `grill-to-build.preferences.md` or skill-root `PREFERENCES.md`; overrides in current instructions or `PROJECT.md` take priority. Old `Diagram format: ...` settings continue to apply to living-model sources. The selected editable source remains a hard constraint. Do not replace it with an AI-generated look-alike; image generation requires explicit selection as the source/output method. `Excalidraw to PNG` means author the native editable Excalidraw scene, then render it.
 
@@ -64,7 +64,8 @@ Before changing the workflow, review these cases against the entry point and ref
 | Product answers omit presentation preference | Host-native default remains; no new setup question |
 | Explicit Figma profile | Model authored in Figma when possible; ChatGPT/Claude interview presentation may remain native |
 | Figma unavailable | Preferred Figma retained; active Markdown model fallback disclosed |
-| Explicit no-diagram choice | No diagram visual in chat/Artifact or model source |
+| Explicit no persistent diagram; rich in-chat model requested | No diagram artifact; model semantics in `PROJECT.md` prose/tables, with native visual chat presentation |
+| Explicit no diagrams anywhere | No diagram visual in chat/Artifact or project source |
 | Explicit Excalidraw + PNG | Editable Excalidraw scene first, PNG export second; no AI-generated imitation |
 | Selected diagram tool unavailable | Disclose limitation and use only an allowed fallback |
 | Existing `PROJECT.md` resumed in a different host | Explicit preferences and saved decisions preserved; presentation adapts to host |
