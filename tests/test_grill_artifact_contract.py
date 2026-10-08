@@ -52,6 +52,15 @@ class GlossaryContractTests(unittest.TestCase):
         self.assertIn("does not require or create a glossary", quick)
         self.assertIn("Do not automatically", execute)
 
+    def test_no_persistent_diagram_can_use_native_chat_visualization(self):
+        presentation = read("grill-to-build/references/presentation-and-interaction.md")
+        preferences = read("grill-to-build/references/preferences-and-diagrams.md")
+        readme = read("grill-to-build/README.md")
+        for body in (presentation, preferences, readme):
+            self.assertIn("no persistent diagram", body.lower())
+            self.assertIn("in-chat", body.lower())
+        self.assertIn("no diagrams anywhere", preferences.lower())
+
     def test_no_active_context_as_glossary_claims(self):
         files = (
             "grill-to-build/SKILL.md",
