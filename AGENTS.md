@@ -2,6 +2,7 @@
 
 This repository contains reusable agent instructions, not an application. Use [README.md](README.md) to select a skill for the user's actual task. Merely reading this repository does not invoke every skill or authorize its external actions.
 
+- When creating or revising a skill, load and apply `writing-for-agents` from the active host catalog before drafting its instructions, including when Skill Creator is selected. Skill Creator covers packaging and validation; Writing for Agents governs authoring.
 - Read only the selected skill's entry point and references relevant to the current branch.
 - Preserve each skill's scope and completion contract. Do not run build, deployment, or account setup workflows while merely reviewing these files.
 - Preserve the portable Agent Skills subset documented in [host compatibility](docs/host-compatibility.md). Grok Bot repository skills, its separate account library, and Grok CLI have distinct discovery routes.
