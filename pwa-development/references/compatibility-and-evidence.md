@@ -48,6 +48,8 @@ Keep these gates distinct:
 
 Use `verified`, `guidance`, `inference`, and `unknown` labels. Include the exact browser/OS/device/profile for runtime observations. A simulator or another Chromium browser is not interchangeable with the claimed surface.
 
+For offline tests, verify failed network access from the service-worker target as well as the page; an emulator flag alone is not evidence of that failure. Use a disposable profile and controlled test-origin outage when needed, preserving other agents' browsers and network access. Check installation eligibility in a regular disposable profile because private browsing can independently disable installation.
+
 ## Volatile Unknowns
 
 Do not universalize exact launcher metadata refresh timing, quota/eviction timing, background execution, installed storage isolation, store-review behavior, or a particular `controllerchange` ordering. Test them for the product and retain the uncertainty when they remain unobserved.
