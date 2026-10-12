@@ -15,16 +15,7 @@ An implementation recommendation may be strongly supported without being a stand
 
 Honor an existing project matrix. If none exists, propose the current stable generation plus the immediate prior shipping generation only for platforms the product actually supports. Use feature detection and preserve the browser-tab path.
 
-The research snapshot used to create this skill was verified on **2026-08-22**:
-
-| Product | Current stable observation | Immediate prior observation |
-| :--- | :--- | :--- |
-| Chrome desktop/Android | 151 | 150 |
-| Microsoft Edge | 151 | 150 |
-| Firefox desktop | 154 | 153 |
-| Safari/WebKit | 26.6 | 18.6 |
-
-Apple moved the public Safari version from 18 to 26; there was no stable Safari 19-25 line. Safari 27 was beta at the snapshot and is not a stable target. These numbers are volatile examples, not permanent defaults. Re-open primary release sources before making a current-version claim:
+Record exact supported browser/OS releases in the product's dated acceptance record rather than keeping a current-version table in this reusable skill. Distinguish stable, beta, enterprise/extended-support, and store distributions. Determine the immediate prior shipping generation from current vendor records, not by subtracting one from a version number. Re-open primary release sources before making a current-version claim:
 
 - [Chrome stable releases](https://chromereleases.googleblog.com/)
 - [Microsoft Edge release schedule](https://learn.microsoft.com/en-us/deployedge/microsoft-edge-release-schedule)

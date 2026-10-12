@@ -22,9 +22,13 @@ Edge exposes desktop install, Start/taskbar integration, window/display behavior
 
 Safari Add to Dock creates a web-app surface and data boundary that is not interchangeable with a Safari tab or Chrome/Edge install. Test cookies/storage, icon, notification permission, deep links, update, and uninstall for each supported route.
 
-## Linux And Firefox
+## Firefox And Linux
 
-Chromium launcher integration varies by browser and desktop environment. Firefox desktop supports many PWA runtime features and offline behavior without the Chromium-style manifest install flow. Preserve a capable browser-tab path and do not label Firefox failure merely because a Chromium install affordance is absent.
+Firefox on Windows offers taskbar web apps from version 143; Microsoft Store installations support them from version 150. This is a vendor-specific site window, not Chromium's manifest-driven install flow. Check the current distribution and version, then verify taskbar/Start identity, launch, session behavior, and removal separately. Firefox's implementation shares its browser profile; do not assume a separate installed storage boundary.
+
+On Linux, Chromium launcher integration varies by browser and desktop environment. Firefox's taskbar-app implementation is disabled by default on Linux; macOS support is unavailable in the current vendor documentation. Preserve the browser-tab path and verify actual enabled behavior before claiming installed support.
+
+Platform guidance reviewed 2026-10-12. Recheck vendor sources before changing a product's target matrix; documentation about manifest installation alone can miss a vendor's separate site-window feature.
 
 ## Acceptance Record
 
@@ -38,3 +42,5 @@ For every target capture browser/OS version, clean versus returning profile, ins
 - [web.dev installation](https://web.dev/learn/pwa/installation)
 - [Microsoft Edge PWA documentation](https://learn.microsoft.com/en-us/microsoft-edge/progressive-web-apps/)
 - [Apple Safari web apps on Mac](https://support.apple.com/guide/safari/use-safari-web-apps-sfri407b2f6b/mac)
+- [Mozilla web apps on Windows](https://support.mozilla.org/en-US/kb/web-apps-firefox-windows)
+- [Firefox taskbar-app implementation](https://firefox-source-docs.mozilla.org/browser/components/taskbartabs/docs/index.html)
