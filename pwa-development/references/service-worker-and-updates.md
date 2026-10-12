@@ -32,6 +32,8 @@ Precache only what is required for a meaningful boot. Never broad-delete caches 
 
 For an account app, start with an explicit allowlist of public static resources and a non-personal offline fallback. Keep API/MCP routes, sign-in/callback/logout navigations, bearer requests, and the shared identity origin outside that cache. Treat authentication queries and redirected, opaque, failed, or personalized responses as network-only unless a separate reviewed private-storage contract requires them. Cache API writes do not enforce HTTP `Cache-Control: no-store`; the worker must enforce its own exclusions.
 
+Review HTTP caching separately from Cache Storage: `fetch()` can still use the browser's HTTP cache. Where the contract requires a fresh network outcome, choose appropriate request/response cache controls and test a returning page with the connection disabled.
+
 When the product requires connectivity for private data, show that requirement honestly on offline launch. Installing the app does not create offline sync or authorize replaying a mutation. Test the complete identity redirect and return path in the claimed installed surface; a successful browser-tab sign-in does not prove installed-session behavior.
 
 ## Update Acceptance
