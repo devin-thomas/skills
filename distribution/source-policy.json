@@ -14,7 +14,8 @@
       "style/",
       "surface-sweep/",
       "surface-sweep-showcase/",
-      "task-execution-prompt/"
+      "task-execution-prompt/",
+      "branded-sign-in/"
     ],
     "devin-thomas/starter-pack": [
       "public/skills/starter-pack/",

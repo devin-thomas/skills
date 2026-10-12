@@ -329,6 +329,26 @@
       "prerequisites": [],
       "recommendationOnly": false,
       "sourceRef": "main"
+    },
+    {
+      "id": "branded-sign-in",
+      "slug": "branded-sign-in",
+      "title": "Branded Sign-In",
+      "summary": "Branded authentication surfaces, provider and method artwork, original logo geometry and browser acceptance.",
+      "category": "build",
+      "order": 8,
+      "sourceRepo": "devin-thomas/skills",
+      "sourcePath": "branded-sign-in/SKILL.md",
+      "sourceVersion": null,
+      "sourceRevision": "e4827a48b21ea94240c64cc653375d6fe6b6679d",
+      "public": true,
+      "ownedBy": "devin-thomas",
+      "relatedSkills": [
+        "surface-sweep"
+      ],
+      "prerequisites": [],
+      "recommendationOnly": false,
+      "sourceRef": "main"
     }
   ]
 }

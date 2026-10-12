@@ -17,6 +17,7 @@ For guided onboarding, start at [Starter Pack](https://starter.devthomas.site). 
 | Find and fix visual/interaction defects | [surface-sweep](surface-sweep/SKILL.md) | Corrected app, reviewed browser evidence, honest coverage gaps |
 | Present a working product | [surface-sweep-showcase](surface-sweep-showcase/SKILL.md) | Corrected app and screenshot-led showcase; requires surface-sweep |
 | Follow my coding conventions | [style](style/SKILL.md) | Report of guide deviations (starter.devthomas.site/style); `refactor` applies them |
+| Build or refine account interfaces | [branded-sign-in](branded-sign-in/SKILL.md) | Branded auth methods, original logo geometry and browser acceptance |
 | Remove unhelpful UI wording | [no-useless-copy](no-useless-copy/SKILL.md) | Scoped copy improvements with necessary guidance preserved |
 | Build or repair PWA behavior | [pwa-development](pwa-development/SKILL.md) | Install, offline, update, and recovery behavior with platform evidence |
 | Make or inspect an exact Spotify playlist | [perfect-playlist](perfect-playlist/SKILL.md) | Deterministic selected-track workflow; requires its CLI and Spotify access for service operations |

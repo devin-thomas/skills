@@ -15,3 +15,6 @@ This MIT grant is scoped to the approved npm bundle. It does not license the
 rest of this repository or change the separate Starter Pack repository's
 rights notice, application, course, curriculum, or other unbundled material.
 Third-party software and services referenced by a skill keep their own terms.
+
+The standalone `branded-sign-in` guidance is also MIT licensed under
+[its own license](branded-sign-in/LICENSE). No provider artwork is distributed by it.
