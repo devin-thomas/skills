@@ -331,6 +331,24 @@
       "sourceRef": "main"
     },
     {
+      "id": "programmatic-harness",
+      "slug": "programmatic-harness",
+      "title": "Programmatic Harness",
+      "summary": "Opt in to a bounded, resumable local Codex session proof through Agent Native with nonsecret evidence.",
+      "category": "specialized",
+      "order": 3,
+      "sourceRepo": "devin-thomas/skills",
+      "sourcePath": "programmatic-harness/SKILL.md",
+      "sourceVersion": null,
+      "sourceRevision": "50ce5dce91c49fcf896aa887e11b4c3a529e40e5",
+      "public": true,
+      "ownedBy": "devin-thomas",
+      "relatedSkills": [],
+      "prerequisites": [],
+      "recommendationOnly": false,
+      "sourceRef": "main"
+    },
+    {
       "id": "branded-sign-in",
       "slug": "branded-sign-in",
       "title": "Branded Sign-In",

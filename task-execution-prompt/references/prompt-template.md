@@ -23,7 +23,7 @@ Do not ask for a task identifier. Resolve one task from fresh authoritative stat
 Before changing anything:
 
 1. Record start-time evidence using <reporting-clock policy>.
-2. Read <applicable instructions, context, ADRs, plans, tracker guidance, and task documents>.
+2. Read <applicable instructions, GLOSSARY-MAP.md and mapped GLOSSARY.md files, PROJECT.md if present, ADRs, plans, tracker guidance, and task documents; check unresolved legacy context migration>.
 3. Inspect <Git and protected-work preflight>.
 4. Read <authoritative task-source state and retry/authentication behavior>.
 5. Inspect code, tests, fixtures, and documentation relevant to candidate work.

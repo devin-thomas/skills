@@ -5,7 +5,7 @@ Use this checklist to separate discoverable facts from decisions. Inspect first;
 ## Repository and domain
 
 - Applicable instruction-file hierarchy.
-- Canonical domain terms from `CONTEXT-MAP.md` and `CONTEXT.md`.
+- Canonical domain terms from `GLOSSARY-MAP.md` and its applicable `GLOSSARY.md` files; wider project understanding from `PROJECT.md` when present. Treat `CONTEXT-MAP.md`, `CONTEXT.md`, and `Context.md` as migration inputs only.
 - Relevant ADRs, product/spec authority, implementation plans, and existing code's role.
 - Repository root, project surface, target branch, runtime, and validation environment.
 - Existing runner, automation, preview, deployment, or publication conventions.

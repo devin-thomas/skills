@@ -17,7 +17,7 @@ Discover facts from the repository and configured task source before asking ques
 
 - the active host's applicable repository instructions and enabled rules, including scoped `AGENTS.md`, `CLAUDE.md`, documented host rule files, and repository-designated instruction files such as `CODEX.md` when applicable; preserve host scope and precedence;
 - README and agent/runner documentation;
-- `CONTEXT-MAP.md` and every applicable `CONTEXT.md`;
+- `GLOSSARY-MAP.md` and all applicable `GLOSSARY.md` files, plus `PROJECT.md` where present; inspect legacy `CONTEXT-MAP.md`, `CONTEXT.md`, or `Context.md` only to identify unmigrated projects;
 - relevant ADRs, product contracts, specifications, and implementation plans;
 - tracker guidance, local ticket conventions, and current task-source state;
 - Git, commit, branch, push, PR, deployment, and publishing policy;
@@ -35,7 +35,7 @@ Ask only consequential questions whose answers cannot be discovered. Ask one que
 
 At minimum resolve the checklist's task source, selection, lifecycle, authority, validation, Git/publishing, protected resources, failure outcomes, reporting, and time-zone decisions. Do not ask the user to restate facts already present in repository context or task-source configuration.
 
-Sharpen ambiguous terms against `CONTEXT.md`. Preserve the task source's native vocabulary; do not introduce statuses, labels, or priority semantics merely to make the prompt uniform.
+Sharpen ambiguous terms against the applicable `GLOSSARY.md`. If only a legacy `CONTEXT.md` or `Context.md` exists, flag migration before generating a parallel glossary. Preserve the task source's native vocabulary; do not introduce statuses, labels, or priority semantics merely to make the prompt uniform.
 
 ## 3. Obtain one authoring approval
 

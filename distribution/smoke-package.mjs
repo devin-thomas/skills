@@ -36,7 +36,8 @@ try {
   }));
   const listed = run('list');
   assert.equal(listed.outcome, 'complete');
-  assert.equal(listed.data.length, 15);
+  assert.equal(listed.data.length, 16);
+  assert.ok(listed.data.some(({ id }) => id === 'programmatic-harness'));
 
   const added = run('add', 'execute-task-cycles', '--host', 'codex', '--project', project);
   assert.equal(added.outcome, 'complete');

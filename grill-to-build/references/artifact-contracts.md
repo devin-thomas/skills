@@ -2,20 +2,23 @@
 
 ## Contents
 
-- Context
+- Glossary
+- Project brief
 - ADR
 - Ideas
 - Specification
 - Tickets
 - Recommended pack
 
-## Context
+## Glossary
 
-Use `Context.md` as the living shared understanding. It answers what is being built, why, for whom, which words have precise meanings, which behavior and constraints are agreed, what is excluded, which questions remain, and what the current system looks like.
+Use the exact uppercase `GLOSSARY.md` convention from Matt Pocock skills v1.3. Include **only canonical domain terms**, defined in one or two sentences, with rejected synonyms under `_Avoid_` when helpful. Create it on first resolved term, not speculatively. If `GLOSSARY-MAP.md` exists, use its mapped domain glossaries. Do not duplicate terms, record product decisions here, or split a bloated document into multiple bloated glossaries. This file is vocabulary, not an implementation guide, spec, discovery history or project brief.
 
-Keep it descriptive rather than argumentative. Rewrite sections so it remains coherent and current. Include a visual model only when it materially clarifies the product, domain, state, flow, or system boundary. Link an external editable artifact from Context when the chosen format does not embed in Markdown.
+## Project brief
 
-Include a `Ubiquitous Language` section for terms that two participants could interpret differently, especially entities, roles, statuses, lifecycle names, ownership, and calculated concepts.
+`PROJECT.md` is the living shared understanding that Grill's former `Context.md` actually represented. It answers what is being built, why, for whom, which behavior and constraints are agreed, what is excluded, which questions remain, how many Grill questions have been used, the workflow preferences, and the current system model.
+
+Keep it descriptive rather than argumentative. Rewrite sections so it remains coherent and current. Include a visual model only when it materially clarifies the product, domain, state, flow, or system boundary. Link an external editable artifact from `PROJECT.md` when the chosen format does not embed in Markdown. Reference terms from `GLOSSARY.md` instead of redefining them.
 
 ## ADR
 
@@ -81,7 +84,8 @@ Add Notes, Out of Scope, Test Cases, or Migration Requirements only when useful.
 
 ```text
 project/
-|-- Context.md
+|-- PROJECT.md
+|-- GLOSSARY.md       # created only when terms are settled
 |-- ADR.md
 |-- SPEC.md
 |-- Ideas.md
@@ -91,3 +95,7 @@ project/
 ```
 
 Do not add other planning files unless the project genuinely requires them.
+
+## Legacy migration
+
+Read [migration-from-context.md](migration-from-context.md) before resuming a pre-migration Grill pack. If `Context.md` combined domain terms, rules, diagrams, progress, and preferences, move only terms into `GLOSSARY.md` and move the rest into `PROJECT.md`. A legacy upstream `CONTEXT.md` that truly is glossary-only can be renamed directly; preserve source material until verification. `CONTEXT-MAP.md` becomes `GLOSSARY-MAP.md` when its members are verified glossaries.
