@@ -14,7 +14,7 @@ Build a web-first product whose browser-tab, installed, offline, update, storage
 - Keep the ordinary browser route useful when installation or an optional capability is missing, denied, interrupted, or unsupported.
 - Feature-detect optional APIs and define a behavioral fallback. Hiding a control without preserving the user's goal is not a fallback.
 - Use the project's declared browser/OS matrix. If it has none, propose the current stable and immediate prior shipping generation for relevant targets, then label every untested target. Refresh exact version claims from primary vendor sources.
-- For synchronized business data, keep the server authoritative and use local storage as a read model/outbox. For intentionally local-only products, define export, backup, quota, and recovery instead.
+- For synchronized business data, keep the server authoritative. Add a local read model or outbox only when offline access or writes are required. For intentionally local-only products, define export, backup, quota, and recovery instead.
 - Keep sensitive credentials out of localStorage and general-purpose caches. Review service-worker cache keys and personalized responses.
 - Do not deploy, submit a store package, clear origin storage, or exercise destructive recovery unless the user authorized that action.
 
@@ -26,6 +26,8 @@ Inspect the existing app before changing it. Locate the manifest link and file, 
 2. Target platforms, browser/OS generations, browser-tab and installed surfaces.
 3. Required online, offline, persistence, update, and packaging behavior.
 4. What can be automated now and what requires a live origin, clean profile, physical device, store account, or human observation.
+
+For suites, choose each application origin and scope independently from marketing, documentation, and the shared identity issuer. Installation of one app does not authorize PWA changes to the other surfaces. When agents work concurrently, assign ownership of the shell, manifest, worker, icons, tests, and release; share pinned build identities and evidence. Reuse existing user authorization within its scope; delegation does not expand it.
 
 Do not add offline mutation queues, background APIs, install prompts, or store packaging merely because they are associated with PWAs. Add them only when they serve the product requirement.
 
