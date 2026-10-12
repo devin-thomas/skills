@@ -28,6 +28,8 @@ A registration points to a worker URL and scope. A changed script installs and n
 
 Precache only what is required for a meaningful boot. Never broad-delete caches owned by other apps on the origin.
 
+Where SPA fallback routing can return a different HTML document for a missing asset, validate the required offline document's identity before caching it. Status `200` and `text/html` alone cannot distinguish an offline page from the main app shell. Test that fallback response as a failed install while preserving the active revision.
+
 ## Account And Identity Boundaries
 
 For an account app, start with an explicit allowlist of public static resources and a non-personal offline fallback. Keep API/MCP routes, sign-in/callback/logout navigations, bearer requests, and the shared identity origin outside that cache. Treat authentication queries and redirected, opaque, failed, or personalized responses as network-only unless a separate reviewed private-storage contract requires them. Cache API writes do not enforce HTTP `Cache-Control: no-store`; the worker must enforce its own exclusions.
