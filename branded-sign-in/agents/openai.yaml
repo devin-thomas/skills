@@ -1,0 +1,4 @@
+interface:
+  display_name: "Branded Sign-In"
+  short_description: "Polished auth UI with faithful logos and method icons"
+  default_prompt: "Use $branded-sign-in to build or review this product's authentication UI with approved branding and faithful logo geometry."
