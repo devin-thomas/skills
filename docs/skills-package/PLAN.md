@@ -44,7 +44,7 @@ automatic dependency closure; complete content bundles; immutable source receipt
 channels; safe updates and removal; local conflict protection; explicit project/global scope; all six host
 adapters; and a shared typed Agent Native capability layer with a programmatic integration entry point.
 
-Reuse the current 15-record owned catalog: 12 local skill directories plus three owned entries sourced from
+Reuse the owned catalog: 13 local skill directories plus three owned entries sourced from
 Starter Pack and VidChopper. Their external resource closures and licenses need auditing before distribution.
 "Our catalog only" does not mean an arbitrary third-party GitHub/URL installer.
 

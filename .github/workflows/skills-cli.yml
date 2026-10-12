@@ -3,6 +3,9 @@ name: Skills CLI
 on:
   pull_request:
     paths:
+      - 'README.md'
+      - 'programmatic-harness/**'
+      - 'tests/test-manifest.py'
       - 'packages/skills-cli/**'
       - 'distribution/**'
       - 'manifest/**'
@@ -10,6 +13,9 @@ on:
   push:
     branches: [main]
     paths:
+      - 'README.md'
+      - 'programmatic-harness/**'
+      - 'tests/test-manifest.py'
       - 'packages/skills-cli/**'
       - 'distribution/**'
       - 'manifest/**'
@@ -50,4 +56,5 @@ jobs:
       - uses: actions/checkout@v4
       - run: python3 scripts/validate-skills.py
       - run: python3 tests/test-manifest.py
+      - run: node --test programmatic-harness/scripts/codex-proof.test.mjs
       - run: node --test tests/pwa-helpers.test.mjs
