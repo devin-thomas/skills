@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "skillName": "quick-build",
+  "skillBlobSha": "c09c191ccc6cb04735433f7b7732a1add32f5cf8",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "plan",
+      "path": "templates/PLAN.md",
+      "gitBlobSha": "0d7252fc289303e98ce96bd59e935516e3e7e470",
+      "required": "stage",
+      "stages": [
+        "specification"
+      ]
+    },
+    {
+      "key": "spec",
+      "path": "templates/SPEC.md",
+      "gitBlobSha": "40c09bd169a0ef20244c4ef8f6d6d6fe9dc39d49",
+      "required": "stage",
+      "stages": [
+        "specification"
+      ]
+    },
+    {
+      "key": "decisions",
+      "path": "templates/DECISIONS.md",
+      "gitBlobSha": "3f692e403ec8728577b1c3f0b0c61d1bf98ebbc7",
+      "required": "stage",
+      "stages": [
+        "specification"
+      ]
+    },
+    {
+      "key": "ticket",
+      "path": "templates/TICKET.md",
+      "gitBlobSha": "3bcbc49db9bb35fd382cdcf0eb172b64a95fd1f4",
+      "required": "stage",
+      "stages": [
+        "specification"
+      ]
+    },
+    {
+      "key": "curriculum-snapshot",
+      "path": "references/starter-pack-mode.md",
+      "gitBlobSha": "6c30306748c3cfcfd7e69ce2e617200b5098b6c5",
+      "required": "stage",
+      "stages": [
+        "curriculum"
+      ]
+    },
+    {
+      "key": "source-provenance",
+      "path": "README.md",
+      "gitBlobSha": "17ac2f8a3952842082ef5190a9c5703c37afb5f8",
+      "required": "optional"
+    },
+    {
+      "key": "host-metadata",
+      "path": "agents/openai.yaml",
+      "gitBlobSha": "c31f5b5a28118f7c821c3a908622068407d48b43",
+      "required": "optional"
+    }
+  ],
+  "stages": [
+    {
+      "key": "specification",
+      "resources": [
+        "plan",
+        "spec",
+        "decisions",
+        "ticket"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "curriculum",
+      "resources": [
+        "curriculum-snapshot",
+        "source-provenance"
+      ],
+      "dependencies": [],
+      "unresolved": "The bundled curriculum snapshot requires resource 0.2.0 and requirements revision 2026-09-10. Current Starter Pack requirements are 2026-10-09; matching pinned cross-source requirements, progress and template closure is unverified."
+    }
+  ],
+  "dependencies": []
+}

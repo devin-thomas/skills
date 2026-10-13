@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "skillName": "grill-to-build",
+  "skillBlobSha": "8df853e6edb11b42c00ecbbb58c3927ad9857059",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "artifact-contracts",
+      "path": "references/artifact-contracts.md",
+      "gitBlobSha": "bb6770a27b248a81cc3bf2d71a073cc1b272b476",
+      "required": "stage",
+      "stages": [
+        "discovery",
+        "specification",
+        "figma"
+      ],
+      "requires": [
+        "migration-from-context"
+      ]
+    },
+    {
+      "key": "migration-from-context",
+      "path": "references/migration-from-context.md",
+      "gitBlobSha": "8762aec61e6d310455b283a50a30fd6c1b00dcbc",
+      "required": "stage",
+      "stages": [
+        "discovery",
+        "specification",
+        "figma"
+      ]
+    },
+    {
+      "key": "presentation-and-interaction",
+      "path": "references/presentation-and-interaction.md",
+      "gitBlobSha": "02af43261d0a9452b5e739098a6621273f016475",
+      "required": "stage",
+      "stages": [
+        "discovery",
+        "specification",
+        "figma"
+      ],
+      "requires": [
+        "preferences-and-diagrams"
+      ]
+    },
+    {
+      "key": "preferences-and-diagrams",
+      "path": "references/preferences-and-diagrams.md",
+      "gitBlobSha": "0c0741a968626a2d9a5400f8ca49d66e796c8afc",
+      "required": "stage",
+      "stages": [
+        "discovery",
+        "specification",
+        "figma"
+      ],
+      "requires": [
+        "presentation-and-interaction"
+      ]
+    },
+    {
+      "key": "grilling-and-modeling",
+      "path": "references/grilling-and-modeling.md",
+      "gitBlobSha": "3119e538233af0a83e008b9defb4c23d614ed524",
+      "required": "stage",
+      "stages": [
+        "discovery",
+        "specification",
+        "figma"
+      ],
+      "requires": [
+        "presentation-and-interaction",
+        "preferences-and-diagrams"
+      ]
+    },
+    {
+      "key": "specification-tickets-and-build",
+      "path": "references/specification-tickets-and-build.md",
+      "gitBlobSha": "cd9593e826ab60ebdec4f313be2682b1a9b933cd",
+      "required": "stage",
+      "stages": [
+        "specification"
+      ]
+    },
+    {
+      "key": "figma-profile",
+      "path": "profiles/figma.md",
+      "gitBlobSha": "a7ccab5a03be5397143a7748baf82710921880fa",
+      "required": "stage",
+      "stages": [
+        "figma"
+      ]
+    },
+    {
+      "key": "readme",
+      "path": "README.md",
+      "gitBlobSha": "bb6bcbfc4c22669bd579866b9606f2150956bd29",
+      "required": "optional"
+    },
+    {
+      "key": "host-metadata",
+      "path": "agents/openai.yaml",
+      "gitBlobSha": "d68e81429617e5b82129a82fbd7c2128b03e202d",
+      "required": "optional"
+    }
+  ],
+  "stages": [
+    {
+      "key": "discovery",
+      "resources": [
+        "artifact-contracts",
+        "migration-from-context",
+        "presentation-and-interaction",
+        "preferences-and-diagrams",
+        "grilling-and-modeling"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "specification",
+      "resources": [
+        "artifact-contracts",
+        "migration-from-context",
+        "presentation-and-interaction",
+        "preferences-and-diagrams",
+        "grilling-and-modeling",
+        "specification-tickets-and-build"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "figma",
+      "resources": [
+        "artifact-contracts",
+        "migration-from-context",
+        "presentation-and-interaction",
+        "preferences-and-diagrams",
+        "grilling-and-modeling",
+        "figma-profile"
+      ],
+      "dependencies": []
+    }
+  ],
+  "dependencies": []
+}
