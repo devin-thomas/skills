@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "skillName": "quick-build",
-  "skillBlobSha": "c09c191ccc6cb04735433f7b7732a1add32f5cf8",
+  "skillBlobSha": "e4109adf3911576c0c0ab2aa69bba696ab93f3eb",
   "auditComplete": true,
   "resources": [
     {
@@ -43,7 +43,7 @@
     {
       "key": "curriculum-snapshot",
       "path": "references/starter-pack-mode.md",
-      "gitBlobSha": "6c30306748c3cfcfd7e69ce2e617200b5098b6c5",
+      "gitBlobSha": "1997d1e235de445ff16f45278b21ab66f7c169c9",
       "required": "stage",
       "stages": [
         "curriculum"
@@ -52,7 +52,7 @@
     {
       "key": "source-provenance",
       "path": "README.md",
-      "gitBlobSha": "17ac2f8a3952842082ef5190a9c5703c37afb5f8",
+      "gitBlobSha": "60128b4aa9e2b63b2c6feb022d04d7efa4f82ac1",
       "required": "optional"
     },
     {
@@ -79,9 +79,19 @@
         "curriculum-snapshot",
         "source-provenance"
       ],
-      "dependencies": [],
-      "unresolved": "The bundled curriculum snapshot requires resource 0.2.0 and requirements revision 2026-09-10. Current Starter Pack requirements are 2026-10-09; matching pinned cross-source requirements, progress and template closure is unverified."
+      "dependencies": [
+        "curriculum-workflow"
+      ]
     }
   ],
-  "dependencies": []
+  "dependencies": [
+    {
+      "key": "curriculum-workflow",
+      "canonicalId": "starter-pack/quick-build",
+      "required": "stage",
+      "stages": [
+        "curriculum"
+      ]
+    }
+  ]
 }

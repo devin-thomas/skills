@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "skillName": "long-horizon-dashboard",
+  "skillBlobSha": "3cb290bc71abe0ebcfee4158fc9895e274be88c6",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "port-checks",
+      "path": "references/port-checks.md",
+      "gitBlobSha": "2f0585d15a78aae87d8ae83d5198d13339064db7",
+      "required": "stage",
+      "stages": [
+        "localhost-delivery",
+        "tailscale-delivery"
+      ],
+      "requires": [
+        "dashboard-endpoint"
+      ]
+    },
+    {
+      "key": "optional-delivery",
+      "path": "references/optional-delivery.md",
+      "gitBlobSha": "772ca196c2141675c904c3c5a0addfff505a00eb",
+      "required": "stage",
+      "stages": [
+        "claude-artifact-delivery",
+        "tailscale-delivery"
+      ]
+    },
+    {
+      "key": "dashboard-endpoint",
+      "path": "scripts/dashboard_endpoint.py",
+      "gitBlobSha": "971f810c368f00bcec9bb7a6776647d4a8e977c0",
+      "required": "stage",
+      "stages": [
+        "localhost-delivery",
+        "tailscale-delivery"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "key": "localhost-delivery",
+      "resources": [
+        "port-checks",
+        "dashboard-endpoint"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "claude-artifact-delivery",
+      "resources": [
+        "optional-delivery"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "tailscale-delivery",
+      "resources": [
+        "optional-delivery",
+        "port-checks",
+        "dashboard-endpoint"
+      ],
+      "dependencies": []
+    }
+  ],
+  "dependencies": []
+}

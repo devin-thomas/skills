@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "skillName": "no-useless-copy",
+  "skillBlobSha": "9d597c0e688a2cdb6b65a490ac79c49c5a22a807",
+  "auditComplete": true,
+  "resources": [],
+  "stages": [],
+  "dependencies": []
+}

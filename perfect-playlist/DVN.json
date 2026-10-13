@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "skillName": "perfect-playlist",
+  "skillBlobSha": "13ac7682a3cced02ade75f7129cb9a6be3e5ac10",
+  "auditComplete": true,
+  "resources": [],
+  "stages": [],
+  "dependencies": []
+}

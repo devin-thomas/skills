@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "skillName": "branded-sign-in",
+  "skillBlobSha": "61c0ce46999b7bee9b53d2132ae680fd4d925e32",
+  "auditComplete": true,
+  "resources": [],
+  "stages": [],
+  "dependencies": []
+}
