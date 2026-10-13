@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "skillName": "execute-task-cycles",
+  "skillBlobSha": "235b7debe23ba1ee91d9bfe1dafed63bab01b194",
+  "auditComplete": true,
+  "resources": [],
+  "stages": [
+    {
+      "key": "portable-workflow",
+      "resources": [],
+      "dependencies": [
+        "portable-execute-task"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "key": "execute-task",
+      "canonicalId": "public/execute-task",
+      "required": "mandatory"
+    },
+    {
+      "key": "portable-execute-task",
+      "canonicalId": "public/execute-task",
+      "required": "stage",
+      "stages": [
+        "portable-workflow"
+      ],
+      "childStages": [
+        "portable-workflow"
+      ]
+    }
+  ]
+}

@@ -1,17 +1,21 @@
 ---
 name: quick-build
 description: Shape a meaningful Starter Pack project with one design interview, an approved plan, a durable build, and live deployment.
-version: 0.2.0
-updated: 2026-09-10
+version: 0.2.2
+updated: 2026-10-09
 ---
 
 # Quick Build
 
 ## Entry gate
 
-Before the interview, load existing progress and the [canonical requirements](https://starter.devthomas.site/agent/requirements.json), or the matching generated definitions already supplied. This skill uses resource version `0.2.0`, requirements revision `2026-09-10`. Resolve Quick Build's prerequisites from that registry, not a separately maintained checklist. Computer capability evidence includes the selected editor and actual CLI execution contexts; the remote baseline distinguishes networking on both devices, each file-transfer direction, and one real phone-to-harness action. One successful route does not certify another. Confirm the latest progress and setup state reached a private GitHub repository using the [progress guide](https://starter.devthomas.site/artifacts/progress/README.md); a local commit or empty remote is insufficient.
+Before the interview, load existing progress and the [canonical requirements](https://starter.devthomas.site/agent/requirements.json), or the matching generated definitions already supplied. This skill uses resource version `0.2.0`, requirements revision `2026-10-09`. Resolve Quick Build's prerequisites from that registry, not a separately maintained checklist. Computer capability evidence includes the selected editor and actual CLI execution contexts; the remote baseline distinguishes networking on both devices, each file-transfer direction, and one real phone-to-harness action. One successful route does not certify another. Confirm the latest progress and setup state reached a private GitHub repository using the [progress guide](https://starter.devthomas.site/artifacts/progress/README.md); a local commit or empty remote is insufficient.
 
 If a prerequisite is missing, preserve results and return to the focused [Computer Setup](https://starter.devthomas.site/skills/computer-setup/current/SKILL.md) action. Reuse verified evidence instead of repeating successful installs, sign-ins, or phone tests. Email preferences and the Workbench are not gates. A historically completed phase retains its revision; on resume do not restart Quick Build because of an obsolete pointer. Reconcile completion first and offer any newly introduced checks separately.
+
+## Reuse Codex readiness
+
+When Quick Build is part of Starter Pack, reuse the [Codex readiness checkpoint](https://starter.devthomas.site/setup/codex-readiness.md) during planning and before approved implementation. Recheck only facts affected by a material host, harness, workspace, permission, runtime, or authentication change. Do not repeat a decline, setup, or successful sign-in check. The optional Programmatic Harness proof is never a Quick Build prerequisite; preserve the required next action when it is declined, deferred, unavailable, or failed.
 
 Before use, make this skill and its [planning templates](https://starter.devthomas.site/artifacts/quick-build/README.md) available. Record their source/version in the private handoff. If using them as supplied context, say `context_only`; claim `native_discovered` only after verifying discovery in the selected harness's currently supported skill location. Do not install a full global engineering bundle or require skill theory for this build. Begin or reuse the lightweight private session report described in the progress guide.
 

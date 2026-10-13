@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "skillName": "pwa-development",
+  "skillBlobSha": "452eb57696a487738869dc36057b7180c1c789ef",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "manifest-and-icons",
+      "path": "references/manifest-and-icons.md",
+      "gitBlobSha": "8a3ecc58da9d40080ea0ab88529c413853981d7f",
+      "required": "stage",
+      "stages": [
+        "manifest"
+      ]
+    },
+    {
+      "key": "service-worker-and-updates",
+      "path": "references/service-worker-and-updates.md",
+      "gitBlobSha": "2359918b17a066a876dea0b29cfc76700b61183a",
+      "required": "stage",
+      "stages": [
+        "service-worker"
+      ]
+    },
+    {
+      "key": "offline-data-and-storage",
+      "path": "references/offline-data-and-storage.md",
+      "gitBlobSha": "2dcf048799b91427228ead922c416629625aa500",
+      "required": "stage",
+      "stages": [
+        "offline-storage"
+      ]
+    },
+    {
+      "key": "platform-installation",
+      "path": "references/platform-installation.md",
+      "gitBlobSha": "3223606a22b94de85a485470bf185c373b2e03a0",
+      "required": "stage",
+      "stages": [
+        "platform-installation"
+      ]
+    },
+    {
+      "key": "compatibility-and-evidence",
+      "path": "references/compatibility-and-evidence.md",
+      "gitBlobSha": "65415ff237045c1d3c2cfd4e336445374237e9b4",
+      "required": "stage",
+      "stages": [
+        "compatibility"
+      ]
+    },
+    {
+      "key": "release-and-validation",
+      "path": "references/release-and-validation.md",
+      "gitBlobSha": "504dab5afb2e5c6315bf7aa6f967e3ff31cde0c0",
+      "required": "stage",
+      "stages": [
+        "release"
+      ]
+    },
+    {
+      "key": "packaging-and-stores",
+      "path": "references/packaging-and-stores.md",
+      "gitBlobSha": "4156a8a5eb4ed0c27ae2c02290a8b2d5c18a1af8",
+      "required": "stage",
+      "stages": [
+        "packaging"
+      ]
+    },
+    {
+      "key": "audit-manifest",
+      "path": "scripts/audit-manifest.mjs",
+      "gitBlobSha": "c2eb99cd84f39d343e05098fe5b888f848006f6c",
+      "required": "optional"
+    },
+    {
+      "key": "probe-release",
+      "path": "scripts/probe-release.mjs",
+      "gitBlobSha": "ece8f4617d0ebdfd4b04937ee20e98f3e672ac46",
+      "required": "optional"
+    }
+  ],
+  "stages": [
+    {
+      "key": "manifest",
+      "resources": [
+        "manifest-and-icons"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "service-worker",
+      "resources": [
+        "service-worker-and-updates"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "offline-storage",
+      "resources": [
+        "offline-data-and-storage"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "platform-installation",
+      "resources": [
+        "platform-installation"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "compatibility",
+      "resources": [
+        "compatibility-and-evidence"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "release",
+      "resources": [
+        "release-and-validation"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "packaging",
+      "resources": [
+        "packaging-and-stores"
+      ],
+      "dependencies": []
+    }
+  ],
+  "dependencies": []
+}

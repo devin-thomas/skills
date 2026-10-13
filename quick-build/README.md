@@ -13,7 +13,9 @@ Starter Pack mode preserves the curriculum's prerequisites, private progress, an
 
 ## Source and maintenance
 
-Adapted from [devin-thomas/starter-pack](https://github.com/devin-thomas/starter-pack/tree/e911c5263ac9c4476e94d76aa43a7ff16e3b5598/public/skills/quick-build/0.2.0), Quick Build 0.2.0, requirements revision 2026-09-10. The original entry point is retained verbatim in [references/starter-pack-mode.md](references/starter-pack-mode.md). Bundled templates derive from that same commit; curriculum-only closeout text is conditional in the standalone templates.
+The curriculum snapshot is [Starter Pack Quick Build 0.2.2](https://github.com/devin-thomas/starter-pack/tree/6da746986d8af0065c4f318c333ed3849e692004/public/skills/quick-build/0.2.2), requirements revision 2026-10-09. Its original entry point is retained verbatim in [references/starter-pack-mode.md](references/starter-pack-mode.md). Curriculum mode loads the matching authoritative requirements, progress and planning templates from Starter Pack. This update preserves older learner completion history under its recorded revision.
+
+The standalone adaptation and bundled templates originally derive from [Quick Build 0.2.0](https://github.com/devin-thomas/starter-pack/tree/e911c5263ac9c4476e94d76aa43a7ff16e3b5598/public/skills/quick-build/0.2.0). Those standalone templates remain unchanged; curriculum-only closeout text is conditional there.
 
 The Starter Pack repository remains authoritative for curriculum behavior. This repository maintains the standalone adaptation. When updating the snapshot, compare the source version, linked requirements, templates, and closeout together; do not overwrite an older learner's completion history or label an old snapshot current without checking.
 

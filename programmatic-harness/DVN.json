@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "skillName": "programmatic-harness",
+  "skillBlobSha": "c014b492d5901d5f1bc529dacba8a6de36519888",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "codex-setup",
+      "path": "references/codex.md",
+      "gitBlobSha": "604131e9fcd97b79fb7d6e2bc8019f65509ba2e2",
+      "required": "mandatory"
+    },
+    {
+      "key": "proof-and-evidence",
+      "path": "references/proof-and-evidence.md",
+      "gitBlobSha": "69afe1d7b7618a679c12dcc435b543a5db4807ec",
+      "required": "mandatory"
+    },
+    {
+      "key": "codex-proof",
+      "path": "scripts/codex-proof.mjs",
+      "gitBlobSha": "c4dc3289e272e24c10356e37407d3622c3acb86c",
+      "required": "stage",
+      "stages": [
+        "run-proof"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "key": "run-proof",
+      "resources": [
+        "codex-proof"
+      ],
+      "dependencies": []
+    }
+  ],
+  "dependencies": []
+}
