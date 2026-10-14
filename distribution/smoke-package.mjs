@@ -36,7 +36,8 @@ try {
   }));
   const listed = run('list');
   assert.equal(listed.outcome, 'complete');
-  assert.equal(listed.data.length, 16);
+  const expectedIds = JSON.parse(readFileSync(join(repositoryRoot, 'manifest', 'skills.json'), 'utf8')).skills.map(({ id }) => id).sort();
+  assert.deepEqual(listed.data.map(({ id }) => id).sort(), expectedIds);
   assert.ok(listed.data.some(({ id }) => id === 'programmatic-harness'));
 
   const added = run('add', 'execute-task-cycles', '--host', 'codex', '--project', project);
