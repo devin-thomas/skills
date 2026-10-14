@@ -1,8 +1,41 @@
 # Skills package releases
 
-The latest public version is [`@uppercut-labs/skills@0.1.1`](https://www.npmjs.com/package/@uppercut-labs/skills/v/0.1.1),
-published 2026-10-05; npm `latest` resolves to 0.1.1. The source repository is
+The latest GitHub release is [0.1.2](https://github.com/devin-thomas/skills/releases/tag/v0.1.2),
+published 2026-10-14. npm `latest` still resolves to
+[`@uppercut-labs/skills@0.1.1`](https://www.npmjs.com/package/@uppercut-labs/skills/v/0.1.1),
+published 2026-10-05. The source repository is
 `devin-thomas/skills`; the npm scope identifies the publisher, not the GitHub owner.
+
+## 0.1.2 autonomous task recovery
+
+Released from tag `v0.1.2` at `d86ef8b4951d8a9b97760f159ba1a33889256f62`,
+with the three updated execution skill snapshots pinned to
+`2a5aea5ceb22a76a6635d24a089dfe13394a82f7`. `execute-task-cycles` counts completed
+tasks, keeping diagnosis, retries and recovery inside the current task.
+`execute-task` and the task-prompt authoring skill/template preserve current user
+intent and existing authorization without manufacturing confirmation checkpoints.
+Required checks and genuine access, decision and protected-data boundaries remain.
+
+The exact GitHub-downloaded 74-file archive is 226157 bytes with SHA-256
+`277412f79c443df1463d313a9ddbe9b45d6d4e8039eaf93a01e37e624ba45489`.
+Its adjacent `.sha256` verified. A fresh consumer installed the cycle skill,
+its execute-task dependency and task-execution-prompt from that downloaded
+archive; every tracked resource matched the reviewed source commit byte-for-byte.
+The bundle now includes all 17 catalog skills; the installer's source allowlist
+also recognizes the already-approved `branded-sign-in` catalog entry.
+
+Local checks passed: three Skill Creator validations, the 17-entry catalog/source
+validator, 27 manifest checks, 6 artifact-contract checks, 4 PWA helper checks,
+50 package tests, packed CLI/MCP consumer verification and diff checks. An
+independent instruction review exercised dependency/test repair, an unavailable
+external permission, scoped continuation, prompt revision and tracker timeout.
+GitHub Actions was manually disabled before this change and remains in that
+configured state; no CI run is claimed. Node 26.9.0/npm 11.19.1 built the artifact.
+
+The authorized npm publish of the retained archive returned `ENEEDAUTH`; no npm
+0.1.2 publication is claimed. The GitHub release archive/checksum and current
+GitHub source channel deliver these changes now. A later npm publication should
+use this verified archive and verify registry bytes rather than rebuilding it.
 
 ## 0.1.1 registry and GitHub distribution
 
