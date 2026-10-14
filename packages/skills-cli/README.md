@@ -2,6 +2,9 @@
 
 `@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies.
 
+Version 0.1.2 is available from the GitHub release archive and checksum below.
+Its npm publication awaits registry authentication; npm `latest` remains 0.1.1.
+
 ## Run from this checkout
 
 Requires Node.js 22 or newer.
