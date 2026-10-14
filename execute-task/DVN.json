@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "skillName": "execute-task",
-  "skillBlobSha": "0393afc9d9c18e87a7abf2ff907c3356d7f49418",
+  "skillBlobSha": "70cd434250954d01d9534fa9369a1963de00a8c7",
   "auditComplete": true,
   "resources": [
     {
       "key": "portable-workflow",
       "path": "references/portable-workflow.md",
-      "gitBlobSha": "216270e372852a1df70118a7a60817aab475cad5",
+      "gitBlobSha": "443ba686f5ac13fdc401b344154d3f742c852b50",
       "required": "stage",
       "stages": [
         "portable-workflow"

@@ -5,7 +5,7 @@ description: Create or revise a repository-specific TASK-EXECUTION-PROMPT.md for
 
 # Task Execution Prompt
 
-Design a self-contained repository workflow contract, obtain one approval of the synthesized contract, write the canonical prompt, and validate it through a read-only preflight rehearsal.
+Design or revise a self-contained repository workflow contract from the user's intent and existing decisions, write the canonical prompt, and validate it through a read-only preflight rehearsal.
 
 Do not execute an implementation task while authoring or rehearsing the prompt.
 
@@ -37,7 +37,7 @@ At minimum resolve the checklist's task source, selection, lifecycle, authority,
 
 Sharpen ambiguous terms against the applicable `GLOSSARY.md`. If only a legacy `CONTEXT.md` or `Context.md` exists, flag migration before generating a parallel glossary. Preserve the task source's native vocabulary; do not introduce statuses, labels, or priority semantics merely to make the prompt uniform.
 
-## 3. Obtain one authoring approval
+## 3. Resolve remaining authoring decisions
 
 After resolving material ambiguities, present one concise synthesized contract covering:
 
@@ -50,7 +50,7 @@ After resolving material ambiguities, present one concise synthesized contract c
 - protected resources and private-data boundaries;
 - terminal results, reporting fields, and reporting clock.
 
-Request one explicit approval. Do not write or revise the repository prompt before approval. After approval, do not seek repeated section-by-section confirmations unless new evidence exposes a material contradiction.
+Use decisions and authorization already supplied by the user. An explicit request to create or revise the prompt authorizes reversible drafting; make the result concrete and reviewable. Ask only for a consequential policy choice that remains unresolved, explaining its source and effect. Do not add a mandatory approval checkpoint or repeat a confirmation solely because this workflow lists one.
 
 ## 4. Choose the destination
 

@@ -5,7 +5,7 @@ description: Complete exactly one next executable repository task in a bounded p
 
 # Execute Task
 
-Complete one task-level pass from fresh repository and task-source state, record a terminal execution result, and stop.
+Complete one selected task from fresh repository and task-source state. Work through implementation, diagnosis, repair, verification and authorized delivery before reporting its result. One task means one scope, not one attempt.
 
 ## Trigger conservatively
 
@@ -30,7 +30,9 @@ Only continue with this skill's one-pass workflow when the user explicitly reque
 - Preserve pre-existing work and protected resources.
 - Stop and report an irreconcilable conflict instead of weakening these boundaries.
 
-Treat a canonical repository prompt as repository policy within these boundaries. Aim to invoke it faithfully, not reinterpret it through the portable workflow.
+Follow the user's current intent and existing authorization when applying workflow instructions. Use judgment for routine implementation choices, dependency setup, debugging, retries and reversible recovery. A failed test, review finding or transient tool error normally calls for diagnosis and repair within the task, not an immediate handoff or permission request. Report a terminal blocker only when meaningful progress cannot continue within the authorized scope.
+
+Use a canonical repository prompt for project-specific policy and task selection. Preserve real constraints while interpreting procedural steps in context; historical examples and intermediate failure labels must not override the user's current direction. Do not replace the canonical workflow with portable defaults merely for convenience.
 
 ## Resolve the reporting clock
 
@@ -51,7 +53,7 @@ Resolve `TASK-EXECUTION-PROMPT.md` in this order:
 
 Read the resolved prompt completely before acting. If it embeds a prompt or autostart instruction, treat the current invocation as the request to execute it. Do not ask for a task ID or restate a plan when the prompt says to select and begin automatically.
 
-If the canonical prompt requires more than one task pass or conflicts with a higher-level boundary, report the exact conflict and stop. Do not silently substitute portable policy.
+Apply the current user-authorized scope when a canonical prompt assumes a different task count or earlier scope. Use `execute-task-cycles` for an authorized multi-task request. Resolve apparent procedural conflicts from the conversation and repository evidence; ask only when a consequential decision remains unresolved. Report an actual irreconcilable conflict with its exact source.
 
 ## Run the portable workflow
 
@@ -66,4 +68,4 @@ Do not select a tracker merely because its connector is installed or a Git remot
 
 ## Finish once
 
-Apply either the canonical prompt's report contract or the portable report contract. Report execution result separately from persisted task state. Include failed or skipped validation clearly. Stop after reporting; do not begin a sibling, successor, review task, or adjacent cleanup.
+Apply either the canonical prompt's report contract or the portable report contract after completing the task or exhausting reasonable authorized recovery. Report execution result separately from persisted task state, including failed or skipped validation. End the single-task workflow without taking unrelated work; under `execute-task-cycles`, return the verified result to its controller so the requested sequence can continue.

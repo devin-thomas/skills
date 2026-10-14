@@ -15,8 +15,8 @@ Use this workflow only when no canonical repository task execution prompt exists
 
 Use [task-sources.md](task-sources.md) to identify one authoritative task source and normalize its native facts without changing them.
 
-1. If exactly one incomplete task is natively active or assigned to the current actor and its blockers are complete, resume it.
-2. If several tasks are active or assigned to the current actor, report `Inconsistent State`; do not guess.
+1. Apply the user's current project/task scope first. If exactly one incomplete task within that scope is natively active or assigned to the current actor and its blockers are complete, resume it.
+2. If several in-scope tasks are active or assigned to the current actor, use an explicit user selection or authoritative plan order when it resolves the choice. Report `Inconsistent State` only when the ambiguity cannot be resolved from that evidence; unrelated assignments do not widen the scope.
 3. Otherwise form the executable frontier from autonomous incomplete tasks whose declared blockers are complete.
 4. Exclude human-decision, approval-only, and review-only tasks unless the user explicitly selected one.
 5. Order the frontier by:
@@ -55,7 +55,7 @@ For a real tracker, update only the selected task. Do not mutate siblings, paren
 1. Use acceptance criteria as the primary validation contract.
 2. Discover checks from repository instructions, README files, package scripts, build configuration, and CI configuration.
 3. Run focused checks after meaningful slices, then the complete applicable suite.
-4. Treat a failing check or unintended skip as incomplete. Resolve task-owned causes when safe.
+4. Treat a failing check or unintended skip as a problem to investigate. Resolve task-owned causes, routine dependency/setup problems and transient failures within existing authorization, then rerun the affected checks. Do not turn an intermediate failure into a terminal result while reasonable progress is available.
 5. If no automated checks exist, perform the strongest available manual or static verification and disclose the testing gap. Do not invent a test framework merely to satisfy this workflow.
 6. Do not hide failures with broad catches, skipped checks, destructive cleanup, or success-shaped fallbacks.
 
@@ -87,7 +87,7 @@ Follow explicit repository Git policy first. When it is silent:
 6. Verify the commit and ensure pre-existing dirty paths remain protected.
 7. Never push, open a pull request, deploy, publish, or create a remote without explicit user, task, or repository authority.
 
-If validation, staging, or commit verification fails, do not mark the task complete.
+If validation, staging, or commit verification fails, diagnose and repair the cause within the task and existing authorization. Verify uncertain external outcomes before retrying a mutation. Do not mark the task complete until the required checks pass; stop only when a genuine blocker remains after reasonable recovery.
 
 ## 9. Reconcile the task source
 
@@ -96,7 +96,7 @@ After validation and any required completion commit succeed:
 - Add concise implementation, changed-file, validation, commit, and risk evidence when the source supports notes or comments.
 - Mark only the selected external task complete using its native mechanism.
 - For local Markdown already included in the verified commit, confirm the committed lifecycle edit matches the selected task and actual acceptance evidence.
-- If external finalization fails, preserve the verified repository commit, report the task-source inconsistency clearly, and do not conceal it with a success result.
+- If external finalization fails, inspect the current task-source state and retry safely when authorized. Preserve the verified repository commit, and report a remaining inconsistency if access or another genuine blocker prevents reconciliation. Do not conceal it with a success result.
 
 Do not claim completion until repository and task-source state are consistent.
 
