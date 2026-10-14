@@ -15,7 +15,8 @@ test('catalog list and show are host-free and return the versioned result envelo
   assert.equal(list.exitCode, 0);
   assert.ok(list.result.data.some(({ id }) => id === 'programmatic-harness'));
   assert.equal(list.result.schema, 'uppercut.skills.result/v1');
-  assert.equal(list.result.data.length, 16);
+  assert.equal(list.result.data.length, 17);
+  assert.ok(list.result.data.some(({ id }) => id === 'branded-sign-in'));
 
   const show = await runCli(parseArgs(['show', 'quick-build', '--json']), { catalogBundle });
   assert.equal(show.exitCode, 0);
