@@ -57,6 +57,7 @@ Keep execution-result vocabulary separate from persisted task state.
 - Required reviews, previews, deployments, or credentialed checks.
 - Documentation updates and completion evidence.
 - Failure behavior: never call a task complete with failing or unintentionally skipped required checks.
+- Recovery behavior: diagnose and repair ordinary failures within the current authorization; retries do not consume another task/cycle. Define a terminal blocker by unavailable access, a required new decision or exhausted meaningful recovery, not the first failed check.
 
 ## Git and publishing
 

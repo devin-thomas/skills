@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "skillName": "execute-task-cycles",
-  "skillBlobSha": "235b7debe23ba1ee91d9bfe1dafed63bab01b194",
+  "skillBlobSha": "90cbfac727b6226eed1f1e007cf47a5d5a434e4a",
   "auditComplete": true,
   "resources": [],
   "stages": [

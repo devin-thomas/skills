@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "skillName": "task-execution-prompt",
-  "skillBlobSha": "3eb85ab07d84f8c2797bb9f8a8fa05047b02d71f",
+  "skillBlobSha": "734aab34d555d7a9d2fd08cc9228020672669c18",
   "auditComplete": true,
   "resources": [
     {
       "key": "authoring-checklist",
       "path": "references/authoring-checklist.md",
-      "gitBlobSha": "c2fd8787ea6810b9dd69d7427d66450d076bf986",
+      "gitBlobSha": "76980acfff33de7d4597fbf59920feb3c7c06afd",
       "required": "mandatory"
     },
     {
       "key": "prompt-template",
       "path": "references/prompt-template.md",
-      "gitBlobSha": "f2a05ffd34fb9d09764b41696c5116b981724729",
+      "gitBlobSha": "7ebada00276260ea6584d4dd28474955838a7993",
       "required": "stage",
       "stages": [
         "write-prompt"

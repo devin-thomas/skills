@@ -5,7 +5,7 @@ description: Run the existing execute-task workflow sequentially across an expli
 
 # Execute Task Cycles
 
-Run bounded, sequential `execute-task` passes. The cycle limit is a safety ceiling, not a promise to complete that many tasks.
+Complete the requested sequence of tasks, one at a time, using `execute-task`. Treat the requested count as the completion target within the authorized scope. Debugging attempts, retries and recovery work belong to the current task; they do not consume additional cycles.
 
 ## Trigger conservatively
 
@@ -30,19 +30,19 @@ Treat `max_cycles` as optional. Use an explicitly supplied positive base-10 inte
 ## Cycle controller
 
 1. Resolve `max_cycles` without user interaction: use a supplied positive integer or default to `100`.
-2. For cycle `1` through `max_cycles`, run exactly one `execute-task` pass.
-3. Start the next cycle only after the preceding pass has produced a terminal `Complete` result and its repository and task-source state are consistent.
+2. Work on the current task until it is verified complete or a genuine blocker prevents further authorized progress. Investigate failures, fix defects, resolve routine environment/setup issues, and rerun affected checks as part of that task.
+3. Count one completed cycle only after the task has a verified `Complete` result and its repository and task-source state are consistent. Then select the next task from fresh state.
 4. Begin every next cycle with fresh repository, task-source, Git, and reporting-clock evidence in `America/Chicago`. Treat all changes from earlier successful cycles as current state, while preserving unrelated pre-existing work as protected.
-5. Stop immediately after the first non-`Complete` result. Do not select a fallback task, retry a failed or incomplete pass, or begin sibling/cleanup work outside the next cycle.
+5. Continue through recoverable failures without asking the user to restart the workflow. A failed check, transient network error, review finding, commit failure or intermediate `Incomplete` note is work to resolve, not an automatic end to the run. Retry with evidence and a changed approach when needed; avoid repeating the same failing action without learning or making progress.
 6. Stop normally when the limit is reached, even if more executable tasks remain.
 
 ## Human gates and terminal states
 
-Respect the selected task source's native human-gate and approval rules. If the next task or a declared blocker in its executable frontier is human-gated, approval-required, review-only, or otherwise requires an explicit human decision, stop before implementation and report that gate. Do not skip it to find another task unless the underlying `execute-task` contract explicitly authorizes that selection.
+Respect actual human decisions and authorization boundaries. Read the current request and prior conversation before treating an approval as missing; existing authorization continues to apply to the underlying routine work. A planning label, example, historical approval note or procedural checkpoint does not by itself require asking again. If a required new decision or unavailable permission genuinely prevents the selected task, complete useful independent preparation and report the precise blocker. Do not silently skip it for an easier task unless the task-selection contract permits that.
 
-The following are stopping results when emitted by `execute-task`: `Incomplete`, `Blocked`, `Approval Required`, `Inconsistent State`, and a complete frontier with no task to execute. Also stop for failed validation, failed lifecycle reconciliation, failed commit verification, an irreconcilable conflict, or any safety/private-data boundary.
+Stop when the requested count is reached, the authorized backlog is exhausted, the user asks to stop, reasonable authorized technical recovery is exhausted without meaningful progress, or safe progress genuinely requires unavailable access, a new human decision, an irreconcilable conflict, or crossing a protected-data boundary. Exhaust reasonable diagnosis and recovery within the current authorization before reporting a terminal `Incomplete`, `Blocked`, `Approval Required` or `Inconsistent State`. Do not declare a terminal result merely to satisfy a procedural stopping clause.
 
-Do not convert a stopping result into `Complete`, and do not claim that the requested number of cycles ran. Report the number of completed cycles and the cycle that stopped.
+Never hide failing required checks or mark an unfinished task complete. If a genuine blocker remains, preserve the work, record what was tried and what is needed, and report the actual completed count and stopping task. A workflow boundary limits task scope, not ordinary engineering autonomy.
 
 ## Final report
 

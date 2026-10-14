@@ -30,8 +30,8 @@ Before changing anything:
 
 Select the task mechanically:
 
-1. <Resume exactly one native active/owned task when executable.>
-2. <Report inconsistent state for multiple active/owned tasks.>
+1. <Apply the current request's scope; resume its executable native active/owned task.>
+2. <Resolve several in-scope candidates through explicit user selection or authoritative plan order; report inconsistency only when that evidence cannot resolve the choice.>
 3. <Form the autonomous executable frontier from native incomplete state and blockers.>
 4. <Exclude human/review/final-gate work.>
 5. <Order authoritative critical/security work first, then declared plan order, then stable identifier.>
@@ -52,6 +52,8 @@ Authority order:
 Execution rules:
 
 - Own only the selected task and implement the smallest complete vertical slice.
+- Work through normal debugging, dependency setup, retries, review fixes and reversible recovery within the user's existing authorization. One task is a scope boundary, not an attempt limit.
+- Apply the current request and prior approvals before treating a procedural checkpoint or historical note as a new permission requirement.
 - <Project-specific technical and product rules.>
 - <Validation sequence and environment.>
 - <Protected-resource and private-data constraints.>
@@ -62,7 +64,7 @@ Completion gate:
 
 Mark the task complete only when <acceptance, validation, documentation, review, preview/deployment if applicable, Git, and task-source reconciliation conditions> all pass.
 
-If required validation fails or is skipped, do not claim success. Preserve native active state when work began, record the exact evidence, and stop after an Incomplete or Blocked execution result. Do not invent a task-source status.
+If required validation fails or is skipped, investigate, fix and rerun affected checks within the task. Preserve native active state while working and record relevant failures honestly. Report terminal Incomplete or Blocked only when reasonable authorized recovery cannot make further progress. Never mark incomplete work done or invent a task-source status.
 
 Git and publication:
 
@@ -83,7 +85,7 @@ At the end:
    - Task-source updates.
    - Residual risks or blockers.
    - Start, end, and elapsed time.
-4. Stop. Do not start another task.
+4. End the selected task's pass. For an explicitly requested multi-task run, return the verified result to its controller and continue until the requested completed count or a genuine blocker; otherwise stop without taking unrelated work.
 ```
 
 ## Selection Invariant
@@ -94,6 +96,7 @@ No current task identifier is hard-coded in this prompt. Resolve the selected ta
 ## Template rules
 
 - Preserve the structure's behavior, not its placeholder wording.
+- Make procedural guidance support the user's intent and ordinary autonomy. Distinguish recoverable failures from actual stopping conditions, and existing permission from a genuinely new decision.
 - Use the repository's canonical domain and lifecycle vocabulary.
 - Include project-specific rules only when repository evidence or approved decisions justify them.
 - Put commands and paths in the prompt only when stable and authoritative.
