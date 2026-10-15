@@ -1,4 +1,4 @@
 interface:
   display_name: "Style"
   short_description: "Check or refactor code against the matching style guide"
-  default_prompt: "Scan this code against the matching style guide from starter.devthomas.site/style and report what you would change."
+  default_prompt: "Scan this code against the matching style guide from starter.uppercut-labs.com/style and report what you would change."
