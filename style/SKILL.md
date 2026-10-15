@@ -7,7 +7,7 @@ description: Apply Devin Thomas's coding style guide for the language or framewo
 
 ## Find the guide
 
-Open https://starter.devthomas.site/style and read the guide for each language or framework in scope. Prefer the most specific match, such as React + TypeScript over TypeScript for React components. A guide marked "In progress" may be incomplete; apply what it covers. If no guide matches a language, say so and leave that code out of scope.
+Open https://starter.uppercut-labs.com/style and read the guide for each language or framework in scope. Prefer the most specific match, such as React + TypeScript over TypeScript for React components. A guide marked "In progress" may be incomplete; apply what it covers. If no guide matches a language, say so and leave that code out of scope.
 
 Explicit user instructions and documented project rules (AGENTS.md, CLAUDE.md, linter or formatter configuration) take precedence over a guide where they conflict. Undocumented habits in existing code do not; those are what a scan reports.
 

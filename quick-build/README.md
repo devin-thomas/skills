@@ -13,7 +13,9 @@ Starter Pack mode preserves the curriculum's prerequisites, private progress, an
 
 ## Source and maintenance
 
-The curriculum snapshot is [Starter Pack Quick Build 0.2.2](https://github.com/devin-thomas/starter-pack/tree/6da746986d8af0065c4f318c333ed3849e692004/public/skills/quick-build/0.2.2), requirements revision 2026-10-09. Its original entry point is retained verbatim in [references/starter-pack-mode.md](references/starter-pack-mode.md). Curriculum mode loads the matching authoritative requirements, progress and planning templates from Starter Pack. This update preserves older learner completion history under its recorded revision.
+Current Starter Pack mode uses the verbatim [Quick Build 0.2.3 snapshot](references/starter-pack-0.2.3.md) from [the released source](https://github.com/devin-thomas/starter-pack/tree/8ce01d3c84ecd7e151dc4391e97e7e28f1eb2488/public/skills/quick-build/0.2.3). It uses the canonical Uppercut Labs URLs and retains requirements revision 2026-10-09. The earlier snapshot remains available for existing handoffs.
+
+The preserved earlier curriculum snapshot is [Starter Pack Quick Build 0.2.2](https://github.com/devin-thomas/starter-pack/tree/6da746986d8af0065c4f318c333ed3849e692004/public/skills/quick-build/0.2.2), requirements revision 2026-10-09. Its original entry point is retained verbatim in [references/starter-pack-mode.md](references/starter-pack-mode.md). Curriculum mode loads the matching authoritative requirements, progress and planning templates from Starter Pack. This update preserves older learner completion history under its recorded revision.
 
 The standalone adaptation and bundled templates originally derive from [Quick Build 0.2.0](https://github.com/devin-thomas/starter-pack/tree/e911c5263ac9c4476e94d76aa43a7ff16e3b5598/public/skills/quick-build/0.2.0). Those standalone templates remain unchanged; curriculum-only closeout text is conditional there.
 

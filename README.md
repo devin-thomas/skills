@@ -2,7 +2,7 @@
 
 Practical skills by Devin Thomas for shaping an idea, building a bounded piece of work, checking the result, and making it useful to someone else. Start with an observable outcome, keep decisions and progress in files you own, and introduce tools when the work needs them.
 
-For guided onboarding, start at [Starter Pack](https://starter.devthomas.site). This repository is a toolbox, not a required installation bundle.
+For guided onboarding, start at [Starter Pack](https://starter.uppercut-labs.com). This repository is a toolbox, not a required installation bundle.
 
 ## Choose by the job
 
@@ -17,7 +17,7 @@ For guided onboarding, start at [Starter Pack](https://starter.devthomas.site). 
 | Follow extended work and resume safely | [Long Horizon Dashboard](long-horizon-dashboard/SKILL.md) | Committed status snapshots, checked localhost serving; optional Claude artifacts or private Tailscale access |
 | Find and fix visual/interaction defects | [surface-sweep](surface-sweep/SKILL.md) | Corrected app, reviewed browser evidence, honest coverage gaps |
 | Present a working product | [surface-sweep-showcase](surface-sweep-showcase/SKILL.md) | Corrected app and screenshot-led showcase; requires surface-sweep |
-| Follow my coding conventions | [style](style/SKILL.md) | Report of guide deviations (starter.devthomas.site/style); `refactor` applies them |
+| Follow my coding conventions | [style](style/SKILL.md) | Report of guide deviations (starter.uppercut-labs.com/style); `refactor` applies them |
 | Build or refine account interfaces | [branded-sign-in](branded-sign-in/SKILL.md) | Branded auth methods, original logo geometry and browser acceptance |
 | Remove unhelpful UI wording | [no-useless-copy](no-useless-copy/SKILL.md) | Scoped copy improvements with necessary guidance preserved |
 | Build or repair PWA behavior | [pwa-development](pwa-development/SKILL.md) | Install, offline, update, and recovery behavior with platform evidence |
@@ -44,9 +44,9 @@ No skill requires the author's global AGENTS.md, account memory, or private setu
 
 ## Starter Pack relationship
 
-[Quick Build](quick-build/README.md) includes a standalone adaptation plus explicit curriculum mode sourced from Starter Pack 0.2.0. Starter Pack remains authoritative for phase requirements and graduation. Standalone use does not require the curriculum's computer setup or private progress protocol.
+[Quick Build](quick-build/README.md) includes a standalone adaptation derived from Starter Pack 0.2.0 and a separate curriculum mode using the released 0.2.3 snapshot. Starter Pack remains authoritative for phase requirements and graduation. Standalone use does not require the curriculum's computer setup or private progress protocol.
 
-Starter Pack also publishes [starter-pack](https://starter.devthomas.site/skills/starter-pack/current/SKILL.md), its progress-aware companion, and [computer-setup](https://starter.devthomas.site/skills/computer-setup/current/SKILL.md). Those remain in the curriculum repository rather than being duplicated here. Their numbered directories are releases, not additional skills.
+Starter Pack also publishes [starter-pack](https://starter.uppercut-labs.com/skills/starter-pack/current/SKILL.md), its progress-aware companion, and [computer-setup](https://starter.uppercut-labs.com/skills/computer-setup/current/SKILL.md). Those remain in the curriculum repository rather than being duplicated here. Their numbered directories are releases, not additional skills.
 
 Upstream engineering skills, including selected Matt Pocock skills, can complement this collection. They are not vendored or required as a full bundle. Additional recommendations belong to the curriculum and should identify their source/version and the job they help with.
 

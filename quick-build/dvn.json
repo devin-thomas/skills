@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "skillName": "quick-build",
-  "skillBlobSha": "e4109adf3911576c0c0ab2aa69bba696ab93f3eb",
+  "skillBlobSha": "e4bae34aee1681aa33b6b9cde939009f37fd4323",
   "auditComplete": true,
   "resources": [
     {
@@ -42,8 +42,8 @@
     },
     {
       "key": "curriculum-snapshot",
-      "path": "references/starter-pack-mode.md",
-      "gitBlobSha": "1997d1e235de445ff16f45278b21ab66f7c169c9",
+      "path": "references/starter-pack-0.2.3.md",
+      "gitBlobSha": "2a3f2737e7a2f7fe4a2e81be04e70193c41de447",
       "required": "stage",
       "stages": [
         "curriculum"
@@ -52,7 +52,7 @@
     {
       "key": "source-provenance",
       "path": "README.md",
-      "gitBlobSha": "60128b4aa9e2b63b2c6feb022d04d7efa4f82ac1",
+      "gitBlobSha": "06d170ddaea860e57c72992eb5bb529911ad5d1c",
       "required": "optional"
     },
     {
