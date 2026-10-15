@@ -57,7 +57,8 @@ for (const entry of manifest.skills) {
     const [, mode, sourcePath] = match;
     if (mode !== '100644' && mode !== '100755') throw new Error(`Unsupported file mode in ${entry.id}: ${sourcePath}`);
     if (!sourcePath.startsWith(skillRoot)) throw new Error(`Escaping source path in ${entry.id}: ${sourcePath}`);
-    const path = sourcePath.slice(skillRoot.length);
+    const relativePath = sourcePath.slice(skillRoot.length);
+    const path = relativePath === 'DVN.json' ? 'dvn.json' : relativePath;
     if (!isSafePath(path)) throw new Error(`Unsafe bundled path in ${entry.id}: ${path}`);
     const folded = path.toLocaleLowerCase('en-US');
     if (foldedPaths.has(folded)) throw new Error(`Case-colliding bundled path in ${entry.id}: ${path}`);

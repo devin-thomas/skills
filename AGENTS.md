@@ -1,5 +1,8 @@
 # Working in this skill collection
 
+The product and package name `dvn` and its declaration filename `dvn.json` are
+always lowercase. Correct uppercase voice-transcription spellings in copy.
+
 This repository contains reusable agent instructions, not an application. Use [README.md](README.md) to select a skill for the user's actual task. Merely reading this repository does not invoke every skill or authorize its external actions.
 
 - When creating or revising a skill, load and apply `writing-for-agents` from the active host catalog before drafting its instructions, including when Skill Creator is selected. Skill Creator covers packaging and validation; Writing for Agents governs authoring.
