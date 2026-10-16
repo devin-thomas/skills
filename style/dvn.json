@@ -23,7 +23,7 @@
     {
       "key": "kotlin",
       "path": "kotlin.md",
-      "gitBlobSha": "690ef7459bd5cd5ffcd966478eb6670a051f489b",
+      "gitBlobSha": "5be63e47548bccce64b05d5d74bbabdc3e3c4438",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
@@ -31,7 +31,7 @@
     {
       "key": "react-typescript",
       "path": "react-typescript.md",
-      "gitBlobSha": "df58b98ab6e12d8560357ca0d7e80adda07aeb7a",
+      "gitBlobSha": "cd39b44d050e838a5d4be0bf6e98e4e9af9710bf",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style",
@@ -42,7 +42,7 @@
     {
       "key": "python",
       "path": "python.md",
-      "gitBlobSha": "c9d32f8ad3c67b723006d12baa8cf6e4e38092dd",
+      "gitBlobSha": "eb6ce5fc7c77ea33f9246ca0c78e0b8b4a5cf260",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
@@ -50,7 +50,7 @@
     {
       "key": "swift-swiftui",
       "path": "swift-swiftui.md",
-      "gitBlobSha": "9e61492dcfdbb024eec5aeb8efdbeac84ca20131",
+      "gitBlobSha": "7e7f201e2be008c177668077db2722b729cdd258",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
@@ -58,7 +58,7 @@
     {
       "key": "javascript",
       "path": "javascript.md",
-      "gitBlobSha": "983f18f0bf8ee52f90c3864c5e61cc7d06485de0",
+      "gitBlobSha": "fee27a00cdc23df78e86ca115a81d305f27d8000",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style",
@@ -69,7 +69,7 @@
     {
       "key": "dart-flutter",
       "path": "dart-flutter.md",
-      "gitBlobSha": "6d39e44823b8c7dce1c73154cc2a6de31e4eba82",
+      "gitBlobSha": "08781fcc49144f2ebf19c7bbfa2d97580211dc7f",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
