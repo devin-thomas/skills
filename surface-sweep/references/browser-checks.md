@@ -6,6 +6,43 @@ Read when implementing or adapting the harness. Prefer existing test helpers and
 
 Use an actual Dark Reader extension in an isolated test profile/context when the permitted harness supports it. Otherwise, when script injection is permitted, use the [official Dark Reader API](https://github.com/darkreader/darkreader#using-dark-reader-on-a-website) from a versioned local test bundle. Keep this tooling outside the shipped app and its runtime dependencies. API injection is simulated compatibility evidence; only an extension run establishes extension behavior. OS dark-mode emulation and CSS inversion are not substitutes for Dark Reader.
 
+### Playwright extension preflight
+
+Use a fresh persistent profile and headed Chrome for extension cases. Keep the extension directory, profile, and ID in local runner configuration or environment variables; never reuse a personal browser profile or commit the extension binary. Playwright launch flags can appear to succeed while Chrome ignores the extension, so assert it is present before capture. For Chrome builds that support the CDP Extensions domain:
+
+```js
+import { chromium } from 'playwright';
+
+const profileDir = process.env.PLAYWRIGHT_PROFILE_DIR;
+const darkReaderDir = process.env.DARK_READER_EXTENSION_DIR;
+const darkReaderId = process.env.DARK_READER_EXTENSION_ID;
+if (!profileDir || !darkReaderDir || !darkReaderId) {
+  throw new Error('Set an isolated profile, Dark Reader directory, and extension ID');
+}
+
+const context = await chromium.launchPersistentContext(profileDir, {
+  channel: 'chrome',
+  headless: false,
+  ignoreDefaultArgs: ['--disable-extensions'],
+});
+const browser = context.browser();
+if (!browser) throw new Error('Persistent Chrome browser is unavailable');
+
+const cdp = await browser.newBrowserCDPSession();
+let { extensions } = await cdp.send('Extensions.getExtensions');
+if (!extensions.some(extension => extension.id === darkReaderId)) {
+  await cdp.send('Extensions.loadUnpacked', { path: darkReaderDir });
+  ({ extensions } = await cdp.send('Extensions.getExtensions'));
+}
+if (!extensions.some(extension => extension.id === darkReaderId)) {
+  throw new Error('Dark Reader did not load in this Playwright context');
+}
+```
+
+If this CDP method is unavailable, use the browser's supported extension-loading method and keep the same presence and visual checks. In the isolated profile, grant Dark Reader host access to the test origin (`chrome://extensions/?id=…`); Chromium may default to “On click.” Prefer access limited to the local or preview origin. Do not treat installation alone as permission to transform the page.
+
+Before app screenshots, open a simple light probe served from the test origin and verify that its known light background and text are transformed. This proves extension access even when the product itself uses a native dark theme that Dark Reader leaves unchanged. Then verify the actual target page and record an unchanged native-dark result as such. Repeat the check after creating a new context or changing origins.
+
 Record extension/API version, settings, injection or loading method, and effective enabled state. Assert that Dark Reader is active and that representative computed colors reflect its transformation, then wait for style and geometry stability before capture. Reapply and verify the setup after navigation or reload; check dynamically opened overlays and newly loaded content too. If Dark Reader intentionally leaves a native-dark page unchanged, verify and record that decision instead of claiming a transformed rendering.
 
 Pair Dark Reader-on cases with native cases using the same fixture and viewport in a clean context or with Dark Reader verified off. Keep their captures and visual baselines separate. Diagnose defects in both states; fix product compatibility without disabling Dark Reader, concealing controls, or shipping the test injection as the fix. Recheck native rendering after compatibility changes.
