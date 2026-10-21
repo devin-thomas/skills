@@ -13,7 +13,7 @@ If the request only mentions a **later** showcase, use Surface Sweep now and pre
 
 Read and execute [Surface Sweep](../surface-sweep/SKILL.md), including the references it routes to. Install both skills together; this companion requires the shared QA contract, regardless of global or project-local installation. If that file is missing, locate `surface-sweep` in the current skill catalog before proceeding; report a missing dependency if unavailable.
 
-Both Playwright and Puppeteer are supported here too: apply the shared rule to honor the user's established Puppeteer or other browser automation preference and otherwise default to Playwright. Apply the shared Dark Reader-on default during exploration and compatibility checks for both the product and showcase, while retaining separate native-theme evidence and recording opt-outs or capability gaps.
+Both Playwright and Puppeteer are supported here too: apply the shared rule to honor the user's established Puppeteer or other browser automation preference and otherwise default to Playwright. Apply the shared Dark Reader-on default during exploration and compatibility checks for both the product and showcase, while retaining separate native-theme evidence and recording opt-outs or capability gaps. For Playwright captures, run the shared extension preflight in the showcase capture context too; a product-page check does not prove a new context or origin has host access.
 
 Use showcase mode to extend the base deliverables, not to bypass its correction loop. Reuse a prior sweep only if its source revision, fixtures, relevant matrix, inspection results, and assets still match the current app. Rerun impacted cases after intervening changes. Do not build a polished page around known-broken captures.
 
