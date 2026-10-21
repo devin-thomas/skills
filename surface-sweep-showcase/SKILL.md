@@ -13,6 +13,8 @@ If the request only mentions a **later** showcase, use Surface Sweep now and pre
 
 Read and execute [Surface Sweep](../surface-sweep/SKILL.md), including the references it routes to. Install both skills together; this companion requires the shared QA contract, regardless of global or project-local installation. If that file is missing, locate `surface-sweep` in the current skill catalog before proceeding; report a missing dependency if unavailable.
 
+Both Playwright and Puppeteer are supported here too: apply the shared rule to honor the user's established Puppeteer or other browser automation preference and otherwise default to Playwright. Apply the shared Dark Reader-on default during exploration and compatibility checks for both the product and showcase, while retaining separate native-theme evidence and recording opt-outs or capability gaps.
+
 Use showcase mode to extend the base deliverables, not to bypass its correction loop. Reuse a prior sweep only if its source revision, fixtures, relevant matrix, inspection results, and assets still match the current app. Rerun impacted cases after intervening changes. Do not build a polished page around known-broken captures.
 
 **Done when:** the relevant product cases pass behavior, geometry, readiness, and visual review; remaining gaps are explicitly reported and do not misrepresent any featured surface.
@@ -23,7 +25,7 @@ Read [showcase-delivery.md](references/showcase-delivery.md) before selecting im
 
 Choose a small complementary set: overview, primary workflow, meaningful interaction/detail, and mobile use where supported. Use representative synthetic data with realistic density. A QA stress case can be featured when it demonstrates capability clearly; do not make every image a maximum-length torture test.
 
-Select captures only from reviewed final states. Maintain provenance from published asset to source case, revision, fixture, viewport, and transformation. Recapture to remove incidental menus or dev chrome; do not fabricate UI or retouch away a product defect. Preserve a separate menu-open or error-state capture when it is the feature being shown.
+Select captures only from reviewed final states. Maintain provenance from published asset to source case, revision, fixture, viewport, authored theme, Dark Reader state, and transformation. Use native-theme captures for public product imagery by default; feature a Dark Reader-on capture only when relevant to the requested story and label its browser transformation accurately. Recapture to remove incidental menus or dev chrome; do not fabricate UI or retouch away a product defect. Preserve a separate menu-open or error-state capture when it is the feature being shown.
 
 **Done when:** every selected asset has a distinct purpose, safe content, a matching passing case, and source provenance.
 
@@ -47,6 +49,7 @@ Verify the production build/preview and hosting route behavior. A client navigat
 - [ ] Every public image maps to a reviewed passing case and contains safe content.
 - [ ] Images keep correct proportions and remain legible at display sizes.
 - [ ] Showcase and main app pass their relevant responsive and interaction checks.
+- [ ] Both include reviewed Dark Reader compatibility evidence or explicit opt-outs/capability gaps.
 - [ ] Build, deep link, refresh, asset delivery, and navigation checks pass in the claimed environment.
 - [ ] Handoff links the showcase, evidence, assets, and any actual delivery gaps.
 
