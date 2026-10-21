@@ -1,10 +1,16 @@
 # Skills package releases
 
-The latest GitHub release is [0.1.2](https://github.com/devin-thomas/skills/releases/tag/v0.1.2),
-published 2026-10-14. npm `latest` still resolves to
-[`@uppercut-labs/skills@0.1.1`](https://www.npmjs.com/package/@uppercut-labs/skills/v/0.1.1),
-published 2026-10-05. The source repository is
-`devin-thomas/skills`; the npm scope identifies the publisher, not the GitHub owner.
+## 1.0.0 stable public release
+
+The owner requested a stable version of at least 1.0.0 for the already public
+`@uppercut-labs/skills` package. This release promotes the existing installer,
+CLI, read-only MCP catalog and reviewed bundled skill snapshots to 1.0.0.
+The repository and CLI guides now describe the published installer and show
+pinned 1.0.0 commands. Bundled source revisions and runtime behavior are unchanged.
+
+Publication and exact archive verification are recorded below after the registry
+accepts the retained release archive. Historical 0.1.2 was distributed through
+GitHub only; npm previously served 0.1.1.
 
 ## 0.1.2 autonomous task recovery
 
