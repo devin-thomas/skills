@@ -9,13 +9,15 @@ Deliver corrected product surfaces with reproducible browser evidence. A passing
 
 ## 1. Establish the product and execution contract
 
-Inspect repository instructions, working-tree state, design authority, routes, component variants, existing browser tests, fixtures, and run commands. Preserve the app's visual language. Reuse Playwright or Puppeteer already present; otherwise select a permitted browser harness suited to repeatable state setup and assertions. Follow the current tool's API and restrictions; these instructions do not grant additional browser capabilities.
+Inspect repository instructions, working-tree state, design authority, routes, component variants, existing browser tests, fixtures, and run commands. Preserve the app's visual language. Both Playwright and Puppeteer are supported. Honor the user's established preference for Puppeteer or another browser automation tool; otherwise default to Playwright. Reuse compatible project fixtures, helpers, and runners. When the preferred harness is unavailable or incompatible with the permitted environment, use a supported alternative and record why. Follow the current tool's API and restrictions; these instructions do not grant additional browser capabilities.
+
+By default, keep Dark Reader enabled during exploratory browsing and include Dark Reader-on compatibility cases throughout the sweep, unless the user opts out. Retain separate native-theme checks with Dark Reader off. Use the setup, verification, and fallback guidance in [browser-checks.md](references/browser-checks.md); record unavailable coverage explicitly.
 
 Identify local/preview/production targets and provider dependencies. Prefer isolated local fixtures for mutations. Label mocks and seeded sessions as simulated evidence. Do not put test-only auth or fixture bypasses into production. Carry out already-authorized delivery; a sweep alone does not authorize purchases, messages, production records, or deployment.
 
 Verify that the running server serves the intended checkout and fresh build. If watching/HMR is disabled or stale, restart only the identified task-owned process and confirm a changed marker before judging post-fix captures.
 
-**Done when:** the target revision, design authority, run command, fixture mechanism, browser capabilities, and external-action boundary are recorded in the run's evidence.
+**Done when:** the target revision, design authority, run command, fixture mechanism, browser harness and selection reason, Dark Reader setup or exception, browser capabilities, and external-action boundary are recorded in the run's evidence.
 
 ## 2. Inventory surfaces and state transitions
 
@@ -25,7 +27,7 @@ Inventory from both source and browser navigation. Include every in-scope route 
 
 Distinguish source-implemented, entry-wired, and browser-reachable surfaces. For dormant components, locate the intended entry or test in an isolated component harness when in scope; otherwise record a reasoned exclusion or unresolved reachability. Do not add a production route solely to obtain coverage.
 
-Start with representative desktop, tablet, phone, and narrow supported widths (often 1440, 768, 390, and 320 CSS pixels). Add both sides of actual breakpoints and short-height/landscape views where controls or overlays are constrained. Enumerate all supported theme choices; test System against both OS schemes. Do not invent a dark theme for a single-theme app.
+Start with representative desktop, tablet, phone, and narrow supported widths (often 1440, 768, 390, and 320 CSS pixels). Add both sides of actual breakpoints and short-height/landscape views where controls or overlays are constrained. Enumerate all supported theme choices; test System against both OS schemes. Track authored theme, OS scheme, and Dark Reader state separately; a browser transformation does not establish an authored dark theme. Include Dark Reader-on cases for primary workflows at desktop and phone widths and for vulnerable controls, overlays, images, and dense content.
 
 Use risk-based combinations outside critical paths instead of multiplying every axis blindly. State omissions explicitly. Assign stable case IDs and expected assertions before running. If delegation is available, split independent route families or visual review with isolated fixtures and output paths; retain one owner for shared CSS and the final matrix.
 
@@ -47,7 +49,7 @@ Write artifacts under unique run/case/attempt paths, using test-runner output pa
 
 Inspect every capture counted as reviewed using an image-capable tool. Contact sheets help triage; inspect each state at a readable scale and open full-resolution crops for dense text, controls, or suspected defects. If images cannot be inspected, keep visual review incomplete. Screenshots are evidence, not assertions by themselves.
 
-Review hierarchy, spacing, readable proportions, text wrapping, icon containment, card density, preview/control balance, scroll effort, sticky obstruction, stacking, contrast, and state feedback against the existing design. Test pointer, touch emulation, and keyboard behavior: visible focus, tab order, selection, Escape, focus return, outside clicks where intended, input retention, disabled/pending controls, and recovery. Test real zoom or assistive technology only when available; narrow-width emulation is not proof of either.
+Review hierarchy, spacing, readable proportions, text wrapping, icon containment, card density, preview/control balance, scroll effort, sticky obstruction, stacking, contrast, and state feedback against the existing design. In Dark Reader cases, also inspect text/background contrast, focus and selection visibility, icons/logos, images, and semantic status colors. Test pointer, touch emulation, and keyboard behavior: visible focus, tab order, selection, Escape, focus return, outside clicks where intended, input retention, disabled/pending controls, and recovery. Test real zoom or assistive technology only when available; narrow-width emulation is not proof of either.
 
 Record each finding with case ID, severity, symptom, before image, reproduction, root cause, and verification condition. Classify product defects separately from fixture/harness defects before changing code.
 
@@ -66,6 +68,7 @@ Reconcile every planned case as passed, failed, blocked, or excluded with reason
 - [ ] All in-scope surfaces and primary transitions have final dispositions.
 - [ ] Captures counted as reviewed were actually inspected.
 - [ ] Fixed findings have after evidence and passing regression checks.
+- [ ] Dark Reader cases have reviewed evidence and final dispositions; opt-outs and capability gaps are explicit.
 - [ ] No known in-scope issue is hidden by a screenshot baseline, skip, mock, or CSS clip.
 - [ ] Final report links matrix, manifest, representative before/after images, commands/results, and unresolved limitations.
 
