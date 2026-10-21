@@ -8,9 +8,30 @@ CLI, read-only MCP catalog and reviewed bundled skill snapshots to 1.0.0.
 The repository and CLI guides now describe the published installer and show
 pinned 1.0.0 commands. Bundled source revisions and runtime behavior are unchanged.
 
-Publication and exact archive verification are recorded below after the registry
-accepts the retained release archive. Historical 0.1.2 was distributed through
-GitHub only; npm previously served 0.1.1.
+Published to npm as [`@uppercut-labs/skills@1.0.0`](https://www.npmjs.com/package/@uppercut-labs/skills/v/1.0.0),
+with `latest` pointing to 1.0.0. npm accepted the upload at
+2026-10-21T02:58:37.711Z; its publish-time processing completed with registry
+publication timestamp 2026-10-21T03:02:46.460Z. Fresh registry consumer verification
+finished at 2026-10-21T03:04:55.554Z. The matching
+[GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.0) is tagged
+at source commit `3bac53a9b330acd4e09f1884a4b8d32c90c7aae0` and includes the exact
+archive plus its adjacent SHA-256 checksum.
+
+Both GitHub- and registry-downloaded archives match the retained tested archive
+byte-for-byte: 226181 bytes, 74 files, SHA-256
+`479573713445487a57c9a7c1df2f98189492cd0206cbab62d60b3486aca59443`.
+Registry integrity is
+`sha512-Oib6/hf8YYpyUrCOF2aU55A2lvOiD2yaG+Y6zgKD70Zm+6ZYHJLUbb+3955mz0ZYHVjXo0K1OQAbAS8MxFltQA==`.
+
+Validation passed: 14 skill entry points and the 17-entry catalog, 6 artifact
+contract tests, 4 PWA helper tests, 50 package tests, TypeScript checks, and
+packed consumer verification. A fresh consumer installed exact npm version
+1.0.0, listed all 17 skills, installed `execute-task-cycles` with `execute-task`,
+passed doctor/update/remove, and exercised legacy and current read-only MCP
+protocols plus the CLI loopback launcher. Node 26.10.0/npm 11.19.1 built the
+archive. This release adds no new native-host acceptance claim.
+
+Historical 0.1.2 was distributed through GitHub only; npm previously served 0.1.1.
 
 ## 0.1.2 autonomous task recovery
 
