@@ -4,7 +4,7 @@ Read when planning a sweep and recording its results. Use the repository's exist
 
 ## Matrix
 
-Each case has: ID, surface/route, initial fixture and role, action sequence, expected visible result, browser engine, CSS viewport, device scale, theme/OS scheme, assertions, capture kinds, and disposition. Use stable IDs rather than screenshot filenames as identity.
+Each case has: ID, surface/route, initial fixture and role, action sequence, expected visible result, browser engine, CSS viewport, device scale, authored theme/OS scheme, Dark Reader mode (`off`, `extension`, or `api`) and effective state/settings, assertions, capture kinds, and disposition. Use stable IDs rather than screenshot filenames as identity. Give native and Dark Reader-on variants distinct case IDs so their coverage and baselines cannot be conflated.
 
 Use `planned`/`not-executed` during preparation; final sweep dispositions must reconcile these to executed results, blockers, or reasoned exclusions. A user-requested planning-only exercise reports zero executions and does not claim a completed sweep. Report parameterized case families separately from expanded case IDs; neither planned families nor retries count as executed unique cases.
 
@@ -29,7 +29,7 @@ Cover critical state transitions at desktop and mobile, every supported layout/t
 
 ## Capture manifest
 
-Keep one run manifest with target URL/environment, source revision and dirty-tree note, timestamp, startup/test commands, browser/version/OS, fixture version/seed, capture stabilization policy, and cases. Keep private session files and raw diagnostic payloads out of public artifacts.
+Keep one run manifest with target URL/environment, source revision and dirty-tree note, timestamp, startup/test commands, browser harness and selection reason, browser/version/OS, Dark Reader version/setup or opt-out/limitation, fixture version/seed, capture stabilization policy, and cases. Keep private session files and raw diagnostic payloads out of public artifacts.
 
 For each case record:
 
@@ -45,6 +45,7 @@ For each case record:
   "browser": "chromium",
   "theme": "light",
   "osScheme": "light",
+  "darkReader": { "mode": "off", "enabled": false },
   "providerMode": "mocked",
   "attempt": 1,
   "status": "failed",
@@ -62,6 +63,6 @@ This is an illustrative failed case, not proof of a run. Add diagnostics and rer
 
 Each finding records symptom and impact, affected cases, severity, before image, reproduction, root cause, changed source, regression check, after image, and final disposition. Prioritize blocked tasks/data loss, inaccessible actions, overlap/clipping, and then proportions/spacing. If no product fix is needed, state that conclusion with actual review coverage.
 
-Report distinct counts: planned cases; unique executed cases; passed/failed/blocked/excluded; captured states; inspected states; product findings fixed/open; harness findings fixed/open. List browser and physical-device gaps. An 80-image run with five reviewed images is five reviewed images.
+Report distinct counts: planned cases; unique executed cases; passed/failed/blocked/excluded; captured states; inspected states; product findings fixed/open; harness findings fixed/open. List browser, physical-device, and Dark Reader gaps; distinguish extension results from API simulation. An 80-image run with five reviewed images is five reviewed images.
 
 Keep raw captures/logs in ignored or external run directories. Retain minimal approved regression baselines according to repo policy. Curated public assets belong only to the showcase workflow. Do not commit an entire transient corpus just to preserve a screenshot count.
