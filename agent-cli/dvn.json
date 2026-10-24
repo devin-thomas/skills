@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "skillName": "agent-cli",
+  "skillBlobSha": "d362bfd07e11dab57fc9a290e6ec69c4066c5e94",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "antigravity",
+      "path": "references/antigravity.md",
+      "gitBlobSha": "4d09a9fcb5a8c0aaaea06470338cf3caf99fd1e1",
+      "required": "optional"
+    },
+    {
+      "key": "claude",
+      "path": "references/claude.md",
+      "gitBlobSha": "70c0e6212ddba17d00f55a29cdc903774930647d",
+      "required": "optional"
+    },
+    {
+      "key": "codex",
+      "path": "references/codex.md",
+      "gitBlobSha": "8ac009f352f62c66f60e300c36b9b2cc6ff4fb67",
+      "required": "optional"
+    },
+    {
+      "key": "coding-artifacts",
+      "path": "references/coding-artifacts.md",
+      "gitBlobSha": "85dc77d6b5027a140e741f6e361d1831e3623d11",
+      "required": "optional"
+    },
+    {
+      "key": "cursor",
+      "path": "references/cursor.md",
+      "gitBlobSha": "98a2a9d9a7f073c65c0132f58192639e8e883099",
+      "required": "optional"
+    },
+    {
+      "key": "process-control",
+      "path": "references/process-control.md",
+      "gitBlobSha": "49f5ae44b97627c7fa9e6c4773adde5ca1f866d9",
+      "required": "optional"
+    },
+    {
+      "key": "usage",
+      "path": "references/usage.md",
+      "gitBlobSha": "202b6013faadf428d244b7d3832c92c0c002274d",
+      "required": "optional"
+    },
+    {
+      "key": "verification",
+      "path": "references/verification.md",
+      "gitBlobSha": "1f4d033ef78ca923a8ab29ae0ea05d07e57b7ccb",
+      "required": "optional"
+    }
+  ],
+  "stages": [],
+  "dependencies": []
+}

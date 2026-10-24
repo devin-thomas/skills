@@ -7,18 +7,18 @@ Adapt this structure to the repository. Remove irrelevant sections and replace e
 
 ## Autostart Instruction
 
-When this file is referenced or supplied without additional task text, execute the embedded workflow immediately. Do not ask for a task identifier or provide a plan instead of beginning. Read fresh repository and task-source state, mechanically select or resume one executable task, complete exactly one bounded task pass, record a terminal result, and stop. Ask only when a real ambiguity or required decision cannot be resolved from authoritative sources.
+When this file is referenced or supplied without additional task text, execute the embedded workflow immediately. Do not ask for a task identifier or provide a plan instead of beginning. Read fresh repository and task-source state, mechanically select or resume one executable task, complete the selected task through repair and verification, record its result, and continue within the user-authorized run. Ask only when a real ambiguity or required decision cannot be resolved from authoritative sources.
 
 ## Prompt
 
 ```text
-Complete exactly one next executable task for <project>.
+Complete the user-authorized task or backlog scope for <project>, one verified task at a time.
 
 Repository: <root or current repository root>
 Task source of truth: <source and scope>
 Target branch: <branch or repository policy>
 
-Do not ask for a task identifier. Resolve one task from fresh authoritative state, complete only that task, record the result, and stop.
+Do not ask for a task identifier. Resolve one task from fresh authoritative state, complete that task, record the result, and return to the authorized run controller.
 
 Before changing anything:
 
@@ -85,12 +85,12 @@ At the end:
    - Task-source updates.
    - Residual risks or blockers.
    - Start, end, and elapsed time.
-4. End the selected task's pass. For an explicitly requested multi-task run, return the verified result to its controller and continue until the requested completed count or a genuine blocker; otherwise stop without taking unrelated work.
+4. End the selected task's pass. For an explicitly requested multi-task run, return the verified result to its controller and continue until the requested completed count, scope completion, or a human blocker prevents all useful authorized progress; otherwise stop without taking unrelated work.
 ```
 
 ## Selection Invariant
 
-No current task identifier is hard-coded in this prompt. Resolve the selected task from fresh authoritative state on every pass, preserve existing work, and stop after one task-level result.
+No current task identifier is hard-coded in this prompt. Resolve the selected task from fresh authoritative state on every pass, preserve existing work, and return each task-level result to the authorized controller.
 ````
 
 ## Template rules
@@ -102,3 +102,7 @@ No current task identifier is hard-coded in this prompt. Resolve the selected ta
 - Put commands and paths in the prompt only when stable and authoritative.
 - Make completion ordering internally consistent, especially when a local task-file update must be included in a completion commit.
 - State external-write authority explicitly; silence must not imply permission to push, deploy, publish, or reorganize trackers.
+
+## AFK recovery and notifications
+
+Diagnose and repair automatically within existing authority. Ask asynchronously only for a material owner decision or unavailable access that cannot be recovered. Notify through an authorized configured channel and continue independent preparation or another authorized ready task while waiting. Preserve blocked items and revisit them after an answer; elapsed time is never approval. End the run only when its explicit limit or scope is complete, the user stops it, or all remaining useful work genuinely depends on the owner.

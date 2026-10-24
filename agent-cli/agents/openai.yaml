@@ -1,0 +1,4 @@
+interface:
+  display_name: "agent-cli"
+  short_description: "Delegate work through an installed agent CLI"
+  default_prompt: "Use $agent-cli to delegate this task through the selected CLI and verify the result."

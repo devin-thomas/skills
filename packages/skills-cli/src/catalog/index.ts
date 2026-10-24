@@ -18,7 +18,7 @@ const DEFAULT_POLICY: Required<CatalogPolicy> = {
     'devin-thomas/skills': [
       'execute-task/', 'execute-task-cycles/', 'grill-to-build/', 'long-horizon-dashboard/',
       'no-useless-copy/', 'perfect-playlist/', 'programmatic-harness/', 'pwa-development/', 'quick-build/', 'style/',
-      'surface-sweep/', 'surface-sweep-showcase/', 'task-execution-prompt/', 'branded-sign-in/',
+      'surface-sweep/', 'surface-sweep-showcase/', 'task-execution-prompt/', 'branded-sign-in/', 'agent-cli/', 'immutable-reports/',
     ],
     'devin-thomas/starter-pack': ['public/skills/'],
     'devin-thomas/vid-chopper': ['.agents/skills/'],

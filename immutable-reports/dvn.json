@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "skillName": "immutable-reports",
+  "skillBlobSha": "596806b76274557016a0ee521d4ec3217bce8425",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "index",
+      "path": "assets/INDEX.md",
+      "gitBlobSha": "097d4795fd075ca86580aabcd63c840cccf312a3",
+      "required": "optional"
+    },
+    {
+      "key": "plan",
+      "path": "assets/plan.md",
+      "gitBlobSha": "1c6244f0f712d6846cfa15b0911192887892938e",
+      "required": "optional"
+    },
+    {
+      "key": "project-rule",
+      "path": "assets/project-rule.md",
+      "gitBlobSha": "85f5dc08687e4683fabc36e838bb4195ba2a5129",
+      "required": "optional"
+    },
+    {
+      "key": "walkthrough",
+      "path": "assets/walkthrough.md",
+      "gitBlobSha": "a0fc1241db2efdf73aaa6c70f0dfe424b783a2d7",
+      "required": "optional"
+    },
+    {
+      "key": "ledger-format",
+      "path": "references/ledger-format.md",
+      "gitBlobSha": "175319d739debbab3404de2cae44c154de4cc6d1",
+      "required": "mandatory"
+    }
+  ],
+  "stages": [],
+  "dependencies": []
+}

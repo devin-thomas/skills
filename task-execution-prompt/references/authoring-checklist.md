@@ -83,7 +83,8 @@ Do not let a generated prompt silently broaden publishing authority.
 - Re-resolve at end for daylight-saving or configuration changes. Calculate elapsed time from UTC instants or a monotonic clock, not local display values.
 - Treat failed queries, missing identifiers, disagreement, offset mismatch, fixed-offset-only resolution, or unexpected zone changes as anomalous. Do not interrupt implementation; report verified numeric-offset timestamps and ask `Which named time zone should future task reports use?` in the final report.
 - Required fields: selected task, execution result, native state, outcomes, exact validation, commit, changed files, task-source updates, residual risks, and failures/skips.
-- Final stop instruction.
+- Return control after each task; stop the run only at its authorized scope/resource limit or an actual human blocker affecting all remaining useful work.
+- Automatic repair, asynchronous questions, authorized owner notification, and independent ready work while an answer is pending.
 
 ## Prompt destination and invocation
 

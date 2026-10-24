@@ -26,7 +26,7 @@ Use [task-sources.md](task-sources.md) to identify one authoritative task source
 6. Recognize priority only from native priority fields, repository-recognized labels, repository-defined title markers, or explicit plan declarations. Never infer it from prose or tone.
 7. Select the first task and announce its identifier and goal before implementation.
 
-If no task is executable, report the accurate terminal result: complete frontier, approval required, blocked dependency, or inconsistent source state. Make no implementation or lifecycle changes.
+If no task is executable, report the accurate terminal result: complete frontier, approval required, blocked dependency, or inconsistent source state. Notify the owner of the actionable dependency, continue authorized independent preparation, and leave dependent implementation and lifecycle changes pending.
 
 ## 3. Establish authority and scope
 
@@ -100,7 +100,7 @@ After validation and any required completion commit succeed:
 
 Do not claim completion until repository and task-source state are consistent.
 
-## 10. Report and stop
+## 10. Report and continue within scope
 
 Report:
 
@@ -116,3 +116,5 @@ Report:
 - Start, end, and elapsed time from [reporting-clock.md](reporting-clock.md).
 
 Do not start another task after reporting.
+
+For an AFK backlog run, a blocked item does not block independent ready work. Record it, notify the owner through an authorized route, and return control for fresh selection. Keep a blocked task out of the completed count.

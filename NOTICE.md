@@ -1,6 +1,6 @@
 # Source and attribution
 
-Copyright (c) 2026 Devin Thomas. The approved installer and 15 bundled skill
+Copyright (c) 2026 Devin Thomas. The approved installer and 19 bundled skill
 snapshots in `@uppercut-labs/skills` are released under the package's
 [MIT license](packages/skills-cli/LICENSE).
 
