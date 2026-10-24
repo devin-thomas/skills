@@ -6,7 +6,11 @@ Owner-approved release: all sixteen public-repository skill snapshots are pinned
 
 Private skills and the private layout migration are outside this npm payload. The dvn and dvn-internal compatibility review remains a separate owner-led follow-up after this release.
 
-Final archive, validation and registry delivery evidence will be recorded after publication.
+Published to [npm](https://www.npmjs.com/package/@uppercut-labs/skills/v/1.0.1), with `latest` pointing to 1.0.1. Registry publication timestamp: `2026-10-24T01:25:21.886Z`. The [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.1) tags release source `3e2c4846e798a94110b6d57fde51b83fca7af241` and includes the exact tested archive and SHA-256 sidecar.
+
+The tested, GitHub-downloaded and registry-downloaded archives are byte-identical: 283820 bytes, 74 files, SHA-256 `06cc15e3d2171cb614941066afe5c998ac9ce1cc45b1006a3c8db9bea58e098c`. Registry integrity is `sha512-rP+Wv4m0bPBsoVdEhXxQGq8Z6xBXSeAKhcSXamPVYO0PjgOWy3zD0bv7QK22aZgTCP46SlkHYSGsPSfwAd1tcQ==`.
+
+Validation passed: 16 source entry points; the 19-entry catalog and 27 manifest checks; 6 artifact-contract tests; 4 PWA-helper tests; TypeScript checks and 50 package tests; packed consumer CLI/MCP checks. A fresh npm-registry consumer installed all 19 skills, passed doctor/update/remove, and matched all 107 public source files against their pinned Git bytes. Both legacy and current read-only MCP protocols and the loopback launcher passed from the registry installation. Node 26.10.0/npm 11.19.1 built the release. No new native-host acceptance is claimed.
 
 ## 1.0.0 stable public release
 
