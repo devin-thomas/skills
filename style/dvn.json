@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "skillName": "style",
-  "skillBlobSha": "58323ab4623471f5fd31e67a42a5e00d59bfcbcd",
+  "skillBlobSha": "fbc0647a90b859ae24ab2b0aff692633aeae2019",
   "auditComplete": true,
   "resources": [
     {
@@ -31,7 +31,7 @@
     {
       "key": "react-typescript",
       "path": "react-typescript.md",
-      "gitBlobSha": "cd39b44d050e838a5d4be0bf6e98e4e9af9710bf",
+      "gitBlobSha": "325fcf2e7c7b89afa60d576d4cbebdd579e918d1",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style",
@@ -42,7 +42,7 @@
     {
       "key": "python",
       "path": "python.md",
-      "gitBlobSha": "eb6ce5fc7c77ea33f9246ca0c78e0b8b4a5cf260",
+      "gitBlobSha": "66e08e35f92a4a8080996c9bdfb539dd416b7087",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
@@ -50,7 +50,7 @@
     {
       "key": "swift-swiftui",
       "path": "swift-swiftui.md",
-      "gitBlobSha": "7e7f201e2be008c177668077db2722b729cdd258",
+      "gitBlobSha": "22cc530e558e6d6a461c9e85fd6e702903874754",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
@@ -58,7 +58,7 @@
     {
       "key": "javascript",
       "path": "javascript.md",
-      "gitBlobSha": "fee27a00cdc23df78e86ca115a81d305f27d8000",
+      "gitBlobSha": "e51560cb3747a6bdc937fcd679d143672f69447a",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style",
@@ -69,7 +69,15 @@
     {
       "key": "dart-flutter",
       "path": "dart-flutter.md",
-      "gitBlobSha": "08781fcc49144f2ebf19c7bbfa2d97580211dc7f",
+      "gitBlobSha": "582ee101d6848ceb4eb966ffb396632d51e2198b",
+      "required": "stage",
+      "repository": "devin-thomas/starter-pack",
+      "root": "content/style"
+    },
+    {
+      "key": "rust",
+      "path": "rust.md",
+      "gitBlobSha": "9abe48f815e74801831e248624c1a0e86ad5c330",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
@@ -129,6 +137,13 @@
       "key": "dart-flutter",
       "resources": [
         "dart-flutter"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "rust",
+      "resources": [
+        "rust"
       ],
       "dependencies": []
     }
