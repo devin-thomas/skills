@@ -1,11 +1,15 @@
 {
   "name": "@uppercut-labs/skills",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "Install and manage Uppercut Labs agent skills",
   "author": "Devin Thomas",
   "license": "MIT",
-  "keywords": ["agent-skills", "cli", "uppercut-labs"],
+  "keywords": [
+    "agent-skills",
+    "cli",
+    "uppercut-labs"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/devin-thomas/skills.git",
@@ -40,7 +44,13 @@
       "import": "./dist/mcp/index.js"
     }
   },
-  "files": ["dist", "bin", "README.md", "LICENSE", "NOTICE.md"],
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE",
+    "NOTICE.md"
+  ],
   "scripts": {
     "prepack": "npm run build",
     "postinstall": "node bin/grokbot-postinstall.js",
@@ -53,7 +63,9 @@
     "@modelcontextprotocol/server": "2.3.0"
   },
   "peerDependenciesMeta": {
-    "@modelcontextprotocol/server": { "optional": true }
+    "@modelcontextprotocol/server": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@uppercut-labs/agent-native": "0.1.0"
