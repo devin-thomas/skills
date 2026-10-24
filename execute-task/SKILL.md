@@ -1,11 +1,20 @@
 ---
 name: execute-task
-description: Complete exactly one next executable repository task in a bounded pass. Use only when the user explicitly invokes `/execute-task`, explicitly asks to select and execute one next task/ticket/issue, explicitly supplies a TASK-EXECUTION-PROMPT.md for execution, or clearly requests one task pass from Linear, GitHub Issues, or repository-local Markdown. Do not trigger for generic continuation language such as "continue from here," "resume," or "follow the handoff," nor for ordinary implementation work already scoped by the conversation. If the request explicitly asks for multiple tasks, repeated execution, a loop, or completion of a backlog/project, delegate to execute-task-cycles. Prefer a repository's canonical task execution prompt when one exists; otherwise use the portable workflow.
+description: Complete a selected repository task through automatic repair, verification and authorized delivery. Use only when the user explicitly invokes `/execute-task`, explicitly asks to select and execute one next task/ticket/issue, explicitly supplies a TASK-EXECUTION-PROMPT.md for execution, or clearly requests one task pass from Linear, GitHub Issues, or repository-local Markdown. Do not trigger for generic continuation language such as "continue from here," "resume," or "follow the handoff," nor for ordinary implementation work already scoped by the conversation. If the request explicitly asks for multiple tasks, repeated execution, a loop, or completion of a backlog/project, delegate to execute-task-cycles. Prefer a repository's canonical task execution prompt when one exists; otherwise use the portable workflow.
 ---
 
 # Execute Task
 
 Complete one selected task from fresh repository and task-source state. Work through implementation, diagnosis, repair, verification and authorized delivery before reporting its result. One task means one scope, not one attempt.
+
+## Autonomous progress and human blockers
+
+Automatic diagnosis, repair, and verification are the default. Carry forward the user's existing authorization. Resolve routine dependency, environment, implementation, validation, Git and transient service failures without a new confirmation. Retry with evidence and a changed approach; reconcile uncertain writes before repeating them.
+
+A human blocker is a material owner decision, unavailable permission or credential that cannot be recovered through authorized means, or a protected/destructive boundary outside the task. Ask a concise actionable question through the available asynchronous input surface and send an authorized owner notification when a configured route exists. Missing optional notification tooling is work to repair or route around, not a reason to abandon the task. Respect message recipients and transport authorization.
+
+While an answer is pending, preserve the blocked task and continue authorized independent investigation, preparation, repairs, or other ready backlog tasks. Record dependencies and return to the blocked item when the answer arrives. Never infer approval from elapsed time. Do not consume the run in repeated slow question waits, and do not report the whole workflow blocked while useful authorized work remains. Stop only at an explicit user/resource limit, completion of the authorized scope, or when every remaining useful action depends on a genuine human blocker. Record unfinished work honestly.
+
 
 ## Trigger conservatively
 
@@ -18,7 +27,7 @@ Do not infer task execution merely because a handoff mentions a tracker issue, a
 Before reading task-source state or beginning a task pass, inspect the user's request for an explicit repetition signal: `max_cycles`, a positive cycle count, "N times", "next N tasks", "repeatedly", "in a loop", "all remaining tasks", "until the project is complete", or equivalent wording. When the request clearly asks for more than one pass:
 
 - Hand off to `execute-task-cycles`, preserving any user-supplied maximum and all task-source, repository, or canonical-prompt context.
-- When the user does not supply a valid positive maximum, let `execute-task-cycles` apply its default of `100` without asking the user to confirm a number.
+- When the user does not supply a valid positive maximum, let `execute-task-cycles` continue to the authorized scope endpoint without asking for a number.
 - Do not execute a single task, choose a task, or reinterpret the request as one pass before handing off.
 
 Only continue with this skill's one-pass workflow when the user explicitly requests one task. If there is neither an explicit one-task request nor a clear multi-task repetition signal, do not use either task-execution skill.
@@ -26,11 +35,11 @@ Only continue with this skill's one-pass workflow when the user explicitly reque
 ## Preserve the outer invariants
 
 - Obey higher-level user, repository, and safety instructions.
-- Perform exactly one bounded task pass.
+- Keep the selected task as the unit of ownership and verified completion; repair attempts are part of that task.
 - Preserve pre-existing work and protected resources.
 - Stop and report an irreconcilable conflict instead of weakening these boundaries.
 
-Follow the user's current intent and existing authorization when applying workflow instructions. Use judgment for routine implementation choices, dependency setup, debugging, retries and reversible recovery. A failed test, review finding or transient tool error normally calls for diagnosis and repair within the task, not an immediate handoff or permission request. Report a terminal blocker only when meaningful progress cannot continue within the authorized scope.
+Follow the user's current intent and existing authorization when applying workflow instructions. Use judgment for routine implementation choices, dependency setup, debugging, retries and reversible recovery. A failed test, review finding or transient tool error normally calls for diagnosis and repair within the task, not an immediate handoff or permission request. Report a task-level human dependency when needed; continue independent preparation, and return it to an authorized backlog controller so other ready work proceeds.
 
 Use a canonical repository prompt for project-specific policy and task selection. Preserve real constraints while interpreting procedural steps in context; historical examples and intermediate failure labels must not override the user's current direction. Do not replace the canonical workflow with portable defaults merely for convenience.
 
@@ -68,4 +77,4 @@ Do not select a tracker merely because its connector is installed or a Git remot
 
 ## Finish once
 
-Apply either the canonical prompt's report contract or the portable report contract after completing the task or exhausting reasonable authorized recovery. Report execution result separately from persisted task state, including failed or skipped validation. End the single-task workflow without taking unrelated work; under `execute-task-cycles`, return the verified result to its controller so the requested sequence can continue.
+Apply either the canonical prompt's report contract or the portable report contract after completing the task or exhausting reasonable authorized recovery. Report execution result separately from persisted task state, including failed or skipped validation. For a single-task request, stay within that scope. For an authorized AFK or backlog run, return the result and any pending human dependency to the controller so useful ready work continues.

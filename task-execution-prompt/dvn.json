@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "skillName": "task-execution-prompt",
-  "skillBlobSha": "734aab34d555d7a9d2fd08cc9228020672669c18",
+  "skillBlobSha": "c97ecfc09a8fd17c3622d2308f03590d759c9f5b",
   "auditComplete": true,
   "resources": [
     {
       "key": "authoring-checklist",
       "path": "references/authoring-checklist.md",
-      "gitBlobSha": "76980acfff33de7d4597fbf59920feb3c7c06afd",
+      "gitBlobSha": "2e07df72004983b798b0d6948c041a8fadb34df2",
       "required": "mandatory"
     },
     {
       "key": "prompt-template",
       "path": "references/prompt-template.md",
-      "gitBlobSha": "7ebada00276260ea6584d4dd28474955838a7993",
+      "gitBlobSha": "fa2df8d6e77fc7523ca5065f7dcb9cc18122d11b",
       "required": "stage",
       "stages": [
         "write-prompt"
@@ -22,7 +22,7 @@
     {
       "key": "preflight-rehearsal",
       "path": "references/preflight-rehearsal.md",
-      "gitBlobSha": "3a85c801238f77c940cb6e36943dde0832a7f7e2",
+      "gitBlobSha": "d7179db470e180f00d0686f25745dc97972fe03b",
       "required": "stage",
       "stages": [
         "rehearsal"

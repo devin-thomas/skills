@@ -20,14 +20,14 @@ If an authoritative read requires authentication that is unavailable, report reh
 1. Re-read the written prompt as the sole workflow contract.
 2. Verify structural invariants:
    - autostart behavior;
-   - one bounded pass;
+   - one task as the unit of ownership, with the user-authorized run scope preserved;
    - fresh-state discovery;
    - no hard-coded current task identifier;
    - mechanical selection;
    - authority order;
    - completion gate;
    - terminal report;
-   - final stop instruction.
+   - automatic repair, asynchronous owner questions, independent ready work, and genuine run stopping conditions.
 3. Resolve every referenced repository path and instruction source.
 4. Read current task-source state using the prompt's specified source and scope.
 5. Compute active/owned tasks, blocker completion, human gates, authoritative critical/security signals, declared order, and stable tie-breakers.

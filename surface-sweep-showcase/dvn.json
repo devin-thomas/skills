@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "skillName": "surface-sweep-showcase",
-  "skillBlobSha": "1607da4b64f8e2bd3920235106e72d00561f16c8",
+  "skillBlobSha": "6ff9461912a5c33afa9d93515458228ad2c14c1d",
   "auditComplete": true,
   "resources": [
     {
       "key": "showcase-delivery",
       "path": "references/showcase-delivery.md",
-      "gitBlobSha": "c82fb00a7033de919f1372249c10016ad151fdbb",
+      "gitBlobSha": "8ad3b976ad54cdc262b1cec1c644f2b55a28ddde",
       "required": "stage",
       "stages": [
         "showcase"

@@ -16,7 +16,9 @@
       "surface-sweep/",
       "surface-sweep-showcase/",
       "task-execution-prompt/",
-      "branded-sign-in/"
+      "branded-sign-in/",
+      "agent-cli/",
+      "immutable-reports/"
     ],
     "devin-thomas/starter-pack": [
       "public/skills/starter-pack/",
