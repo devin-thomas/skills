@@ -1,5 +1,13 @@
 # Skills package releases
 
+## 1.0.1 complete public skill refresh
+
+Owner-approved release: all sixteen public-repository skill snapshots are pinned to source commit `2f245b58d25cf0da5aeb61f137e8909ef7a10891`, including the new portable `agent-cli` and `immutable-reports` additions. Together with the three retained external snapshots, the package contains nineteen skills. The public style skill references all nine finalized guides. The execution skills default to automatic repair and asynchronous human questions while independent ready work continues; an unspecified backlog run follows its authorized scope endpoint.
+
+Private skills and the private layout migration are outside this npm payload. The dvn and dvn-internal compatibility review remains a separate owner-led follow-up after this release.
+
+Final archive, validation and registry delivery evidence will be recorded after publication.
+
 ## 1.0.0 stable public release
 
 The owner requested a stable version of at least 1.0.0 for the already public
