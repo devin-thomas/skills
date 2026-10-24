@@ -7,7 +7,11 @@ description: Apply Devin Thomas's coding style guide for the language or framewo
 
 ## Find the guide
 
-Open https://starter.uppercut-labs.com/style and read the guide for each language or framework in scope. Prefer the most specific match, such as React + TypeScript over TypeScript for React components. A guide marked "In progress" may be incomplete; apply what it covers. If no guide matches a language, say so and leave that code out of scope.
+Read the [style catalog](https://starter.uppercut-labs.com/style/catalog.json) and the `.md` guide for every language or framework in scope. All nine published guides are finalized and authoritative: TypeScript, Godot, Kotlin, React + TypeScript, Python, Swift + SwiftUI, JavaScript, Dart + Flutter, and Rust. Apply their accepted rules without further guide-level approval.
+
+When invoked through `dvn`, activate the matching guide stages before scanning or writing code: `typescript`, `godot`, `kotlin`, `react-typescript`, `python`, `swift-swiftui`, `javascript`, `dart-flutter`, or `rust`. Read the returned guide resources and their required companions. React + TypeScript supplements TypeScript; use both for React components. JavaScript also uses the TypeScript companion for shared contracts. Direct skill installations read those same guides from the catalog's Markdown URLs.
+
+If no guide matches a language, say so and leave that code out of scope.
 
 Explicit user instructions and documented project rules (AGENTS.md, CLAUDE.md, linter or formatter configuration) take precedence over a guide where they conflict. Undocumented habits in existing code do not; those are what a scan reports.
 
