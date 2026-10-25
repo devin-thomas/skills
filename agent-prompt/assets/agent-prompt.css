@@ -80,3 +80,7 @@
   --ap-focus: #93c5fd;
   --ap-mono-filter: brightness(0) invert(1);
 }
+/* Dark Reader transforms surfaces but leaves external SVG image pixels intact. */
+html[data-darkreader-scheme="dark"] .agent-prompt {
+  --ap-mono-filter: brightness(0) invert(1);
+}
