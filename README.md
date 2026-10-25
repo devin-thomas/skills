@@ -21,6 +21,7 @@ For guided onboarding, start at [Starter Pack](https://starter.uppercut-labs.com
 | Preserve plans and verification history | [immutable-reports](immutable-reports/SKILL.md) | Append-only snapshots and a mutable evidence-linked index |
 | Follow my coding conventions | [style](style/SKILL.md) | Report of guide deviations (starter.uppercut-labs.com/style); `refactor` applies them |
 | Build or refine account interfaces | [branded-sign-in](branded-sign-in/SKILL.md) | Branded auth methods, original logo geometry and browser acceptance |
+| Build branded agent handoffs | [agent-prompt](agent-prompt/SKILL.md) | Short guide-backed prompts, authentic product marks, host styling with optional defaults |
 | Remove unhelpful UI wording | [no-useless-copy](no-useless-copy/SKILL.md) | Scoped copy improvements with necessary guidance preserved |
 | Build or repair PWA behavior | [pwa-development](pwa-development/SKILL.md) | Install, offline, update, and recovery behavior with platform evidence |
 | Make or inspect an exact Spotify playlist | [perfect-playlist](perfect-playlist/SKILL.md) | Deterministic selected-track workflow; requires its CLI and Spotify access for service operations |

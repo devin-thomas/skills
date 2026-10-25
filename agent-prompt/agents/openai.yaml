@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Prompt"
+  short_description: "Branded handoffs with short, useful agent prompts"
+  default_prompt: "Use $agent-prompt to add a branded handoff that follows this project's visual style, keeps the prompt short, and verifies copy behavior and guide retrieval."
