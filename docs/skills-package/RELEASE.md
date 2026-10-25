@@ -4,7 +4,7 @@
 
 Adds the portable `agent-prompt` skill, its implementation references and optional scoped light/dark defaults. The bundle contains twenty skills; existing snapshots retain their source pins. The public skill has no private dependencies.
 
-The tested archive is distributed through the [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.2). npm remains at 1.0.1 because neither configured host has publishing authentication. Use the linked archive for Agent Prompt and when using the expanded `--latest` catalog; older installers do not permit the new source root. No npm publication is claimed.
+Published to [npm as 1.0.2](https://www.npmjs.com/package/@uppercut-labs/skills/v/1.0.2), with `latest` pointing to 1.0.2. The registry archive is byte-identical to the tested [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.2): SHA-256 `6229cdc8a9b172b356d873c92554fc277d9ecae43d4a0352811478d2c517bca3`. An initial credential lookup missed the existing API-key entry; publication used that existing credential without a new login. Older installers do not permit the new root in the expanded `--latest` catalog; use 1.0.2 for that channel.
 
 Validation: twenty-entry catalog and 27 manifest checks, six artifact-contract tests, four PWA-helper tests, fifty installer tests and packed consumer verification. Browser evidence for the optional skin and live site/MCP checks is recorded separately in the private release walkthrough.
 
