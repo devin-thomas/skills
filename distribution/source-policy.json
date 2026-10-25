@@ -18,7 +18,8 @@
       "task-execution-prompt/",
       "branded-sign-in/",
       "agent-cli/",
-      "immutable-reports/"
+      "immutable-reports/",
+      "agent-prompt/"
     ],
     "devin-thomas/starter-pack": [
       "public/skills/starter-pack/",
