@@ -403,6 +403,27 @@
       "prerequisites": [],
       "recommendationOnly": false,
       "sourceRef": "main"
+    },
+    {
+      "id": "agent-prompt",
+      "slug": "agent-prompt",
+      "title": "Agent Prompt",
+      "summary": "Build branded agent handoffs with short guide-backed prompts, host styling, and optional visual defaults.",
+      "category": "build",
+      "order": 10,
+      "sourceRepo": "devin-thomas/skills",
+      "sourcePath": "agent-prompt/SKILL.md",
+      "sourceVersion": null,
+      "sourceRevision": "8b3331b205fcc2700cb4d713c5f78e3d606e9ab4",
+      "public": true,
+      "ownedBy": "devin-thomas",
+      "relatedSkills": [
+        "no-useless-copy",
+        "branded-sign-in"
+      ],
+      "prerequisites": [],
+      "recommendationOnly": false,
+      "sourceRef": "main"
     }
   ]
 }

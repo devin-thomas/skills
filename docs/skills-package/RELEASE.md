@@ -1,5 +1,13 @@
 # Skills package releases
 
+## 1.0.2 public Agent Prompt
+
+Adds the portable `agent-prompt` skill, its implementation references and optional scoped light/dark defaults. The bundle contains twenty skills; existing snapshots retain their source pins. The public skill has no private dependencies.
+
+The tested archive is distributed through the [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.2). npm remains at 1.0.1 because neither configured host has publishing authentication. Use the linked archive for Agent Prompt and when using the expanded `--latest` catalog; older installers do not permit the new source root. No npm publication is claimed.
+
+Validation: twenty-entry catalog and 27 manifest checks, six artifact-contract tests, four PWA-helper tests, fifty installer tests and packed consumer verification. Browser evidence for the optional skin and live site/MCP checks is recorded separately in the private release walkthrough.
+
 ## 1.0.1 complete public skill refresh
 
 Owner-approved release: all sixteen public-repository skill snapshots are pinned to source commit `2f245b58d25cf0da5aeb61f137e8909ef7a10891`, including the new portable `agent-cli` and `immutable-reports` additions. Together with the three retained external snapshots, the package contains nineteen skills. The public style skill references all nine finalized guides. The execution skills default to automatic repair and asynchronous human questions while independent ready work continues; an unspecified backlog run follows its authorized scope endpoint.
