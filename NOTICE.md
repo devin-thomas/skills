@@ -18,3 +18,6 @@ Third-party software and services referenced by a skill keep their own terms.
 
 The standalone `branded-sign-in` guidance is also MIT licensed under
 [its own license](branded-sign-in/LICENSE). No provider artwork is distributed by it.
+
+The standalone `agent-prompt` instructions and optional stylesheet are MIT licensed under
+[their own license](agent-prompt/LICENSE). Referenced product artwork retains its owners’ terms.

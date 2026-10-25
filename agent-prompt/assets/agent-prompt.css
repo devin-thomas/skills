@@ -1,0 +1,82 @@
+/* Optional fallback. Map these scoped tokens to the host's visual system. */
+.agent-prompt {
+  --ap-surface: #ffffff;
+  --ap-text: #171717;
+  --ap-border: #737373;
+  --ap-selected: #eeeeee;
+  --ap-focus: #2563eb;
+  --ap-mono-filter: none;
+  box-sizing: border-box;
+  display: grid;
+  gap: 0.75rem;
+  min-inline-size: 0;
+  padding: 1rem;
+  color: var(--ap-text);
+  background: var(--ap-surface);
+  border: 1px solid var(--ap-border);
+  border-radius: 0.75rem;
+  font: 400 1rem/1.5 Geist, system-ui, sans-serif;
+}
+.agent-prompt *, .agent-prompt *::before, .agent-prompt *::after {
+  box-sizing: inherit;
+}
+.agent-prompt__choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  gap: 0.5rem;
+}
+.agent-prompt__choice, .agent-prompt__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-block-size: 44px;
+  min-inline-size: 0;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--ap-border);
+  border-radius: 0.5rem;
+  color: inherit;
+  background: var(--ap-surface);
+  font: inherit;
+  text-align: center;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.agent-prompt__choice[aria-pressed="true"], .agent-prompt__action {
+  background: var(--ap-selected);
+  font-weight: 600;
+}
+.agent-prompt button:focus-visible, .agent-prompt a:focus-visible {
+  outline: 3px solid var(--ap-focus);
+  outline-offset: 3px;
+}
+.agent-prompt button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.agent-prompt__mark {
+  flex: none;
+  inline-size: 24px;
+  block-size: 24px;
+  object-fit: contain;
+}
+.agent-prompt__mark[data-monochrome] { filter: var(--ap-mono-filter); }
+.agent-prompt__status { min-block-size: 1.5em; margin: 0; }
+@media (prefers-color-scheme: dark) {
+  .agent-prompt:not([data-theme="light"]) {
+    --ap-surface: #171717;
+    --ap-text: #fafafa;
+    --ap-border: #a3a3a3;
+    --ap-selected: #303030;
+    --ap-focus: #93c5fd;
+    --ap-mono-filter: brightness(0) invert(1);
+  }
+}
+.agent-prompt[data-theme="dark"] {
+  --ap-surface: #171717;
+  --ap-text: #fafafa;
+  --ap-border: #a3a3a3;
+  --ap-selected: #303030;
+  --ap-focus: #93c5fd;
+  --ap-mono-filter: brightness(0) invert(1);
+}

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "skillName": "agent-prompt",
+  "skillBlobSha": "e78f18c3a6fa37b672de864665b97278ca1e76fb",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "formats",
+      "path": "references/formats.md",
+      "gitBlobSha": "a515f712dc1ad89d8da8acfa5e8a39b2b211601c",
+      "required": "optional"
+    },
+    {
+      "key": "contract",
+      "path": "references/contract.md",
+      "gitBlobSha": "dbc08105685ad03b23057bcd9247b275ab95dbce",
+      "required": "stage",
+      "stages": [
+        "implementation",
+        "audit"
+      ]
+    },
+    {
+      "key": "observed-patterns",
+      "path": "references/observed-patterns.md",
+      "gitBlobSha": "4bdbf193163d09bd05d1d57fe9f480d5273adbd7",
+      "required": "optional"
+    },
+    {
+      "key": "default-appearance",
+      "path": "references/default-appearance.md",
+      "gitBlobSha": "8a5750c62545d2377ed848913eb2ecab8cef68be",
+      "required": "optional"
+    },
+    {
+      "key": "default-stylesheet",
+      "path": "assets/agent-prompt.css",
+      "gitBlobSha": "4af7a054efa67b55d91e3242ee7ee22d907cd398",
+      "required": "optional"
+    },
+    {
+      "key": "agent-metadata",
+      "path": "agents/openai.yaml",
+      "gitBlobSha": "5fc9e4b54f0a78cc75e6270aaca29e2aa2e6f691",
+      "required": "optional"
+    }
+  ],
+  "stages": [
+    {
+      "key": "implementation",
+      "resources": [
+        "contract"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "audit",
+      "resources": [
+        "contract"
+      ],
+      "dependencies": []
+    }
+  ],
+  "dependencies": []
+}
