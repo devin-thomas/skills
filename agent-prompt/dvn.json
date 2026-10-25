@@ -29,13 +29,13 @@
     {
       "key": "default-appearance",
       "path": "references/default-appearance.md",
-      "gitBlobSha": "8a5750c62545d2377ed848913eb2ecab8cef68be",
+      "gitBlobSha": "0acc2d2613ce3eef9e7076318d565e6f7a9c8d20",
       "required": "optional"
     },
     {
       "key": "default-stylesheet",
       "path": "assets/agent-prompt.css",
-      "gitBlobSha": "4af7a054efa67b55d91e3242ee7ee22d907cd398",
+      "gitBlobSha": "50733b6d426404b0242c201a2f871eafe9188f68",
       "required": "optional"
     },
     {

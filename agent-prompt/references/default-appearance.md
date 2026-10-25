@@ -27,4 +27,4 @@ This is a structural example. Supply a verified product asset and implement sele
 
 The stylesheet follows the OS preference unless `data-theme="light"` or `data-theme="dark"` is set on the component. If the host uses a theme class, provider, or other tokens, map to that instead of introducing a second preference. Use `data-monochrome` on an image only when its actual artwork is monochrome; the fallback inverts those marks on dark surfaces. Full-color marks keep their palette.
 
-Check actual Dark Reader transformation separately from the native dark theme. If its transformed surface changes logo contrast, use a scoped monochrome inversion or an authentic white variant only on that surface. Keep treatment switches separate from payload generation.
+Check actual Dark Reader transformation separately from the native dark theme. The stylesheet recognizes its dark-scheme attribute and inverts only images explicitly marked `data-monochrome`. For other surface transformations, use a scoped monochrome inversion or an authentic white variant only on that surface. Keep treatment switches separate from payload generation.
