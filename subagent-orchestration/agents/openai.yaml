@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sub-Agent Orchestration"
+  short_description: "Portable parallel workflows and worker model defaults"
+  default_prompt: "Use $subagent-orchestration to identify independent workstreams, resolve per-harness worker preferences, delegate bounded tasks, and verify the integrated result."
+policy:
+  allow_implicit_invocation: true
