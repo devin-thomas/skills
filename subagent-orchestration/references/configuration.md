@@ -46,9 +46,9 @@ Save this as `.subagent-orchestration/config.json` in your project:
     "maxDepth": 1
   },
   "harnesses": {
-    "codex": { "model": "gpt-6-luna", "effort": "medium" },
+    "codex": { "model": "YOUR_CODEX_MODEL_ID", "effort": "medium" },
     "claude-code": { "model": "sonnet", "effort": "medium" },
-    "gemini-cli": { "model": "gemini-3-flash-preview", "thinkingBudget": 1024 },
+    "gemini-cli": { "model": "YOUR_GEMINI_MODEL_ID", "thinkingBudget": 1024 },
     "cursor": { "model": null, "effort": null }
   },
   "roles": {
@@ -60,7 +60,7 @@ Save this as `.subagent-orchestration/config.json` in your project:
 }
 ```
 
-These are examples, **not** bundled model defaults or guarantees of account
+These are illustrative overrides: replace the uppercase model placeholders with\nIDs verified in your installed CLI. They are **not** bundled defaults or guarantees of account
 access. Replace them with model identifiers supported by your harness and
 account; different models may reject a particular effort level. The
 `gemini-cli` numeric thinking budget is not equivalent to Codex/Claude effort.
