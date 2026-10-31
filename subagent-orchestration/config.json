@@ -1,0 +1,21 @@
+{
+  "$schema": "./config.schema.json",
+  "schemaVersion": 1,
+  "policy": {
+    "maxConcurrentWorkers": 4,
+    "maxDepth": 1,
+    "preferNative": true,
+    "allowCrossHarnessFallback": false,
+    "unsupportedSetting": "report-and-inherit"
+  },
+  "harnesses": {
+    "codex": { "model": null, "effort": null },
+    "claude-code": { "model": null, "effort": null },
+    "cursor": { "model": null, "effort": null },
+    "gemini-cli": { "model": null, "thinkingBudget": null },
+    "antigravity": { "model": null },
+    "grok-cli": { "model": null, "effort": null },
+    "grok-bot": {}
+  },
+  "roles": {}
+}
