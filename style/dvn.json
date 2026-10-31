@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "skillName": "style",
-  "skillBlobSha": "fbc0647a90b859ae24ab2b0aff692633aeae2019",
+  "skillBlobSha": "6d52812e9b753e06b1efbf6023bb9a7c0d81a75b",
   "auditComplete": true,
   "resources": [
     {
       "key": "typescript",
       "path": "typescript.md",
-      "gitBlobSha": "1df72efc06900c24f8920f22d951be7d1fe45e53",
+      "gitBlobSha": "c9245e44e4cef993bfc00a7550413767ed1b309f",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style"
@@ -31,7 +31,7 @@
     {
       "key": "react-typescript",
       "path": "react-typescript.md",
-      "gitBlobSha": "325fcf2e7c7b89afa60d576d4cbebdd579e918d1",
+      "gitBlobSha": "edfa8951dd33a8e482b230fc46fac9de438dd512",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style",
@@ -58,7 +58,7 @@
     {
       "key": "javascript",
       "path": "javascript.md",
-      "gitBlobSha": "e51560cb3747a6bdc937fcd679d143672f69447a",
+      "gitBlobSha": "21e43f7389b2a3c311e9ff8ab085f92cabb12072",
       "required": "stage",
       "repository": "devin-thomas/starter-pack",
       "root": "content/style",

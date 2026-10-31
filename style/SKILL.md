@@ -11,6 +11,8 @@ Read the [style catalog](https://starter.uppercut-labs.com/style/catalog.json) a
 
 When invoked through `dvn`, activate the matching guide stages before scanning or writing code: `typescript`, `godot`, `kotlin`, `react-typescript`, `python`, `swift-swiftui`, `javascript`, `dart-flutter`, or `rust`. Read the returned guide resources and their required companions. React + TypeScript supplements TypeScript; use both for React components. JavaScript also uses the TypeScript companion for shared contracts. Direct skill installations read those same guides from the catalog's Markdown URLs.
 
+For JavaScript, TypeScript, and React website/application UI, apply TypeScript D026 and its companion rules JS029/RX034 before generating labels or choosing icons: default to text and proper icons; emoji require an explicit user request. Follow the rule's content exceptions and source/rendered handoff check.
+
 If no guide matches a language, say so and leave that code out of scope.
 
 Explicit user instructions and documented project rules (AGENTS.md, CLAUDE.md, linter or formatter configuration) take precedence over a guide where they conflict. Undocumented habits in existing code do not; those are what a scan reports.
