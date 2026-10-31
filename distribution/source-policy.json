@@ -19,7 +19,8 @@
       "branded-sign-in/",
       "agent-cli/",
       "immutable-reports/",
-      "agent-prompt/"
+      "agent-prompt/",
+      "subagent-orchestration/"
     ],
     "devin-thomas/starter-pack": [
       "public/skills/starter-pack/",
