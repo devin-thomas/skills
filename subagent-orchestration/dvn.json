@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "skillName": "subagent-orchestration",
+  "skillBlobSha": "88b2795294aa148cc787ba1f4327911a62b26b65",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "config",
+      "path": "config.json",
+      "gitBlobSha": "3e103fbd1c6f39531df58611b5015f824a31399d",
+      "required": "optional"
+    },
+    {
+      "key": "config-schema",
+      "path": "config.schema.json",
+      "gitBlobSha": "b18b181e92c68c665f21364b4c1ce492b793b800",
+      "required": "optional"
+    },
+    {
+      "key": "configuration",
+      "path": "references/configuration.md",
+      "gitBlobSha": "44b36dc97fb572c79c340901b9c69f00521f3e24",
+      "required": "optional"
+    },
+    {
+      "key": "harness-routing",
+      "path": "references/harness-routing.md",
+      "gitBlobSha": "e3549f77cc42dbe7e874c73a382678502016d781",
+      "required": "optional"
+    },
+    {
+      "key": "orchestration-patterns",
+      "path": "references/orchestration-patterns.md",
+      "gitBlobSha": "7e3c0778a38a321d6bd6bee60d553db003c378a5",
+      "required": "optional"
+    },
+    {
+      "key": "agents-openai",
+      "path": "agents/openai.yaml",
+      "gitBlobSha": "eb6bade2021bc6e70ffa7a7b3baecfae73ef3fde",
+      "required": "optional"
+    },
+    {
+      "key": "license",
+      "path": "LICENSE.txt",
+      "gitBlobSha": "17517a5c6b5f20b123980f169a76d0bb2552ecae",
+      "required": "optional"
+    }
+  ],
+  "stages": [],
+  "dependencies": []
+}
