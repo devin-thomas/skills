@@ -424,6 +424,26 @@
       "prerequisites": [],
       "recommendationOnly": false,
       "sourceRef": "main"
+    },
+    {
+      "id": "subagent-orchestration",
+      "slug": "subagent-orchestration",
+      "title": "Sub-Agent Orchestration",
+      "summary": "Plan, route, and verify native parallel subagents with per-harness and per-role model/effort preferences.",
+      "category": "build",
+      "order": 11,
+      "sourceRepo": "devin-thomas/skills",
+      "sourcePath": "subagent-orchestration/SKILL.md",
+      "sourceVersion": null,
+      "sourceRevision": "88b2795294aa148cc787ba1f4327911a62b26b65",
+      "public": true,
+      "ownedBy": "devin-thomas",
+      "relatedSkills": [
+        "agent-cli"
+      ],
+      "prerequisites": [],
+      "recommendationOnly": false,
+      "sourceRef": "main"
     }
   ]
 }
