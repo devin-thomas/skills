@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/devin-thomas/skills/blob/main/subagent-orchestration/config.schema.json",
+  "title": "Sub-Agent Orchestration Preferences",
+  "type": "object",
+  "required": ["schemaVersion"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maxConcurrentWorkers": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "maxDepth": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "preferNative": { "type": "boolean" },
+        "allowCrossHarnessFallback": { "type": "boolean" },
+        "unsupportedSetting": { "enum": ["report-and-inherit", "fail"] }
+      }
+    },
+    "harnesses": { "$ref": "#/$defs/harnessRoutes" },
+    "roles": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9-]*$" },
+      "additionalProperties": { "$ref": "#/$defs/harnessRoutes" }
+    }
+  },
+  "$defs": {
+    "modelEffort": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": { "$ref": "#/$defs/optionalModel" },
+        "effort": { "$ref": "#/$defs/optionalModel" }
+      }
+    },
+    "gemini": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": { "$ref": "#/$defs/optionalModel" },
+        "thinkingBudget": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "antigravity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": { "enum": [null, "inherit", "flash", "pro"] }
+      }
+    },
+    "optionalModel": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "harnessRoutes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "codex": { "$ref": "#/$defs/modelEffort" },
+        "claude-code": { "$ref": "#/$defs/modelEffort" },
+        "cursor": { "$ref": "#/$defs/modelEffort" },
+        "gemini-cli": { "$ref": "#/$defs/gemini" },
+        "antigravity": { "$ref": "#/$defs/antigravity" },
+        "grok-cli": { "$ref": "#/$defs/modelEffort" },
+        "grok-bot": { "type": "object", "maxProperties": 0 }
+      }
+    }
+  }
+}
