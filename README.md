@@ -18,6 +18,7 @@ For guided onboarding, start at [Starter Pack](https://starter.uppercut-labs.com
 | Find and fix visual/interaction defects | [surface-sweep](surface-sweep/SKILL.md) | Corrected app, reviewed browser evidence, honest coverage gaps |
 | Present a working product | [surface-sweep-showcase](surface-sweep-showcase/SKILL.md) | Corrected app and screenshot-led showcase; requires surface-sweep |
 | Delegate a bounded task or hand off an agent session | [agent-cli](agent-cli/SKILL.md) | Supported vendor CLI workflow with separate execution, output and handoff evidence |
+| Orchestrate native subagents with configurable worker routing | [subagent-orchestration](subagent-orchestration/SKILL.md) | Optional per-harness model/effort defaults and role overrides, bounded fan-out and integrated verification |
 | Preserve plans and verification history | [immutable-reports](immutable-reports/SKILL.md) | Append-only snapshots and a mutable evidence-linked index |
 | Follow my coding conventions | [style](style/SKILL.md) | Report of guide deviations (starter.uppercut-labs.com/style); `refactor` applies them |
 | Build or refine account interfaces | [branded-sign-in](branded-sign-in/SKILL.md) | Branded auth methods, original logo geometry and browser acceptance |
