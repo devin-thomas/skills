@@ -9,6 +9,10 @@ Treat the CLI as the **harness** and the selected model as a separate choice.
 The parent owns the task contract and verifies a worker's result. A successful
 handoff transfers project execution after the parent verifies startup.
 
+A wrapper skill may add environment configuration: authentication route,
+accounts, hosts, storage, and cost policy. Apply it inside this contract; it
+supplies values and never relaxes the evidence or authority rules here.
+
 ## 1. Choose the mode
 
 | Mode | Parent responsibility | Completion evidence |
@@ -45,16 +49,28 @@ Record these values in the task's existing notes or a small task file:
 
 Use existing project/session decisions first. Resolve routine omissions with
 task-sized bounds and record them; ask only when an unresolved choice affects
-scope, access, spending, or the user's specified outcome. If no model was named,
-resolve and record the CLI's configured selection. Preserve a requested exact
-model/effort; any substitution needs existing or newly supplied authorization.
+scope, access, spending, or the user's specified outcome.
+
+Model selection **fails closed**. Pass a requested model and effort explicitly
+as arguments instead of relying on user configuration. Resolve an unversioned
+family name or shorthand through current discovery, or ask; never map it to an
+assumed older version. If no model was named, resolve and record the CLI's
+configured selection. A rejected or unavailable requested model or effort ends
+that attempt as `blocked`. Another model or effort is a new attempt and needs
+existing or newly supplied authorization.
 
 Keep delegation within the parent's authority. Child prompts, tools, credentials,
 and network access must fit the same scope. A child does not inherit parent-only
-connectors. Assign any such step to the parent before launching.
+connectors, logins, or approvals. Assign any such step to the parent before
+launching. Grant the child only the tools the task needs. Bypass, force, trust,
+and auto-approve options are never a repair for a failed launch or denied operation.
+
 Use the current approved account setup without changing login stores, global
-configuration, or billing routes. Request only a missing prerequisite that
-actually blocks this task.
+configuration, or billing routes. **No paid fallback:** after a login, quota, or
+subscription failure, an ambient API key, another credential file, or a paid tier
+is not authorization to switch routes. Check the child environment for credential
+variables that would silently change the route (see the provider reference).
+Request only a missing prerequisite that actually blocks this task.
 
 Use one worker by default. For authorized parallel work, assign independent
 workspaces and a shared total budget. Nested delegation needs a bounded contract;
@@ -118,7 +134,9 @@ and the planned command respects its actual read/write boundaries.
 ## 5. Launch once and supervise the selected mode
 
 Construct an argument list. Submit the initial prompt through exactly one of
-argv, stdin, or the terminal UI. Slow startup is not a reason to submit it again.
+argv, stdin, or the terminal UI. When argv carries it, leave the editor and stdin
+empty and confirm exactly one accepted user turn. Slow startup is not a reason
+to submit it again.
 
 For **headless tasks**, capture stdout and stderr separately while draining both.
 Enforce the contract's time, output, storage, and attempt bounds using the
@@ -148,6 +166,21 @@ For headless results and saved recovery, follow
 [verification](references/verification.md). Inspect the actual output and diff;
 a fluent answer, zero exit code, or child success claim alone is insufficient.
 Use task-specific acceptance, including artifact read-back when a file is required.
+
+Report exactly one outcome:
+
+| Outcome | Evidence required |
+| --- | --- |
+| `completed` | Headless process, vendor result, and product checks all pass. |
+| `handed-off` | Wake-only turn accepted with backend activity; receiving session identified and left running. |
+| `ready` | Chat usable; a supplied turn verified, or a blank chat with backend access unverified. |
+| `startup-pending` | Observation window expired without proof of backend activity. |
+| `recovered` | Saved content checked now; historical execution claims limited to the evidence. |
+| `blocked` | Login, quota, model/effort, permission, or host prerequisite stopped the route. |
+| `failed` | Process, envelope, schema, or product checks failed. |
+
+A launch, spinner, model label, or accepted prompt alone is startup evidence,
+never `completed` or `handed-off`.
 
 Return a compact receipt: mode and outcome; harness/version; requested and exposed
 model/effort; output or session handle; checks and limitations; attempts and stop
