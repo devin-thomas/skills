@@ -63,9 +63,10 @@ Use this table as a routing index, then read the selected entry point and only r
 python3 scripts/validate-skills.py
 python3 -m unittest discover -s tests -p 'test_grill_artifact_contract.py'
 node --test tests/pwa-helpers.test.mjs
+node --test tests/invocability.test.mjs
 git diff --check
 ```
 
-The skill validator enforces the portable frontmatter subset used by the supported hosts in addition to local-link and machine-path checks. The PWA tests require Node.js 22+ and use temporary local fixtures. They do not prove installability or physical-device behavior. Browser-probe validation needs a permitted real browser. See [validation notes](docs/validation.md) for observed publication checks.
+The skill validator enforces the portable frontmatter subset used by the supported hosts in addition to local-link and machine-path checks. It also fails any skill hidden from the model (`disable-model-invocation: true`, `user-invocable-only`, `allow_implicit_invocation: false` in `agents/openai.yaml`, or an equivalent); `user-invocable: false` only hides a skill from the slash menu and is allowed. The release gate applies the same rule to every bundled skill. The PWA tests require Node.js 22+ and use temporary local fixtures. They do not prove installability or physical-device behavior. Browser-probe validation needs a permitted real browser. See [validation notes](docs/validation.md) for observed publication checks.
 
 Keep project evidence, credentials, private preferences, local runtimes, and generated artifacts out of this repository. Preserve attribution and source revisions. The approved `@uppercut-labs/skills` bundle is [MIT licensed](packages/skills-cli/LICENSE); see the [source notice](NOTICE.md) for its scope and attribution. This repository as a whole has no blanket license.
