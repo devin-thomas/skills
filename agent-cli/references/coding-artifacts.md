@@ -31,6 +31,7 @@ hidden-state precedence, visible unique controls, keyboard behavior, rendering
 changes, and cleanup. Test responsive layout, reduced motion, or fallbacks only
 where the product's requirements make them relevant. Keep binary evidence on
 disk; inspect a small useful sample instead of embedding image payloads in logs.
+Bound text reads: keep base64, lockfiles, and dependency bundles out of context.
 
 Repair failed checks and their dependencies, then run the required final gate
 against the final files. Reuse a suitable independent audit fixture after
