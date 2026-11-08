@@ -21,7 +21,9 @@ bounded cleanup; current reference pages disagree about default timeouts and
 available effort levels.
 
 Add `--mode plan` for a planning task, not as a security boundary. Verify its
-effective behavior and any interacting flags on the installed version.
+effective behavior and any interacting flags on the installed version; some
+versions warn that plan mode has no effect while slash-command expansion is
+disabled.
 The documented `--sandbox` option can have no effect when sandboxing is
 unavailable. Require evidence of effective containment before claiming isolation.
 
@@ -29,7 +31,8 @@ Inspect inherited permission policy. Headless mode can automatically allow
 workspace reads and writes. A required tool can be denied while the process
 continues and exits zero; inspect stderr and required-operation outcomes.
 Use scoped existing policy or report the blocked capability rather than adding
-an unrestricted permission bypass.
+an unrestricted permission bypass. Keep the authorized login route; an
+available vendor API key is not authorization to move the run to API billing.
 
 ## Decode the result
 

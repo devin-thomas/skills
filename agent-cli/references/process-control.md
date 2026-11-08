@@ -18,6 +18,14 @@ string. Use a verified native launch API, such as a supported
 arguments containing spaces, quotes, empty values, and trailing backslashes.
 Treat dotenv files as data, never as shell programs.
 
+- PowerShell 7.3 changed native argument passing; record the active
+  `$PSNativeCommandArgumentPassing` mode. Windows PowerShell 5.1 redirection
+  commonly writes UTF-16LE.
+- On Windows, Python `selectors` cannot wait on subprocess pipes; drain them
+  with threads or an async subprocess API.
+- Resolve which installed copy and npm shim PATH selects; an older copy can
+  shadow the expected version.
+
 Resolve paths with filesystem APIs. Distinguish Windows absolute and
 drive-relative paths, UNC, WSL, Git Bash, POSIX paths, and URLs. Check canonical
 containment through symlinks/junctions; a string prefix is insufficient.

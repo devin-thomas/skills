@@ -24,6 +24,8 @@ reference defines force as allowing commands unless explicitly denied. Treat it
 as a broader permission change, not a write-only switch. Use an already
 authorized, adequately scoped route or return a patch for the parent to apply.
 Do not weaken permissions to repair authentication or quota failures.
+A model listing does not prove quota: a usage-limit or action-required error is
+`blocked`, and enabling extra spending needs its own authorization.
 
 Avoid automatic `--trust` or `--approve-mcps`; preserve the intended workspace
 trust and MCP scope. A documented sandbox option still needs host qualification.
