@@ -33,7 +33,8 @@ function runGate({ out, sourceRepos }) {
   const startedAt = new Date().toISOString();
   const outDir = resolve(out ?? join(tmpdir(), `uppercut-skills-release-${startedAt.slice(0, 10)}-${process.pid}`));
   mkdirSync(outDir, { recursive: true });
-  const work = mkdtempSync(join(tmpdir(), 'uppercut-skills-gate-'));
+  // Resolve macOS /var -> /private/var: the installer refuses paths through symlinks.
+  const work = realpathSync(mkdtempSync(join(tmpdir(), 'uppercut-skills-gate-')));
   const record = {
     schemaVersion: '1.0.0',
     package: PACKAGE_NAME,
