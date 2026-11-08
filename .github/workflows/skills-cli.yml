@@ -43,4 +43,5 @@ jobs:
       - run: node --test programmatic-harness/scripts/codex-proof.test.mjs
       - run: python3 tests/test-freshness.py
       - run: python3 -m unittest discover -s tests -p 'test_grill_artifact_contract.py'
+      - run: python3 -m unittest discover -s tests -p 'test_agent_cli_contract.py'
       - run: node --test tests/pwa-helpers.test.mjs

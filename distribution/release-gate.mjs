@@ -168,6 +168,7 @@ function runGate({ out, sourceRepos }) {
       ['manifest tests', python, ['tests/test-manifest.py']],
       ['freshness tests', python, ['tests/test-freshness.py']],
       ['grill artifact contract', python, ['-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_grill_artifact_contract.py']],
+      ['agent-cli contract', python, ['-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_agent_cli_contract.py']],
       ['PWA helpers', process.execPath, ['--test', 'tests/pwa-helpers.test.mjs']],
       ['programmatic harness proof helpers', process.execPath, ['--test', 'programmatic-harness/scripts/codex-proof.test.mjs']],
     ];
