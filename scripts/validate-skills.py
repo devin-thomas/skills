@@ -4,6 +4,9 @@ import re
 import sys
 from urllib.parse import unquote, urlsplit
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from invocability import RULE as INVOCABLE_RULE, skill_violations  # noqa: E402
+
 root = Path(__file__).resolve().parents[1]
 errors = []
 skills = sorted(root.glob('*/SKILL.md'))
@@ -46,6 +49,9 @@ for entry in skills:
     if len(text.splitlines()) >= 500:
         errors.append(f'{entry.relative_to(root)}: entry point needs progressive disclosure')
 
+    for violation in skill_violations(entry):
+        errors.append(f'{entry.relative_to(root)}: not model-invocable: {violation}. {INVOCABLE_RULE}')
+
 for document in sorted(root.rglob('*.md')):
     if {'.git', 'node_modules', 'dist', 'build', 'coverage'} & set(document.parts):
         continue
@@ -66,7 +72,7 @@ for error in errors:
     print(error, file=sys.stderr)
 if errors:
     sys.exit(1)
-print(f'PASS: {len(skills)} entry points, portable frontmatter, local Markdown links, and home-path checks')
+print(f'PASS: {len(skills)} entry points, portable frontmatter, model invocability, local Markdown links, and home-path checks')
 
 # Run manifest validation as part of the standard validation flow
 import subprocess

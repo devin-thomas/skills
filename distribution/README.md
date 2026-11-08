@@ -36,7 +36,7 @@ The gate clones the approved external sources fresh (or uses `--source-repo owne
 - a bundle that does not rebuild byte-for-byte, a `dvn.json` declaration whose skill or resource hashes do not match, a public skill depending on a `private/` skill, or a NOTICE that does not name the external commits or still contains `PENDING-OWNER`;
 - any repository validator or test failing, or a package version already published to npm.
 
-It then packs one tarball and checks only that file: allowed package files, exact runtime dependencies, bundled bytes against pinned Git sources, a secret and owner-identifier scan, offline bundled installs, host-scope refusal without writes, and the packed CLI and read-only MCP consumer smoke. `release-record.json` and `RELEASE-RECORD.md` record the commit, tool versions, every result and the tarball SHA-256, and the `.sha256` sidecar is written beside the tarball. Native host registration is listed as unverified; record those results separately.
+It then packs one tarball and checks only that file: allowed package files, exact runtime dependencies, bundled bytes against pinned Git sources, a secret and owner-identifier scan, a check that every bundled skill stays model-invocable, offline bundled installs, host-scope refusal without writes, and the packed CLI and read-only MCP consumer smoke. `release-record.json` and `RELEASE-RECORD.md` record the commit, tool versions, every result and the tarball SHA-256, and the `.sha256` sidecar is written beside the tarball. Native host registration is listed as unverified; record those results separately.
 
 Publish that same tarball. Afterwards, compare what was published without rebuilding:
 
