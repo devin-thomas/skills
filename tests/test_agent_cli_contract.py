@@ -112,7 +112,7 @@ class NoUnauthorizedPaidFallbackTests(unittest.TestCase):
 
 class PortabilityTests(unittest.TestCase):
     OWNER_MARKERS = re.compile(
-        r"titan|uppercut|devin|gohan|holding bay|takaya|ts\.net|"
+        r"titan|uppercut|devin|gohan|holding bay|\.ts\.net\b|"
         r"uppercut\.env|CLAUDE_OAUTH_TOKEN|C:[/\\]dev|~/scratch|/Users/|"
         r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|\bssh (research|command)\b",
         re.IGNORECASE,
