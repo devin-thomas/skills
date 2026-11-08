@@ -47,10 +47,17 @@ codex --model MODEL -C WORKSPACE
   -c model_reasoning_effort="EFFORT" "INITIAL_PROMPT"
 ```
 
-Supply the initial prompt once. Check its accepted turn and successful backend
-response/tool activity before claiming a prompted handoff. MCP startup messages
-or a model label alone do not prove acceptance. Preserve the live session handle.
+Supply the initial prompt once. With the prompt in argv, wait for its accepted
+user turn and leave the editor untouched; without it, wait for the editor, then
+submit once. Check the accepted turn and successful backend response/tool
+activity before claiming a prompted handoff. MCP startup messages or a model
+label alone do not prove acceptance. Preserve the live session handle.
 A blank chat can be ready for input without having verified backend access.
+
+A detached process or a surviving shell wrapper is not a running chat; use a
+real PTY. If a limited terminal (for example `TERM=dumb`) triggers a
+continue-anyway prompt, acknowledge it once only when the PTY renders and
+accepts input; otherwise report a terminal transport failure.
 
 ## Model discovery when needed
 
@@ -58,7 +65,8 @@ Use the installed CLI's discovery surface. For the documented app-server stdio
 protocol, initialize the client, await the response, send `initialized`, then
 request `model/list`. Correlate response IDs, follow pagination, and inspect
 `supportedReasoningEfforts`. Keep stdin open and drain stderr asynchronously
-within the probe deadline; close only the owned discovery process.
+within the probe deadline; use asynchronous reads with a deadline rather than a
+blocking line read as the timeout. Close only the owned discovery process.
 
 Discovery describes advertised support. Record actual task acceptance separately,
 including requested selector versus exposed model identity.
