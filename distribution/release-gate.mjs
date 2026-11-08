@@ -184,6 +184,16 @@ function runGate({ out, sourceRepos }) {
       return summarize(run(npm[0], [...npm.slice(1), 'test'], { cwd: packageRoot, timeout: 600_000 }));
     });
 
+    check('candidate version is not yet on npm', () => {
+      // npm versions are immutable. Only a definite E404 counts as available; a network error is not proof.
+      const lookup = spawnSync(npm[0], [...npm.slice(1), 'view', `${PACKAGE_NAME}@${packageJson.version}`, 'version', '--json'], {
+        cwd: packageRoot, encoding: 'utf8', timeout: 60_000,
+      });
+      if (lookup.status === 0 && lookup.stdout.trim()) throw new Error(`${PACKAGE_NAME}@${packageJson.version} is already published; bump the version`);
+      if (!/E404|404 Not Found/.test(`${lookup.stdout}${lookup.stderr}`)) throw new Error(`Could not confirm ${packageJson.version} is unpublished: ${(lookup.stderr || lookup.stdout).trim().split('\n')[0]}`);
+      return `${packageJson.version} absent from the registry`;
+    });
+
     let tarball;
     if (!check('pack candidate tarball', () => {
       const packed = JSON.parse(run(npm[0], [...npm.slice(1), 'pack', '--json', '--pack-destination', outDir], { cwd: packageRoot, timeout: 300_000 }));
