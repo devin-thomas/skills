@@ -16,6 +16,7 @@ import {
 import { platform, release, tmpdir } from 'node:os';
 import { basename, dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { checkBundleInvocability } from './invocability.mjs';
 
 const repositoryRoot = realpathSync(resolve(dirname(fileURLToPath(import.meta.url)), '..'));
 const packageRoot = join(repositoryRoot, 'packages', 'skills-cli');
@@ -170,6 +171,8 @@ function runGate({ out, sourceRepos }) {
       ['grill artifact contract', python, ['-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_grill_artifact_contract.py']],
       ['agent-cli contract', python, ['-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_agent_cli_contract.py']],
       ['PWA helpers', process.execPath, ['--test', 'tests/pwa-helpers.test.mjs']],
+      ['model invocability rules', python, ['-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_invocability.py']],
+      ['model invocability bundle check', process.execPath, ['--test', 'tests/invocability.test.mjs']],
       ['programmatic harness proof helpers', process.execPath, ['--test', 'programmatic-harness/scripts/codex-proof.test.mjs']],
     ];
     for (const [name, command, args] of sourceChecks) {
@@ -236,6 +239,7 @@ function runGate({ out, sourceRepos }) {
     const installedRoot = join(consumer, 'node_modules', '@uppercut-labs', 'skills');
     check('bundled skills match manifest and pinned Git bytes', () => verifyInstalledBundle(installedRoot, manifest, roots));
     check('no private files, credentials or owner identifiers', () => scanForPrivateContent(installedRoot));
+    check('bundled skills stay model-invocable', () => verifyBundledInvocability(installedRoot));
 
     const cli = (args, env = isolatedEnv) => spawnSync(process.execPath, [join(installedRoot, 'bin', 'uppercut-skills.js'), ...args, '--json'], {
       cwd: consumer, env, encoding: 'utf8', timeout: 60_000, maxBuffer: 4 * 1024 * 1024,
@@ -405,6 +409,13 @@ function verifyInstalledBundle(installedRoot, manifest, roots) {
     }
   }
   return `${actual.length} skills, ${files} files byte-identical to pinned Git sources`;
+}
+
+function verifyBundledInvocability(installedRoot) {
+  // Check the shipped bytes: a skill hidden from the model must never publish.
+  const script = `import(${JSON.stringify(pathToFileURL(join(installedRoot, 'dist', 'generated', 'bundle.js')).href)}).then((m) => process.stdout.write(JSON.stringify(m.catalogBundle)))`;
+  const bundle = JSON.parse(run(process.execPath, ['--input-type=module', '-e', script], { cwd: installedRoot, maxBuffer: 64 * 1024 * 1024 }));
+  return checkBundleInvocability(bundle);
 }
 
 function resolveTracked(root, revision, skillRoot, path) {
