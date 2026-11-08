@@ -205,8 +205,9 @@ function runGate({ out, sourceRepos }) {
     const fakeHome = join(work, 'home');
     mkdirSync(consumer, { recursive: true });
     mkdirSync(fakeHome, { recursive: true });
+    // npm's cache lives outside the fake home so the home stays empty unless the package itself writes there.
     const isolatedEnv = {
-      ...process.env, HOME: fakeHome, USERPROFILE: fakeHome, XDG_CONFIG_HOME: join(fakeHome, '.config'),
+      ...process.env, npm_config_cache: join(work, 'npm-cache'), HOME: fakeHome, USERPROFILE: fakeHome, XDG_CONFIG_HOME: join(fakeHome, '.config'),
       APPDATA: join(fakeHome, 'AppData', 'Roaming'), LOCALAPPDATA: join(fakeHome, 'AppData', 'Local'),
     };
     if (!check('install candidate in clean consumer', () => {
@@ -598,4 +599,3 @@ function removeTemp(path, prefix) {
 function log(message) {
   process.stdout.write(`${message}\n`);
 }
-
