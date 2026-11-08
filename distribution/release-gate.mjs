@@ -517,8 +517,10 @@ function parseArguments(argv) {
 }
 
 function toolVersions() {
+  // git and python resolve to real executables on every platform (pythonCommand() already probes them
+  // without a shell), so no shell is needed; shell plus an args array is deprecated on Windows (DEP0190).
   const version = (command, args) => {
-    const result = spawnSync(command, args, { encoding: 'utf8', shell: platform() === 'win32' });
+    const result = spawnSync(command, args, { encoding: 'utf8' });
     return result.status === 0 ? (result.stdout || result.stderr).trim().split('\n')[0] : 'unavailable';
   };
   const npm = npmCommand();
