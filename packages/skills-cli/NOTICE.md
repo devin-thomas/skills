@@ -11,7 +11,7 @@ The bundle includes these separately authored source locations:
 | Bundled skills | Original source | Rights in this package |
 | --- | --- | --- |
 | Seventeen skills, including the Starter Pack adaptation `quick-build` | [devin-thomas/skills](https://github.com/devin-thomas/skills) | MIT for the approved package bundle |
-| `starter-pack` and `computer-setup` | [devin-thomas/starter-pack](https://github.com/devin-thomas/starter-pack) at commit `ac69dee90fcde13fed7a3ff5827e914e125c3620` (Starter Pack 0.2.8, Computer Setup 0.2.3) | Devin Thomas expressly authorized the original bundled skill snapshots for MIT distribution in `@uppercut-labs/skills` on October 3, 2026, and these refreshed snapshots on PENDING-OWNER-GRANT |
+| `starter-pack` and `computer-setup` | [devin-thomas/starter-pack](https://github.com/devin-thomas/starter-pack) at commit `ac69dee90fcde13fed7a3ff5827e914e125c3620` (Starter Pack 0.2.8, Computer Setup 0.2.3) | Devin Thomas expressly authorized the original bundled skill snapshots for MIT distribution in `@uppercut-labs/skills` on October 3, 2026, and these refreshed snapshots on November 8, 2026 |
 | `vidchopper-cli` | [devin-thomas/vid-chopper](https://github.com/devin-thomas/vid-chopper) at commit `428963b6db87e47f98209c92bc59aca41b5f997a` | Upstream MIT; copyright Devin Thomas |
 
 The original Starter Pack repository retains its own restrictive rights notice.
