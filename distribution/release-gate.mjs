@@ -519,11 +519,18 @@ function toolVersions() {
 }
 
 function npmCommand() {
+  // npm on PATH is a symlink to npm-cli.js on macOS/Linux and an npm.cmd shim beside node_modules on Windows.
+  const onPath = (process.env.PATH ?? '').split(platform() === 'win32' ? ';' : ':').filter(Boolean).flatMap((directory) => {
+    const shim = join(directory, 'npm');
+    const resolved = existsSync(shim) ? realpathSync(shim) : '';
+    return [resolved, join(directory, 'node_modules', 'npm', 'bin', 'npm-cli.js')];
+  });
   const candidates = [
     process.env.npm_execpath,
     join(dirname(process.execPath), '..', 'lib', 'node_modules', 'npm', 'bin', 'npm-cli.js'),
     join(dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js'),
-  ].filter((path) => path && path.endsWith('.js') && existsSync(path));
+    ...onPath,
+  ].filter((path) => path && path.endsWith('npm-cli.js') && existsSync(path));
   if (!candidates.length) throw new Error('Cannot locate npm-cli.js next to this Node.js');
   return [process.execPath, candidates[0]];
 }
