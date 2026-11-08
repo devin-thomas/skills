@@ -16,12 +16,24 @@ const project = join(scratch, 'project');
 mkdirSync(consumer);
 mkdirSync(project);
 
+// --tarball checks an already packed candidate instead of packing a new one.
+const tarballOption = process.argv.indexOf('--tarball');
+const candidate = tarballOption > 0 ? process.argv[tarballOption + 1] : undefined;
+if (tarballOption > 0 && !candidate) throw new Error('Usage: smoke-package.mjs [--tarball path/to/candidate.tgz]');
+
 try {
-  const packed = JSON.parse(npm(['pack', '--json', '--pack-destination', scratch], packageRoot));
-  const artifact = Array.isArray(packed) ? packed[0] : packed['@uppercut-labs/skills'];
-  assert.ok(artifact && Array.isArray(artifact.files), 'npm pack did not return the expected package metadata');
-  assert.ok(artifact.files.every(({ path }) => ['LICENSE', 'NOTICE.md', 'README.md', 'package.json'].includes(path) || path.startsWith('bin/') || path.startsWith('dist/')));
-  const tarball = join(scratch, artifact.filename);
+  let artifact;
+  let tarball;
+  if (candidate) {
+    tarball = realpathSync(candidate);
+    artifact = { filename: basename(tarball), integrity: 'candidate', files: null };
+  } else {
+    const packed = JSON.parse(npm(['pack', '--json', '--pack-destination', scratch], packageRoot));
+    artifact = Array.isArray(packed) ? packed[0] : packed['@uppercut-labs/skills'];
+    assert.ok(artifact && Array.isArray(artifact.files), 'npm pack did not return the expected package metadata');
+    assert.ok(artifact.files.every(({ path }) => ['LICENSE', 'NOTICE.md', 'README.md', 'package.json'].includes(path) || path.startsWith('bin/') || path.startsWith('dist/')));
+    tarball = join(scratch, artifact.filename);
+  }
   npm(['install', '--prefix', consumer, '--no-audit', '--no-fund', tarball], packageRoot);
 
   const bin = join(consumer, 'node_modules', '@uppercut-labs', 'skills', 'bin', 'uppercut-skills.js');
@@ -60,7 +72,7 @@ try {
   execFileSync(process.execPath, [join(consumer, 'smoke-mcp-consumer.mjs')], {
     cwd: consumer, encoding: 'utf8', timeout: 30_000, maxBuffer: 2 * 1024 * 1024,
   });
-  process.stdout.write(`Packed consumer passed: ${artifact.filename}, ${artifact.integrity}, ${artifact.files.length} files.\n`);
+  process.stdout.write(`Packed consumer passed: ${artifact.filename}, ${artifact.integrity}${artifact.files ? `, ${artifact.files.length} files` : ''}.\n`);
 } finally {
   const tempRoot = realpathSync(tmpdir());
   const target = realpathSync(scratch);

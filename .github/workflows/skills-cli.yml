@@ -1,25 +1,11 @@
 name: Skills CLI
 
+# Advisory only. Release acceptance uses the local gate (distribution/release-gate.mjs), never this workflow.
+# No hosted Mac runners: macOS is covered by running the local gate on a self-hosted Mac.
 on:
   pull_request:
-    paths:
-      - 'README.md'
-      - 'programmatic-harness/**'
-      - 'tests/test-manifest.py'
-      - 'packages/skills-cli/**'
-      - 'distribution/**'
-      - 'manifest/**'
-      - '.github/workflows/skills-cli.yml'
   push:
     branches: [main]
-    paths:
-      - 'README.md'
-      - 'programmatic-harness/**'
-      - 'tests/test-manifest.py'
-      - 'packages/skills-cli/**'
-      - 'distribution/**'
-      - 'manifest/**'
-      - '.github/workflows/skills-cli.yml'
 
 jobs:
   package:
@@ -30,8 +16,6 @@ jobs:
           - os: ubuntu-latest
             node: '22'
           - os: windows-latest
-            node: '22'
-          - os: macos-latest
             node: '22'
           - os: ubuntu-latest
             node: '24'
@@ -57,4 +41,7 @@ jobs:
       - run: python3 scripts/validate-skills.py
       - run: python3 tests/test-manifest.py
       - run: node --test programmatic-harness/scripts/codex-proof.test.mjs
+      - run: python3 tests/test-freshness.py
+      - run: python3 -m unittest discover -s tests -p 'test_grill_artifact_contract.py'
+      - run: python3 -m unittest discover -s tests -p 'test_agent_cli_contract.py'
       - run: node --test tests/pwa-helpers.test.mjs

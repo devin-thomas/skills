@@ -8,10 +8,15 @@ const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const manifest = JSON.parse(readFileSync(join(repositoryRoot, 'manifest', 'skills.json'), 'utf8'));
 const policy = JSON.parse(readFileSync(join(repositoryRoot, 'distribution', 'source-policy.json'), 'utf8'));
 const sourceRoots = new Map([[policy.catalogRepository, repositoryRoot]]);
+let output = join(repositoryRoot, 'packages', 'skills-cli', 'src', 'generated', 'bundle.ts');
 
 for (let index = 2; index < process.argv.length; index += 1) {
+  if (process.argv[index] === '--output' && process.argv[index + 1]) {
+    output = resolve(process.argv[++index]);
+    continue;
+  }
   if (process.argv[index] !== '--source-repo' || !process.argv[index + 1]) {
-    throw new Error('Usage: node distribution/build-bundle.mjs --source-repo owner/repo=/absolute/checkout [--source-repo ...]');
+    throw new Error('Usage: node distribution/build-bundle.mjs --source-repo owner/repo=/absolute/checkout [--source-repo ...] [--output file]');
   }
   const option = process.argv[++index];
   const delimiter = option.indexOf('=');
@@ -84,7 +89,6 @@ for (const entry of manifest.skills) {
   };
 }
 
-const output = join(repositoryRoot, 'packages', 'skills-cli', 'src', 'generated', 'bundle.ts');
 mkdirSync(dirname(output), { recursive: true });
 writeFileSync(output, `import type { CatalogBundle } from '../catalog/types.js';\n\nexport const catalogBundle: CatalogBundle = ${JSON.stringify(bundle, null, 2)};\n`);
 process.stdout.write(`Bundled ${manifest.skills.length} skills, ${totalBytes} source bytes into ${output}\n`);
