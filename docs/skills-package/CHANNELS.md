@@ -1,5 +1,9 @@
 # Content channels, provenance, and updates
 
+> **Status:** design specification written for the 0.1.0 installer. The commands below are the original planning
+> examples. For current behavior, use the [CLI guide](../../packages/skills-cli/README.md#versions-and-content-channels)
+> and the [release record](RELEASE.md).
+
 ## Two versions, two meanings
 
 The npm version identifies installer code and its embedded stable snapshot. Skill source versions identify content.
@@ -59,7 +63,9 @@ an ordinary install succeed. Rate limits are actionable source errors.
 
 Commit pinning and digests establish snapshot identity and detect corruption; they do not prove a trusted author's
 content is harmless. No install-time execution, install hooks, automatic host permission changes, or signature claims
-without actual verification. The public bundle must exclude credentials, private preferences, host receipts, and source
+without actual verification. One narrow exception shipped in 0.1.0: a `postinstall` script that fills a fresh, qualified
+Grok Bot account library on the Bot's own computer and writes nothing elsewhere. Its guards are described in the
+[CLI guide](../../packages/skills-cli/README.md#install-time-script-grok-bot-only) and [GROKBOT.md](GROKBOT.md). The public bundle must exclude credentials, private preferences, host receipts, and source
 files outside its declared public resource closure.
 
 ## Shared dependency revisions
