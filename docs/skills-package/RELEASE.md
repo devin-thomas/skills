@@ -1,5 +1,7 @@
 # Skills package releases
 
+Each release below is accepted by the local [release gate](../../distribution/README.md#release-gate) unless its entry says otherwise. Earlier entries record the checks that were run at the time.
+
 ## 1.0.2 public Agent Prompt
 
 Adds the portable `agent-prompt` skill, its implementation references and optional scoped light/dark defaults. The bundle contains twenty skills; existing snapshots retain their source pins. The public skill has no private dependencies.

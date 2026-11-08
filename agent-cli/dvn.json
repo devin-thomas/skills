@@ -1,43 +1,43 @@
 {
   "schemaVersion": 1,
   "skillName": "agent-cli",
-  "skillBlobSha": "d362bfd07e11dab57fc9a290e6ec69c4066c5e94",
+  "skillBlobSha": "eb4dd9233b5a95c14fbd66c0db6de374053fe5c6",
   "auditComplete": true,
   "resources": [
     {
       "key": "antigravity",
       "path": "references/antigravity.md",
-      "gitBlobSha": "4d09a9fcb5a8c0aaaea06470338cf3caf99fd1e1",
+      "gitBlobSha": "caca1f440c8e7707d4559168921cc3f245b5b11a",
       "required": "optional"
     },
     {
       "key": "claude",
       "path": "references/claude.md",
-      "gitBlobSha": "70c0e6212ddba17d00f55a29cdc903774930647d",
+      "gitBlobSha": "d8387b180193bf4597af63f0617961171490c566",
       "required": "optional"
     },
     {
       "key": "codex",
       "path": "references/codex.md",
-      "gitBlobSha": "8ac009f352f62c66f60e300c36b9b2cc6ff4fb67",
+      "gitBlobSha": "f8272f6833d911c74fd35fa4eda5cedcb13f4b33",
       "required": "optional"
     },
     {
       "key": "coding-artifacts",
       "path": "references/coding-artifacts.md",
-      "gitBlobSha": "85dc77d6b5027a140e741f6e361d1831e3623d11",
+      "gitBlobSha": "5aa78ad8e81d13e241eafe4f13dcaca148b4449a",
       "required": "optional"
     },
     {
       "key": "cursor",
       "path": "references/cursor.md",
-      "gitBlobSha": "98a2a9d9a7f073c65c0132f58192639e8e883099",
+      "gitBlobSha": "53d15d717832ab5a1b51affc3f0499c7821ed4ea",
       "required": "optional"
     },
     {
       "key": "process-control",
       "path": "references/process-control.md",
-      "gitBlobSha": "49f5ae44b97627c7fa9e6c4773adde5ca1f866d9",
+      "gitBlobSha": "4f5b954b71a8342706f5c35acc9ba173c15c661e",
       "required": "optional"
     },
     {
@@ -53,6 +53,63 @@
       "required": "optional"
     }
   ],
-  "stages": [],
+  "stages": [
+    {
+      "key": "antigravity",
+      "resources": [
+        "antigravity"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "claude",
+      "resources": [
+        "claude"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "codex",
+      "resources": [
+        "codex"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "coding-artifacts",
+      "resources": [
+        "coding-artifacts"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "cursor",
+      "resources": [
+        "cursor"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "process-control",
+      "resources": [
+        "process-control"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "usage",
+      "resources": [
+        "usage"
+      ],
+      "dependencies": []
+    },
+    {
+      "key": "verification",
+      "resources": [
+        "verification"
+      ],
+      "dependencies": []
+    }
+  ],
   "dependencies": []
 }
