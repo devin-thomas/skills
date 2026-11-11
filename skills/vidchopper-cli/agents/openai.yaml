@@ -1,0 +1,4 @@
+interface:
+  display_name: "VidChopper CLI"
+  short_description: "Plan and verify local chapter exports"
+  default_prompt: "Use $vidchopper-cli to inspect my local video and ChapterFile, dry-run the export, and ask before writing clips."

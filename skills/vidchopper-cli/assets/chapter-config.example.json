@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vidchopper.app/schemas/chapter-config/v1/schema.json",
+  "version": 1,
+  "output": {
+    "folder": "%source%_chapters",
+    "namingPattern": "%index% - %name%"
+  },
+  "encoder": {
+    "crf": 20,
+    "cq": 23,
+    "preset": "slow",
+    "threads": 4
+  },
+  "chapters": [
+    {
+      "name": "Opening",
+      "start": "00:00:00.000",
+      "end": "00:01:15.500"
+    },
+    {
+      "name": "Middle",
+      "start": "00:01:15.500",
+      "end": "00:08:42.000"
+    },
+    {
+      "name": "Finale",
+      "start": "00:08:42.000",
+      "end": "00:13:05.250",
+      "outputName": "Finale Clean"
+    }
+  ]
+}
