@@ -1,0 +1,102 @@
+{
+  "$schema": "https://vidchopper.dev/schemas/chapter-config.schema.json",
+  "version": 1,
+  "chapters": [
+    {
+      "name": "Moku (Akali/Illaoi - Freestyle) vs. Zyngbett / Lumen (Senna/Caitlyn - Freestyle)",
+      "start": "00:00:00",
+      "end": "00:11:53",
+      "outputName": "TNS-2XKO-36-01-Moku-vs-Zyngbett-Lumen"
+    },
+    {
+      "name": "K7 Showoff (Thresh/Yasuo - Freestyle) vs. pink (Ahri/Akali - Freestyle)",
+      "start": "00:11:53",
+      "end": "00:23:23",
+      "outputName": "TNS-2XKO-36-02-K7-Showoff-vs-pink"
+    },
+    {
+      "name": "Noka (Ekko/Vi - Freestyle) vs. LOGAN109 / RoflWorld (Thresh/Ekko - Freestyle)",
+      "start": "00:23:23",
+      "end": "00:32:55",
+      "outputName": "TNS-2XKO-36-03-Noka-vs-LOGAN109-RoflWorld"
+    },
+    {
+      "name": "Leffen (Thresh/Teemo - Freestyle) vs. FabulousZucchini19 (Blitzcrank/Warwick, Thresh/Braum - Freestyle)",
+      "start": "00:32:55",
+      "end": "00:42:05",
+      "outputName": "TNS-2XKO-36-04-Leffen-vs-FabulousZucchini19"
+    },
+    {
+      "name": "WADE (Ekko/Illaoi - Freestyle) vs. ken (Caitlyn/Ahri - Freestyle)",
+      "start": "00:42:05",
+      "end": "00:49:41",
+      "outputName": "TNS-2XKO-36-05-WADE-vs-ken"
+    },
+    {
+      "name": "K7 Showoff (Thresh/Yasuo - Freestyle) vs. SoulDemonXL (Ahri/Ekko - Freestyle)",
+      "start": "00:49:41",
+      "end": "00:58:25",
+      "outputName": "TNS-2XKO-36-06-K7-Showoff-vs-SoulDemonXL"
+    },
+    {
+      "name": "bleed (Ekko/Illaoi - Freestyle) vs. Noka (Ekko/Vi - Freestyle)",
+      "start": "00:58:25",
+      "end": "01:07:25",
+      "outputName": "TNS-2XKO-36-07-bleed-vs-Noka"
+    },
+    {
+      "name": "FCHAMPRYAN (Illaoi/Jinx - 2X Assist) vs. froncois (Caitlyn/Ahri - Freestyle)",
+      "start": "01:07:25",
+      "end": "01:14:53",
+      "outputName": "TNS-2XKO-36-08-FCHAMPRYAN-vs-froncois"
+    },
+    {
+      "name": "Winners Semifinal: Leffen (Thresh/Teemo - Freestyle) vs. K7 Showoff (Thresh/Yasuo - Freestyle)",
+      "start": "01:14:53",
+      "end": "01:26:55",
+      "outputName": "TNS-2XKO-36-09-Winners-Semifinal-Leffen-vs-K7-Showoff"
+    },
+    {
+      "name": "Winners Semifinal: WADE (Ekko/Illaoi - Freestyle) vs. bleed (Ekko/Illaoi - Freestyle)",
+      "start": "01:26:55",
+      "end": "01:31:42",
+      "outputName": "TNS-2XKO-36-10-Winners-Semifinal-WADE-vs-bleed"
+    },
+    {
+      "name": "Losers Round 1: JakeyTheSnakey (Ahri/Jinx - Freestyle) vs. MrChupy01 (Thresh/Caitlyn - Freestyle)",
+      "start": "01:31:42",
+      "end": "01:44:02",
+      "outputName": "TNS-2XKO-36-11-Losers-Round-1-JakeyTheSnakey-vs-MrChupy01"
+    },
+    {
+      "name": "Losers Round 1: Tate (Yasuo/Blitzcrank - Freestyle) vs. Galladiated (Vi/Braum - Double Down)",
+      "start": "01:44:02",
+      "end": "01:55:51",
+      "outputName": "TNS-2XKO-36-12-Losers-Round-1-Tate-vs-Galladiated"
+    },
+    {
+      "name": "Winners Final: K7 Showoff vs. ONi bleed",
+      "start": "01:55:51",
+      "end": "02:17:18",
+      "outputName": "TNS-2XKO-36-13-Winners-Final-K7-Showoff-vs-ONi-bleed"
+    },
+    {
+      "name": "Losers Semifinal: WADE vs. TSM Leffen",
+      "start": "02:17:18",
+      "end": "02:36:55",
+      "outputName": "TNS-2XKO-36-14-Losers-Semifinal-WADE-vs-TSM-Leffen"
+    },
+    {
+      "name": "Losers Final: K7 Showoff vs. WADE",
+      "start": "02:36:55",
+      "end": "02:58:12",
+      "outputName": "TNS-2XKO-36-15-Losers-Final-K7-Showoff-vs-WADE"
+    },
+    {
+      "name": "Grand Final: ONi bleed vs. WADE",
+      "start": "02:58:12",
+      "end": "03:09:51",
+      "outputName": "TNS-2XKO-36-16-Grand-Final-ONi-bleed-vs-WADE"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "skillName": "vidchopper-cli",
+  "skillBlobSha": "6d8429b146510a7cce81c81367e3c2e8cd9469a6",
+  "auditComplete": true,
+  "resources": [
+    {
+      "key": "reference-0",
+      "path": "assets/chapter-config.example.json",
+      "gitBlobSha": "8e270c37531819bfe75735ec54c1d6bdddc28fbd",
+      "required": "optional"
+    },
+    {
+      "key": "reference-1",
+      "path": "assets/chapter-config.example.yaml",
+      "gitBlobSha": "a45a2a3f14f127fddd03bb01a66613a182c28604",
+      "required": "optional"
+    },
+    {
+      "key": "reference-2",
+      "path": "assets/chapter-config.schema.json",
+      "gitBlobSha": "a47ad016f06aa078815a4c5129b08adee622371d",
+      "required": "optional"
+    },
+    {
+      "key": "reference-3",
+      "path": "assets/chapterbuilder-tns-2xko-36.json",
+      "gitBlobSha": "9542a06e88c4d4d71f8c24a3ed2c4047243f7404",
+      "required": "optional"
+    },
+    {
+      "key": "reference-4",
+      "path": "references/chapterfile.md",
+      "gitBlobSha": "4ce7e08917f940a0aac2afc2aabc41ba9872c777",
+      "required": "optional"
+    },
+    {
+      "key": "reference-5",
+      "path": "references/cli.md",
+      "gitBlobSha": "5b2db61bf8aff3163e906dd11903e26c70ef253e",
+      "required": "optional"
+    },
+    {
+      "key": "reference-6",
+      "path": "references/manifests.md",
+      "gitBlobSha": "96ba4ce4ee050e50fa0c99bb4084d0707aa5fcc4",
+      "required": "optional"
+    }
+  ],
+  "stages": [],
+  "dependencies": []
+}
