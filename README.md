@@ -30,6 +30,18 @@ Quick Build and Grill to Build are alternative starting points, not mandatory co
 
 ## Install and invoke
 
+### Claude Code: one plugin, every public skill
+
+The [Claude plugin](docs/claude-plugin.md) follows EditBay's marketplace pattern. It contains **all 20 public catalog skills**, including Starter Pack and Computer Setup:
+
+```sh
+claude plugin marketplace add devin-thomas/skills
+claude plugin install uppercut-skills@uppercut-labs
+```
+
+Inside Claude Code use `/uppercut-skills:start` to start or resume the course, or `/uppercut-skills:starter-pack` for the companion directly. This is optional, and does not install system applications or bypass sign-in, approval, verification or graduation gates. Existing npm and cross-harness install routes remain supported.
+
+
 Ask the active skill-capable agent to install the selected skill for its own supported host. Include declared required sibling skills automatically; do not ask the user to identify or approve each dependency. For example:
 
 ```text

@@ -1,0 +1,16 @@
+{
+  "name": "uppercut-labs",
+  "description": "Uppercut Labs public Claude Code plugins",
+  "owner": {
+    "name": "Devin Thomas",
+    "url": "https://starter.uppercut-labs.com"
+  },
+  "plugins": [
+    {
+      "name": "uppercut-skills",
+      "source": "./",
+      "description": "The complete public Uppercut Labs agent skills collection and guided Starter Pack.",
+      "category": "development"
+    }
+  ]
+}

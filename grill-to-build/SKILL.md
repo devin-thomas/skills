@@ -5,6 +5,10 @@ description: Turn a rough product, feature, migration, or architecture idea into
 
 # Grill to Build
 
+## Starter Pack curriculum routing
+
+When working inside Starter Pack Phase 2, load the [current course-specific Grill to Build skill](https://starter.uppercut-labs.com/skills/grill-to-build/current/SKILL.md), saved progress and canonical requirements before using the general workflow here. The course's prerequisites, approval and graduation checks take precedence. Reuse installed skills from the Claude Code plugin rather than asking the learner to install a second bundle. Full curriculum Grill to Build is the default; switch to the separate course Quick Build only on the learner's explicit request. If current course requirements cannot be confirmed, do not certify completion using this general skill.
+
 Convert uncertainty into shared language, explicit decisions, testable behavior, and executable work without designing the solution prematurely.
 
 ## Core contract

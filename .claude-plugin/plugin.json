@@ -1,0 +1,43 @@
+{
+  "name": "uppercut-skills",
+  "displayName": "Uppercut Labs Skills",
+  "version": "0.1.0",
+  "description": "All 20 public Uppercut Labs skills, including the Starter Pack learner companion and computer setup.",
+  "author": {
+    "name": "Devin Thomas",
+    "url": "https://starter.uppercut-labs.com"
+  },
+  "homepage": "https://starter.uppercut-labs.com/skills",
+  "repository": "https://github.com/devin-thomas/skills",
+  "keywords": [
+    "starter-pack",
+    "agent-skills",
+    "onboarding",
+    "development"
+  ],
+  "skills": [
+    "./grill-to-build",
+    "./task-execution-prompt",
+    "./long-horizon-dashboard",
+    "./quick-build",
+    "./execute-task",
+    "./execute-task-cycles",
+    "./surface-sweep",
+    "./surface-sweep-showcase",
+    "./no-useless-copy",
+    "./style",
+    "./pwa-development",
+    "./perfect-playlist",
+    "./programmatic-harness",
+    "./branded-sign-in",
+    "./agent-cli",
+    "./immutable-reports",
+    "./agent-prompt"
+  ],
+  "commands": {
+    "start": {
+      "description": "Start or resume Starter Pack with its installed skills",
+      "content": "Use the bundled starter-pack skill to start or resume the learner's actual saved course progress. Never assume missing progress means a fresh learner. Resolve the current canonical requirements and show one next action. For Phase 2 use the already installed computer-setup skill without reinstallation; full curriculum Grill to Build is the default, and curriculum Quick Build is used only when the learner asks. Follow the course-specific current skill instructions rather than standalone engineering workflows. Obtain approval for installations, plans, deployment and account changes; verify real outcomes, save private progress and offer Phase 3 only after Phase 2 closeout. Plugin installation itself is not course completion."
+    }
+  }
+}
