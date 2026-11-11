@@ -39,6 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 scripts/validate-skills.py
+      - run: node scripts/check-claude-plugin.mjs
       - run: python3 tests/test-manifest.py
       - run: node --test programmatic-harness/scripts/codex-proof.test.mjs
       - run: python3 tests/test-freshness.py
