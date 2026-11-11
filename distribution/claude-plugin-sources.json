@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0",
+  "note": "Reviewed public source file snapshots for the Claude plugin; independent of frozen npm installer pins.",
+  "skills": [
+    {
+      "id": "starter-pack",
+      "repository": "devin-thomas/starter-pack",
+      "commit": "a50eee42e9dcee64989954e5efab60e7cc8aa3b4",
+      "sourcePath": "public/skills/starter-pack/current/",
+      "files": [
+        {
+          "path": "dvn.json",
+          "gitBlobSha": "4a090d26ed33fd942884df6627dbd033454a593a"
+        },
+        {
+          "path": "SKILL.md",
+          "gitBlobSha": "d83d53a2f0c0d21ccf7857fed6f0747271e69d79"
+        }
+      ]
+    },
+    {
+      "id": "computer-setup",
+      "repository": "devin-thomas/starter-pack",
+      "commit": "a50eee42e9dcee64989954e5efab60e7cc8aa3b4",
+      "sourcePath": "public/skills/computer-setup/current/",
+      "files": [
+        {
+          "path": "dvn.json",
+          "gitBlobSha": "77e24f15592bc4e9f29ab4c43dadcceb8e491748"
+        },
+        {
+          "path": "SKILL.md",
+          "gitBlobSha": "1fab9910839b8b7fbdea86d671f8a9368a3260ff"
+        }
+      ]
+    },
+    {
+      "id": "vidchopper-cli",
+      "repository": "devin-thomas/vid-chopper",
+      "commit": "428963b6db87e47f98209c92bc59aca41b5f997a",
+      "sourcePath": ".agents/skills/vidchopper-cli/",
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "gitBlobSha": "4317457c648bf7094daedae571bbad090f790c1f"
+        },
+        {
+          "path": "assets/chapter-config.example.json",
+          "gitBlobSha": "8e270c37531819bfe75735ec54c1d6bdddc28fbd"
+        },
+        {
+          "path": "assets/chapter-config.example.yaml",
+          "gitBlobSha": "a45a2a3f14f127fddd03bb01a66613a182c28604"
+        },
+        {
+          "path": "assets/chapter-config.schema.json",
+          "gitBlobSha": "a47ad016f06aa078815a4c5129b08adee622371d"
+        },
+        {
+          "path": "assets/chapterbuilder-tns-2xko-36.json",
+          "gitBlobSha": "9542a06e88c4d4d71f8c24a3ed2c4047243f7404"
+        },
+        {
+          "path": "dvn.json",
+          "gitBlobSha": "53863c5a133100296a0e4f028ff728002455b147"
+        },
+        {
+          "path": "references/chapterfile.md",
+          "gitBlobSha": "4ce7e08917f940a0aac2afc2aabc41ba9872c777"
+        },
+        {
+          "path": "references/cli.md",
+          "gitBlobSha": "5b2db61bf8aff3163e906dd11903e26c70ef253e"
+        },
+        {
+          "path": "references/manifests.md",
+          "gitBlobSha": "96ba4ce4ee050e50fa0c99bb4084d0707aa5fcc4"
+        },
+        {
+          "path": "SKILL.md",
+          "gitBlobSha": "6d8429b146510a7cce81c81367e3c2e8cd9469a6"
+        }
+      ]
+    }
+  ]
+}
