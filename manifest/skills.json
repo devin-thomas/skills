@@ -17,8 +17,8 @@
       "order": 1,
       "sourceRepo": "devin-thomas/starter-pack",
       "sourcePath": "public/skills/starter-pack/current/SKILL.md",
-      "sourceVersion": "0.2.8",
-      "sourceRevision": "ac69dee90fcde13fed7a3ff5827e914e125c3620",
+      "sourceVersion": "0.2.19",
+      "sourceRevision": "a50eee42e9dcee64989954e5efab60e7cc8aa3b4",
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [
@@ -38,8 +38,8 @@
       "order": 2,
       "sourceRepo": "devin-thomas/starter-pack",
       "sourcePath": "public/skills/computer-setup/current/SKILL.md",
-      "sourceVersion": "0.2.3",
-      "sourceRevision": "ac69dee90fcde13fed7a3ff5827e914e125c3620",
+      "sourceVersion": "0.2.6",
+      "sourceRevision": "a50eee42e9dcee64989954e5efab60e7cc8aa3b4",
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [
