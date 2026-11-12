@@ -2,6 +2,12 @@
 
 Each release below is accepted by the local [release gate](../../distribution/README.md#release-gate) unless its entry says otherwise. Earlier entries record the checks that were run at the time.
 
+## 1.1.0 every skill at 1.1.0, programmatic harness retired
+
+Every owned skill and the installer move to 1.1.0. The catalog format version stays 1.0.0, because that is the format installers read. The programmatic harness skill is retired; `agent-cli` already covers driving Codex and other agent CLIs, so the bundle has nineteen skills. Quick Build drops its harness sentence and moves to `7d121b9`. Starter Pack and Computer Setup move to `devin-thomas/starter-pack` `eafca0f` (Starter Pack 1.1.0). The other snapshots keep their pins.
+
+Published to [npm as 1.1.0](https://www.npmjs.com/package/@uppercut-labs/skills/v/1.1.0), with `latest` pointing to 1.1.0, from the gate-accepted tarball of `8c1f0c4` (27 of 27 checks). The registry and [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.1.0) archives are byte-identical to it: SHA-256 `77e84a4aadc6ee5ddf22c8159f63d3502b94784904fd45ec91b3c16c5d408738` (release gate `--compare` against npm, and a direct hash of the GitHub download). A clean `npx @uppercut-labs/skills@1.1.0 list` installs and lists all nineteen skills.
+
 ## 1.0.4 installer dependency and refreshed Starter Pack snapshots
 
 npm no longer serves `@uppercut-labs/agent-native` 0.1.0: the package was recreated on November 10, 2026 with only `0.0.0-stage` and `1.1.0`. The published 1.0.3 already depended on 1.1.0, but the repository source still pinned 0.1.0, so `npm ci` from source failed with a 404 and the release gate could not run. 1.0.4 brings the source in line with 1.1.0. The installer compiles against it unchanged and passes all 50 package tests and the packed CLI and MCP consumer smoke.
