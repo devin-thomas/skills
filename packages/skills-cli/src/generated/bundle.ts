@@ -4,7 +4,7 @@ export const catalogBundle: CatalogBundle = {
   "schemaVersion": "1.0.0",
   "manifest": {
     "$schema": "./schema.json",
-    "version": "1.1.0",
+    "version": "1.0.0",
     "categories": [
       "plan",
       "build",
