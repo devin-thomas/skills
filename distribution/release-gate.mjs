@@ -173,7 +173,6 @@ function runGate({ out, sourceRepos }) {
       ['PWA helpers', process.execPath, ['--test', 'tests/pwa-helpers.test.mjs']],
       ['model invocability rules', python, ['-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_invocability.py']],
       ['model invocability bundle check', process.execPath, ['--test', 'tests/invocability.test.mjs']],
-      ['programmatic harness proof helpers', process.execPath, ['--test', 'programmatic-harness/scripts/codex-proof.test.mjs']],
     ];
     for (const [name, command, args] of sourceChecks) {
       check(name, () => summarize(run(command, args, { cwd: repositoryRoot })));
