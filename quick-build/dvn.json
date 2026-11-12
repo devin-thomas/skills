@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "skillName": "quick-build",
-  "skillBlobSha": "e4bae34aee1681aa33b6b9cde939009f37fd4323",
+  "skillBlobSha": "3bfcb7d145d9b3152aaa53d84290fe8fba142ad9",
   "auditComplete": true,
   "resources": [
     {
@@ -41,18 +41,9 @@
       ]
     },
     {
-      "key": "curriculum-snapshot",
-      "path": "references/starter-pack-0.2.3.md",
-      "gitBlobSha": "2a3f2737e7a2f7fe4a2e81be04e70193c41de447",
-      "required": "stage",
-      "stages": [
-        "curriculum"
-      ]
-    },
-    {
       "key": "source-provenance",
       "path": "README.md",
-      "gitBlobSha": "06d170ddaea860e57c72992eb5bb529911ad5d1c",
+      "gitBlobSha": "7fa4e4745dd7385e6e4fb7101b728353e5fa5d64",
       "required": "optional"
     },
     {
@@ -72,26 +63,7 @@
         "ticket"
       ],
       "dependencies": []
-    },
-    {
-      "key": "curriculum",
-      "resources": [
-        "curriculum-snapshot",
-        "source-provenance"
-      ],
-      "dependencies": [
-        "curriculum-workflow"
-      ]
     }
   ],
-  "dependencies": [
-    {
-      "key": "curriculum-workflow",
-      "canonicalId": "starter-pack/quick-build",
-      "required": "stage",
-      "stages": [
-        "curriculum"
-      ]
-    }
-  ]
+  "dependencies": []
 }
