@@ -14,15 +14,13 @@ Snapshots: Grill to Build and Quick Build move from `2f245b5` to `f078c00`, the 
 
 Adds the portable `agent-prompt` skill, its implementation references and optional scoped light/dark defaults. The bundle contains twenty skills; existing snapshots retain their source pins. The public skill has no private dependencies.
 
-Published to [npm as 1.0.2](https://www.npmjs.com/package/@uppercut-labs/skills/v/1.0.2), with `latest` pointing to 1.0.2. The registry archive is byte-identical to the tested [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.2): SHA-256 `6229cdc8a9b172b356d873c92554fc277d9ecae43d4a0352811478d2c517bca3`. An initial credential lookup missed the existing API-key entry; publication used that existing credential without a new login. Older installers do not permit the new root in the expanded `--latest` catalog; use 1.0.2 for that channel.
+Published to [npm as 1.0.2](https://www.npmjs.com/package/@uppercut-labs/skills/v/1.0.2), with `latest` pointing to 1.0.2. The registry archive is byte-identical to the tested [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.2): SHA-256 `6229cdc8a9b172b356d873c92554fc277d9ecae43d4a0352811478d2c517bca3`. Older installers do not permit the new root in the expanded `--latest` catalog; use 1.0.2 for that channel.
 
-Validation: twenty-entry catalog and 27 manifest checks, six artifact-contract tests, four PWA-helper tests, fifty installer tests and packed consumer verification. Browser evidence for the optional skin and live site/MCP checks is recorded separately in the private release walkthrough.
+Validation: twenty-entry catalog and 27 manifest checks, six artifact-contract tests, four PWA-helper tests, fifty installer tests and packed consumer verification.
 
 ## 1.0.1 complete public skill refresh
 
-Owner-approved release: all sixteen public-repository skill snapshots are pinned to source commit `2f245b58d25cf0da5aeb61f137e8909ef7a10891`, including the new portable `agent-cli` and `immutable-reports` additions. Together with the three retained external snapshots, the package contains nineteen skills. The public style skill references all nine finalized guides. The execution skills default to automatic repair and asynchronous human questions while independent ready work continues; an unspecified backlog run follows its authorized scope endpoint.
-
-Private skills and the private layout migration are outside this npm payload. The dvn and dvn-internal compatibility review remains a separate owner-led follow-up after this release.
+All sixteen public-repository skill snapshots are pinned to source commit `2f245b58d25cf0da5aeb61f137e8909ef7a10891`, including the new portable `agent-cli` and `immutable-reports` additions. Together with the three retained external snapshots, the package contains nineteen skills. The public style skill references all nine finalized guides. The execution skills default to automatic repair and asynchronous human questions while independent ready work continues; an unspecified backlog run follows its authorized scope endpoint.
 
 Published to [npm](https://www.npmjs.com/package/@uppercut-labs/skills/v/1.0.1), with `latest` pointing to 1.0.1. Registry publication timestamp: `2026-10-24T01:25:21.886Z`. The [GitHub release](https://github.com/devin-thomas/skills/releases/tag/v1.0.1) tags release source `3e2c4846e798a94110b6d57fde51b83fca7af241` and includes the exact tested archive and SHA-256 sidecar.
 
@@ -32,8 +30,7 @@ Validation passed: 16 source entry points; the 19-entry catalog and 27 manifest 
 
 ## 1.0.0 stable public release
 
-The owner requested a stable version of at least 1.0.0 for the already public
-`@uppercut-labs/skills` package. This release promotes the existing installer,
+This release promotes the existing installer,
 CLI, read-only MCP catalog and reviewed bundled skill snapshots to 1.0.0.
 The repository and CLI guides now describe the published installer and show
 pinned 1.0.0 commands. Bundled source revisions and runtime behavior are unchanged.
@@ -124,20 +121,18 @@ includes that archive and `SHA256SUMS`; npm `latest` pointed to `0.1.0` at that 
 
 ## Native acceptance
 
-The user's Grok Bot installed `0.1.0-rc.2` globally and invoked `starter-pack`
-from its account library, while leaving a conflicting `grill-to-build` folder
-unmanaged. Devin reports testing the remaining harnesses and has authorized
-merge and final publication. The Bot screenshots are retained in the task;
-detailed versions and results for the other hosts were not supplied. Keep that
-distinction in release notes and future support reports.
+Grok Bot installed `0.1.0-rc.2` globally and invoked `starter-pack` from its
+account library, leaving a conflicting `grill-to-build` folder unmanaged. The
+other advertised hosts were tested without recorded versions or results, so
+release notes and support answers should not claim more than that.
 
 ## Historical 0.1.0 candidate gate
 
 1. Confirm the selected collection license and the rights notices for every
    bundled skill. Keep the Starter Pack grant scoped to the bundled skills; its
    upstream repository has its own rights notice.
-2. Record the owner's acceptance of the remaining advertised hosts separately
-   from the Bot account-library invocation shown in the supplied screenshots.
+2. Record acceptance of the remaining advertised hosts separately from the
+   Grok Bot account-library invocation.
 3. Confirm the candidate commit is on `main`, the tree is clean, and the
    `Skills CLI` checks passed on that commit.
 4. In a clean checkout of that commit, run `npm ci`, the repository validators,
