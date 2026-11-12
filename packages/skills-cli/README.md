@@ -34,7 +34,7 @@ If registry publication is unavailable, use the pinned GitHub release tarball an
 curl -fL -o uppercut-labs-skills-1.0.2.tgz https://github.com/devin-thomas/skills/releases/download/v1.0.2/uppercut-labs-skills-1.0.2.tgz
 curl -fL -o uppercut-labs-skills-1.0.2.tgz.sha256 https://github.com/devin-thomas/skills/releases/download/v1.0.2/uppercut-labs-skills-1.0.2.tgz.sha256
 shasum -a 256 -c uppercut-labs-skills-1.0.2.tgz.sha256
-npm exec --yes --package=./uppercut-labs-skills-1.0.2.tgz -- uppercut-skills add programmatic-harness --host codex --project /path/to/disposable-project
+npm exec --yes --package=./uppercut-labs-skills-1.0.2.tgz -- uppercut-skills add quick-build --host codex --project /path/to/project
 ```
 
 On Linux, replace `shasum -a 256 -c` with `sha256sum -c`. The checksum must verify before running the archive.

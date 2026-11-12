@@ -15,7 +15,7 @@ If a prerequisite is missing, preserve results and return to the focused [Comput
 
 ## Reuse Codex readiness
 
-When Quick Build is part of Starter Pack, reuse the [Codex readiness checkpoint](https://starter.devthomas.site/setup/codex-readiness.md) during planning and before approved implementation. Recheck only facts affected by a material host, harness, workspace, permission, runtime, or authentication change. Do not repeat a decline, setup, or successful sign-in check. The optional Programmatic Harness proof is never a Quick Build prerequisite; preserve the required next action when it is declined, deferred, unavailable, or failed.
+When Quick Build is part of Starter Pack, reuse the [Codex readiness checkpoint](https://starter.devthomas.site/setup/codex-readiness.md) during planning and before approved implementation. Recheck only facts affected by a material host, harness, workspace, permission, runtime, or authentication change. Do not repeat a decline, setup, or successful sign-in check.
 
 Before use, make this skill and its [planning templates](https://starter.devthomas.site/artifacts/quick-build/README.md) available. Record their source/version in the private handoff. If using them as supplied context, say `context_only`; claim `native_discovered` only after verifying discovery in the selected harness's currently supported skill location. Do not install a full global engineering bundle or require skill theory for this build. Begin or reuse the lightweight private session report described in the progress guide.
 
