@@ -18,7 +18,7 @@
       "sourceRepo": "devin-thomas/starter-pack",
       "sourcePath": "public/skills/starter-pack/current/SKILL.md",
       "sourceVersion": "0.2.8",
-      "sourceRevision": "ac69dee90fcde13fed7a3ff5827e914e125c3620",
+      "sourceRevision": "c1576a80de0fa0c597550e600c62a1fbec8027d9",
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [
@@ -39,7 +39,7 @@
       "sourceRepo": "devin-thomas/starter-pack",
       "sourcePath": "public/skills/computer-setup/current/SKILL.md",
       "sourceVersion": "0.2.3",
-      "sourceRevision": "ac69dee90fcde13fed7a3ff5827e914e125c3620",
+      "sourceRevision": "c1576a80de0fa0c597550e600c62a1fbec8027d9",
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [
@@ -59,7 +59,7 @@
       "sourceRepo": "devin-thomas/skills",
       "sourcePath": "grill-to-build/SKILL.md",
       "sourceVersion": null,
-      "sourceRevision": "2f245b58d25cf0da5aeb61f137e8909ef7a10891",
+      "sourceRevision": "f078c00b15bfe3e14f3e81937f8e70647eb4f326",
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [
@@ -123,7 +123,7 @@
       "sourceRepo": "devin-thomas/skills",
       "sourcePath": "quick-build/SKILL.md",
       "sourceVersion": null,
-      "sourceRevision": "2f245b58d25cf0da5aeb61f137e8909ef7a10891",
+      "sourceRevision": "f078c00b15bfe3e14f3e81937f8e70647eb4f326",
       "public": true,
       "ownedBy": "devin-thomas",
       "relatedSkills": [

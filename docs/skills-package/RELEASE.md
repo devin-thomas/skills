@@ -2,6 +2,12 @@
 
 Each release below is accepted by the local [release gate](../../distribution/README.md#release-gate) unless its entry says otherwise. Earlier entries record the checks that were run at the time.
 
+## 1.0.4 installer dependency and refreshed Starter Pack snapshots
+
+npm no longer serves `@uppercut-labs/agent-native` 0.1.0: the package was recreated on November 10, 2026 with only `0.0.0-stage` and `1.1.0`. Installer 1.0.3 depends on 0.1.0, so a clean `npm install` or `npx` of 1.0.3 fails with a 404. 1.0.4 depends on Agent Native 1.1.0. The installer compiles against it unchanged and passes all 50 package tests and the packed CLI and MCP consumer smoke.
+
+Snapshots: Grill to Build and Quick Build move from `2f245b5` to `f078c00`, the revision Starter Pack serves and bundles (it adds the course planning pointer). Starter Pack and Computer Setup move to `devin-thomas/starter-pack` `c1576a8` (companion 0.2.22, Computer Setup 0.2.7). The other snapshots keep their pins.
+
 ## 1.0.2 public Agent Prompt
 
 Adds the portable `agent-prompt` skill, its implementation references and optional scoped light/dark defaults. The bundle contains twenty skills; existing snapshots retain their source pins. The public skill has no private dependencies.
