@@ -2,7 +2,7 @@
 
 `@uppercut-labs/skills` installs selected public Devin/Uppercut agent skills with their required skill dependencies.
 
-The examples below pin 1.0.2, the newest version published to npm and attached to a
+The examples below pin 1.1.0, the newest version published to npm and attached to a
 GitHub release when this guide was written. The [npm version list](https://www.npmjs.com/package/@uppercut-labs/skills?activeTab=versions)
 and [GitHub releases](https://github.com/devin-thomas/skills/releases) are authoritative. Pin an
 exact version, or verify the release archive against its adjacent checksum.
@@ -23,18 +23,18 @@ node bin/uppercut-skills.js doctor --host codex --project /path/to/project
 Run the public npm package:
 
 ```sh
-npx @uppercut-labs/skills@1.0.2 list
-npx @uppercut-labs/skills@1.0.2 add execute-task-cycles --host codex --project /path/to/project
-npx @uppercut-labs/skills@1.0.2 doctor --host codex --project /path/to/project
+npx @uppercut-labs/skills@1.1.0 list
+npx @uppercut-labs/skills@1.1.0 add execute-task-cycles --host codex --project /path/to/project
+npx @uppercut-labs/skills@1.1.0 doctor --host codex --project /path/to/project
 ```
 
 If registry publication is unavailable, use the pinned GitHub release tarball and its adjacent checksum instead:
 
 ```sh
-curl -fL -o uppercut-labs-skills-1.0.2.tgz https://github.com/devin-thomas/skills/releases/download/v1.0.2/uppercut-labs-skills-1.0.2.tgz
-curl -fL -o uppercut-labs-skills-1.0.2.tgz.sha256 https://github.com/devin-thomas/skills/releases/download/v1.0.2/uppercut-labs-skills-1.0.2.tgz.sha256
-shasum -a 256 -c uppercut-labs-skills-1.0.2.tgz.sha256
-npm exec --yes --package=./uppercut-labs-skills-1.0.2.tgz -- uppercut-skills add quick-build --host codex --project /path/to/project
+curl -fL -o uppercut-labs-skills-1.1.0.tgz https://github.com/devin-thomas/skills/releases/download/v1.1.0/uppercut-labs-skills-1.1.0.tgz
+curl -fL -o uppercut-labs-skills-1.1.0.tgz.sha256 https://github.com/devin-thomas/skills/releases/download/v1.1.0/uppercut-labs-skills-1.1.0.tgz.sha256
+shasum -a 256 -c uppercut-labs-skills-1.1.0.tgz.sha256
+npm exec --yes --package=./uppercut-labs-skills-1.1.0.tgz -- uppercut-skills add quick-build --host codex --project /path/to/project
 ```
 
 On Linux, replace `shasum -a 256 -c` with `sha256sum -c`. The checksum must verify before running the archive.
@@ -45,7 +45,7 @@ On Linux, replace `shasum -a 256 -c` with `sha256sum -c`. The checksum must veri
 
 Three different things carry versions:
 
-- **Installer version**: the npm package version, such as `@uppercut-labs/skills@1.0.2`. It fixes the CLI code and the bundled snapshot inside it. `npx @uppercut-labs/skills@latest` means the newest installer on npm.
+- **Installer version**: the npm package version, such as `@uppercut-labs/skills@1.1.0`. It fixes the CLI code and the bundled snapshot inside it. `npx @uppercut-labs/skills@latest` means the newest installer on npm.
 - **Bundled channel** (default): each skill is installed from the snapshot compiled into that installer, pinned to the source commit recorded in `manifest/skills.json`. It needs no network after the package is installed, and it never refreshes itself from GitHub. A newer bundled snapshot arrives only with a newer installer version.
 - **GitHub channel** (`--latest` or `--channel github`): opt-in. It resolves the current allowed GitHub source revisions, records them, and remembers the channel for that skill's later `update`. A failed GitHub fetch reports the error; it never falls back to the bundle.
 
@@ -61,7 +61,7 @@ The package declares one npm `postinstall` script. It exists only to fill a fres
 - **Global installs check the machine first.** Even with `npm install -g`, it continues only on Linux, as a non-root user whose home is `/home/box`, where `/home/box/agent-data/workflows` already exists, resolves inside that home, is a real directory, and belongs to the running user. The Bot reports that `agent-data` is a symlink, so the installer resolves the physical directory before writing. On any other computer it writes nothing.
 - **Existing managed installs are preserved.** If the Bot library already has managed skills, postinstall changes nothing and prints the explicit `update --host grokbot --global` command.
 - **Conflicts are skipped, not overwritten.** On a fresh library, a pre-existing folder is adopted only if its complete file set matches the bundle byte for byte. Differing, extra, or unsafe folders and the skills depending on them are skipped and named; the rest install in one transaction.
-- **Scripts must be allowed.** npm 11 blocks package scripts unless allowed, for example `npm install -g @uppercut-labs/skills@1.0.2 --allow-scripts=@uppercut-labs/skills` on the Bot computer. Where scripts stay blocked, run `uppercut-skills add <id> --host grokbot --global` there instead; explicit `add` refuses conflicts rather than skipping them.
+- **Scripts must be allowed.** npm 11 blocks package scripts unless allowed, for example `npm install -g @uppercut-labs/skills@1.1.0 --allow-scripts=@uppercut-labs/skills` on the Bot computer. Where scripts stay blocked, run `uppercut-skills add <id> --host grokbot --global` there instead; explicit `add` refuses conflicts rather than skipping them.
 
 A successful npm install alone does not prove the skills were copied. Check with `uppercut-skills doctor --host grokbot --global --json`. The user's Bot invoked `starter-pack` from an installed account library once; that report is the only Bot account-library acceptance on record.
 
