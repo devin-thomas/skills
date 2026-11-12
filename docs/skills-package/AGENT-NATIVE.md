@@ -2,7 +2,7 @@
 
 ## What is already real
 
-`@uppercut-labs/agent-native@1.1.0` is published and provides `createMcpHandler` for Streamable HTTP. The installer used 0.1.0 through 1.0.3; npm no longer serves 0.1.0, so 1.0.4 depends on 1.1.0.
+`@uppercut-labs/agent-native@1.1.0` is published and provides `createMcpHandler` for Streamable HTTP. npm no longer serves 0.1.0. The published 1.0.3 already depended on 1.1.0, but the repository source still pinned 0.1.0 until 1.0.4.
 Use that exact published dependency; no Agent Native release is needed for this package's MCP mount. [R8]
 
 Current docs provide `defineCapability`, `bindCapability`, `executeCapability`, and `runCapabilityCli`.
