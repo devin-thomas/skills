@@ -11,7 +11,7 @@ Take one meaningful idea through a short interview, an approved plan, a durable 
 
 Standalone is the default. Inspect repository instructions, existing plans, assets, available tools, and any supplied handoff. Reuse answered questions and completed work. Require only capabilities needed for this project; no Starter Pack accounts, phone setup, private progress repository, or companion skill is a standalone prerequisite.
 
-When the user explicitly requests Starter Pack Phase 2 or resumes a Starter Pack Quick Build step, read [Starter Pack mode](references/starter-pack-0.2.3.md) and follow that curriculum contract instead of the standalone stages below. Its resource version is 0.2.0 and requirements revision is 2026-10-09; the source snapshot is identified in [README.md](README.md). Use matching supplied requirements or the canonical linked resources. If requirements have changed, resolve the matching official skill/version before certifying completion. If required resources are unavailable, preserve progress and request the matching instruction packet; do not guess graduation rules or silently switch modes to bypass prerequisites.
+For a Starter Pack Phase 2 learner, also follow the course's [Phase 2 planning reference](https://starter.uppercut-labs.com/phases/2/planning.md) and its [canonical requirements](https://starter.uppercut-labs.com/agent/requirements.json). Completing this skill alone does not certify Starter Pack completion.
 
 Done when the mode, existing work, intended outcome, and available capabilities are understood.
 

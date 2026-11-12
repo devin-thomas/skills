@@ -49,7 +49,7 @@ No skill requires the author's global AGENTS.md, account memory, or private setu
 
 ## Starter Pack relationship
 
-[Quick Build](quick-build/README.md) includes a standalone adaptation derived from Starter Pack 0.2.0 and a separate curriculum mode using the released 0.2.3 snapshot. Starter Pack remains authoritative for phase requirements and graduation. Standalone use does not require the curriculum's computer setup or private progress protocol.
+[Quick Build](quick-build/README.md) is a standalone adaptation derived from Starter Pack 0.2.0. For Starter Pack Phase 2 learners, Grill to Build and Quick Build point to the course's Phase 2 planning reference; Starter Pack remains authoritative for phase requirements and graduation. Standalone use does not require the curriculum's computer setup or private progress protocol.
 
 Starter Pack also publishes [starter-pack](https://starter.uppercut-labs.com/skills/starter-pack/current/SKILL.md), its progress-aware companion, and [computer-setup](https://starter.uppercut-labs.com/skills/computer-setup/current/SKILL.md). Those remain in the curriculum repository rather than being duplicated here. Their numbered directories are releases, not additional skills.
 
