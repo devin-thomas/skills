@@ -1,0 +1,1078 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* One UI font, latin subset, variable weight and optical size. */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url("../../node_modules/@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2") format("woff2");
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    background: var(--chrome);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    letter-spacing: var(--text-base--letter-spacing);
+    font-optical-sizing: auto;
+    font-synthesis: none;
+    font-feature-settings: "cv11", "ss03";
+    -webkit-font-smoothing: antialiased;
+    cursor: default;
+    user-select: none;
+  }
+
+  input,
+  textarea,
+  .selectable {
+    user-select: text;
+  }
+
+  input,
+  textarea {
+    cursor: text;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--stroke-3) transparent;
+  }
+
+  :focus-visible {
+    outline: var(--focus-width) solid var(--accent);
+    outline-offset: var(--focus-offset);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@property --cue {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@layer components {
+  /* ---- window ---------------------------------------------------------- */
+
+  .app {
+    container: app / inline-size;
+    display: grid;
+    grid-template-rows: var(--titlebar) minmax(0, 1fr);
+    height: 100dvh;
+    overflow: clip;
+  }
+
+  .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    /* The right 138 px belong to the native caption buttons. Nothing is drawn there. */
+    padding: 0 var(--caption-reserve) 0 12px;
+    color: var(--fg-2);
+    -webkit-app-region: drag;
+    app-region: drag;
+  }
+
+  .titlebar :is(button, a, input) {
+    -webkit-app-region: no-drag;
+    app-region: no-drag;
+  }
+
+  .titlebar > * {
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  :root[data-window="inactive"] .titlebar > * {
+    opacity: 0.45;
+  }
+
+  .workspace {
+    --rail-w: var(--rail-compact);
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--rail-w);
+    min-height: 0;
+    padding: 0 0 var(--gutter) var(--gutter);
+  }
+
+  @container app (min-width: 1180px) {
+    .workspace {
+      --rail-w: var(--rail);
+    }
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    background: var(--surface);
+    border: var(--hairline) solid var(--stroke-2);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--elev-card);
+  }
+
+  .rail {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .only-narrow {
+    display: none !important;
+  }
+
+  /* Panels that sit over the right edge: a sheet always, the rail when the
+     window is too narrow to dock it. */
+  .sheet {
+    position: absolute;
+    z-index: var(--z-sheet);
+    top: 0;
+    right: var(--gutter);
+    bottom: var(--gutter);
+    width: calc(var(--rail-w) - var(--gutter) * 2);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--surface);
+    border: var(--hairline) solid var(--stroke-2);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--elev-sheet);
+    overflow: clip;
+    transition:
+      transform var(--dur-sheet) var(--ease-snap),
+      opacity var(--dur-moderate) var(--ease-out),
+      visibility 0s;
+  }
+
+  .sheet[data-open="false"] {
+    transform: translateX(calc(100% + 24px));
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      transform var(--dur-slow) var(--ease-snap),
+      opacity var(--dur-slow) var(--ease-out),
+      visibility 0s linear var(--dur-slow);
+  }
+
+  @container app (max-width: 859.98px) {
+    .workspace {
+      grid-template-columns: minmax(0, 1fr);
+      padding-right: var(--gutter);
+    }
+
+    .sheet,
+    .rail {
+      width: min(var(--rail), calc(100% - var(--gutter) * 2));
+    }
+
+    .rail {
+      position: absolute;
+      z-index: var(--z-raised);
+      top: 0;
+      right: var(--gutter);
+      bottom: var(--gutter);
+      background: var(--chrome);
+      border: var(--hairline) solid var(--stroke-2);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--elev-sheet);
+      overflow: clip;
+      transition:
+        transform var(--dur-slow) var(--ease-snap),
+        opacity var(--dur-moderate) var(--ease-out),
+        visibility 0s;
+    }
+
+    .rail[data-open="false"] {
+      transform: translateX(calc(100% + 24px));
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        transform var(--dur-moderate) var(--ease-snap),
+        opacity var(--dur-moderate) var(--ease-out),
+        visibility 0s linear var(--dur-moderate);
+    }
+
+    .only-narrow {
+      display: inline-flex !important;
+    }
+
+    .only-wide {
+      display: none !important;
+    }
+  }
+
+  /* ---- form rows ------------------------------------------------------- */
+
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--label-col) minmax(0, 1fr);
+    padding: 8px 20px;
+    border-bottom: var(--hairline) solid var(--stroke-1);
+  }
+
+  .row-label {
+    color: var(--fg-3);
+    line-height: var(--control-sm);
+  }
+
+  /* The focused row is marked on the card edge; borderless inputs rely on it. */
+  .focus-mark::before {
+    content: "";
+    position: absolute;
+    inset: 8px auto 8px 0;
+    width: 3px;
+    border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+    background: transparent;
+  }
+
+  .focus-mark[data-invalid="true"]::before {
+    background: var(--danger);
+  }
+
+  /* Focus wins over the invalid colour so the focused row is always marked. */
+  .focus-mark:focus-within::before {
+    background: var(--accent);
+  }
+
+  .row:focus-within > .row-label {
+    color: var(--fg);
+  }
+
+  .bare {
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    color: var(--fg);
+    outline: none;
+  }
+
+  /* Reading text keeps a measure of 45 to 75 characters. */
+  .measure {
+    max-width: 72ch;
+  }
+
+  .body-mark::before {
+    inset: 16px auto auto 0;
+    height: 24px;
+  }
+
+  .hair {
+    border: var(--hairline) solid var(--stroke-1);
+  }
+
+  .hair-2 {
+    border: var(--hairline) solid var(--stroke-2);
+  }
+
+  .hair-t {
+    border-top: var(--hairline) solid var(--stroke-1);
+  }
+
+  .hair-b {
+    border-bottom: var(--hairline) solid var(--stroke-1);
+  }
+
+  .facts {
+    border: var(--hairline) solid var(--stroke-2);
+    border-radius: var(--radius-lg);
+  }
+
+  .facts > * + * {
+    border-top: var(--hairline) solid var(--stroke-1);
+  }
+
+  .bare::placeholder,
+  .field::placeholder {
+    color: var(--fg-4);
+  }
+
+  .field,
+  .field-group {
+    height: var(--control-sm);
+    border-radius: var(--radius-md);
+    background: var(--fill-1);
+    color: var(--fg);
+    outline: none;
+    transition: background-color var(--dur-base) var(--ease-out);
+  }
+
+  .field {
+    min-width: 0;
+    padding: 0 8px;
+  }
+
+  .field-group {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .field:focus,
+  .field-group:focus-within {
+    background: var(--surface);
+    box-shadow:
+      0 0 0 1px var(--accent),
+      var(--focus-halo);
+  }
+
+  .field[aria-invalid="true"],
+  .field-group[data-invalid="true"] {
+    box-shadow: 0 0 0 1px var(--danger);
+  }
+
+  .field-group[data-invalid="true"]:focus-within {
+    box-shadow:
+      0 0 0 1px var(--danger),
+      0 0 0 4px color-mix(in srgb, var(--danger) 22%, transparent);
+  }
+
+  .segment {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 6px 0 3px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    color: var(--fg);
+    outline: none;
+    transition: background-color var(--dur-base) var(--ease-out);
+  }
+
+  .segment:focus-visible,
+  .segment[data-popup-open] {
+    background: var(--fill-3);
+  }
+
+  /* ---- buttons --------------------------------------------------------- */
+
+  .btn {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: var(--control-md);
+    padding: 0 12px;
+    border: var(--hairline) solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--fg);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    transition-property: background-color, color, border-color, transform, opacity;
+    transition-duration: var(--dur-base), var(--dur-base), var(--dur-base), var(--dur-base), var(--dur-base);
+    transition-timing-function: var(--ease-out), var(--ease-out), var(--ease-out), var(--ease-spring), var(--ease-out);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: scale(var(--press-scale));
+    transition-duration: 0s, 0s, 0s, var(--dur-fast), 0s;
+    transition-timing-function: var(--ease-out);
+  }
+
+  .btn:disabled {
+    color: var(--fg-4);
+  }
+
+  .btn-sm {
+    height: var(--control-sm);
+    padding: 0 8px;
+  }
+
+  .btn-lg {
+    height: var(--control-lg);
+    padding: 0 16px;
+  }
+
+  .btn-icon {
+    width: var(--control-sm);
+    height: var(--control-sm);
+    padding: 0;
+    color: var(--fg-3);
+  }
+
+  .btn-primary {
+    background: color-mix(in srgb, var(--fg) 88%, var(--surface));
+    color: var(--surface);
+  }
+
+  .btn-primary:disabled {
+    background: var(--fill-3);
+    color: var(--fg-4);
+  }
+
+  .btn-secondary {
+    background: var(--fill-1);
+    border-color: var(--stroke-2);
+  }
+
+  .btn-ghost {
+    color: var(--fg-2);
+  }
+
+  .btn-danger {
+    color: var(--danger);
+  }
+
+  .btn-danger-solid {
+    background: var(--danger);
+    color: var(--surface);
+  }
+
+  .hoverable {
+    transition: background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+  }
+
+  /* Hover appears at once and leaves over the base duration. */
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover:not(:disabled) {
+      transition-duration: 0s, 0s, 0s, var(--dur-base), 0s;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--fg);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--fill-3);
+      border-color: var(--stroke-3);
+    }
+
+    .btn-ghost:hover:not(:disabled),
+    .btn-icon:hover:not(:disabled) {
+      background: var(--fill-2);
+      color: var(--fg);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--danger) 10%, transparent);
+    }
+
+    .btn-danger-solid:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--danger) 88%, var(--fg));
+    }
+
+    .field:hover:not(:focus),
+    .field-group:hover:not(:focus-within) {
+      background: var(--fill-2);
+      transition-duration: 0s;
+    }
+
+    .segment:hover {
+      background: var(--fill-3);
+      transition-duration: 0s;
+    }
+
+    .hoverable:hover {
+      background: var(--fill-2);
+      color: var(--fg);
+      transition-duration: 0s;
+    }
+
+    .chip-remove:hover {
+      background: var(--fill-3);
+      color: var(--fg);
+      transition-duration: 0s, 0s, var(--dur-moderate);
+    }
+  }
+
+  .kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border: var(--hairline) solid var(--stroke-3);
+    border-radius: var(--radius-sm);
+    color: var(--fg-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    line-height: var(--text-small--line-height);
+    font-weight: var(--font-weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Inside a button the shortcut is a quiet suffix, not a second control. */
+  .btn .kbd {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    color: var(--fg-3);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .btn .kbd + .kbd {
+    margin-left: 3px;
+  }
+
+  .btn-primary .kbd {
+    color: color-mix(in srgb, var(--surface) 72%, transparent);
+  }
+
+  .btn:disabled .kbd {
+    color: var(--fg-4);
+  }
+
+  /* ---- small parts ----------------------------------------------------- */
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    height: var(--control-xs);
+    padding-left: 8px;
+    border-radius: var(--radius-md);
+    background: var(--fill-2);
+    color: var(--fg);
+    font-size: var(--text-small);
+    line-height: var(--text-small--line-height);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .chip[data-selected="true"] {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .chip[data-invalid="true"] {
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
+    color: var(--danger);
+  }
+
+  .chip-remove {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: var(--control-xs);
+    height: var(--control-xs);
+    border-radius: var(--radius-md);
+    color: var(--fg-3);
+  }
+
+  .chip-remove,
+  .toast-action {
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out),
+      transform var(--dur-moderate) var(--ease-spring);
+  }
+
+  .chip-remove:active,
+  .toast-action:active {
+    transform: scale(var(--press-scale));
+    transition-duration: 0s, 0s, var(--dur-fast);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .tag {
+    flex: none;
+    padding: 0 4px;
+    border-radius: var(--radius-sm);
+    background: var(--fill-2);
+    color: var(--fg-2);
+    font-family: var(--font-mono);
+    font-weight: 350;
+    font-size: var(--text-small);
+    line-height: var(--text-small--line-height);
+  }
+
+  .dot {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: currentColor;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-weight: 350;
+    letter-spacing: 0;
+  }
+
+  .popup {
+    background: var(--raised);
+    background-clip: padding-box;
+    border: var(--hairline) solid var(--stroke-3);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--elev-pop);
+    padding: 4px;
+    overscroll-behavior: contain;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    height: var(--control-md);
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    outline: none;
+  }
+
+  /* List navigation never animates. */
+  .option[data-active="true"],
+  .option[data-highlighted] {
+    background: var(--fill-2);
+  }
+
+  .select-popup {
+    transform-origin: var(--transform-origin);
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      opacity var(--dur-base) var(--ease-out);
+  }
+
+  .select-popup[data-starting-style] {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  .select-popup[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.98);
+    transition-duration: var(--dur-fast);
+  }
+
+  .tooltip {
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--fg) 92%, var(--surface));
+    color: var(--surface);
+    font-size: var(--text-small);
+    line-height: var(--text-small--line-height);
+    box-shadow: var(--elev-low);
+    transform-origin: var(--transform-origin);
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .tooltip-key {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    color: color-mix(in srgb, var(--surface) 70%, transparent);
+  }
+
+  /* A scroll area fades its lower edge while more content is below it. */
+  .scroll-cue {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--cue)), transparent);
+    animation: scroll-cue linear both;
+    animation-timeline: scroll(self);
+  }
+
+  @keyframes scroll-cue {
+    from {
+      --cue: 32px;
+    }
+    96% {
+      --cue: 32px;
+    }
+    to {
+      --cue: 0px;
+    }
+  }
+
+  .tooltip[data-starting-style],
+  .tooltip[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  .tooltip[data-ending-style] {
+    transition-duration: var(--dur-instant);
+  }
+
+  .tooltip[data-instant] {
+    transition-duration: 0s;
+  }
+
+  .list-row {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    padding: 0 8px;
+    border-radius: var(--radius-md);
+    color: var(--fg);
+  }
+
+  .list-row-add {
+    opacity: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .list-row:hover {
+      background: var(--fill-2);
+    }
+
+    .list-row:hover .list-row-add {
+      opacity: 1;
+    }
+  }
+
+  .list-row:active,
+  .option:active {
+    background: var(--fill-3);
+  }
+
+  .listbox:focus-visible {
+    outline: none;
+  }
+
+  /* The keyboard position shows only while the list has keyboard focus. */
+  .listbox:focus-visible .list-row[data-active="true"] {
+    background: var(--fill-2);
+    outline: var(--focus-width) solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .listbox:focus-visible .list-row[data-active="true"] .list-row-add {
+    opacity: 1;
+  }
+
+  .tab {
+    display: inline-flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    color: var(--fg-2);
+    font-weight: var(--font-weight-medium);
+    outline-offset: 0;
+  }
+
+  .tab:active {
+    color: var(--fg);
+  }
+
+  .tab[data-active],
+  .tab[aria-selected="true"] {
+    background: var(--surface);
+    color: var(--fg);
+    box-shadow: var(--elev-low);
+  }
+
+  :root[data-theme="dark"] .tab[aria-selected="true"] {
+    background: var(--fill-4);
+  }
+
+  .callout {
+    --tone: var(--fg);
+    border: var(--hairline) solid color-mix(in srgb, var(--tone) 32%, transparent);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--tone) 7%, transparent);
+  }
+
+  [data-tone="success"] {
+    --tone: var(--success);
+  }
+
+  [data-tone="warning"] {
+    --tone: var(--warning);
+  }
+
+  [data-tone="danger"] {
+    --tone: var(--danger);
+  }
+
+  [data-tone="neutral"] {
+    --tone: var(--fg-3);
+  }
+
+  .tone {
+    color: var(--tone);
+  }
+
+  .skeleton {
+    height: 10px;
+    border-radius: var(--radius-sm);
+    background: var(--fill-3);
+    opacity: 1;
+    /* Shown only once the wait has passed 150 ms. */
+    transition: opacity var(--dur-base) var(--ease-out) 150ms;
+  }
+
+  @starting-style {
+    .skeleton {
+      opacity: 0;
+    }
+  }
+
+  .spinner {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid color-mix(in srgb, currentColor 28%, transparent);
+    border-top-color: currentColor;
+    border-radius: var(--radius-full);
+    animation: spin 700ms linear infinite;
+    opacity: 1;
+    transition: opacity 0s linear 150ms;
+  }
+
+  @starting-style {
+    .spinner {
+      opacity: 0;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .pop-in {
+    animation: pop-in var(--dur-slow) var(--ease-spring) both;
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  }
+
+  .drop-veil {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    display: grid;
+    place-items: center;
+    border-radius: inherit;
+    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    box-shadow: inset 0 0 0 2px var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .drop-veil[data-active="true"] {
+    opacity: 1;
+  }
+
+  /* ---- overlays -------------------------------------------------------- */
+
+  .scrim {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    background: var(--scrim);
+  }
+
+  .palette {
+    position: fixed;
+    z-index: var(--z-modal);
+    top: min(96px, 12vh);
+    left: 50%;
+    translate: -50% 0;
+    display: flex;
+    flex-direction: column;
+    width: min(560px, calc(100vw - 32px));
+    max-height: min(432px, calc(100dvh - 120px));
+    background: var(--raised);
+    background-clip: padding-box;
+    border: var(--hairline) solid var(--stroke-3);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--elev-sheet);
+    overflow: clip;
+    outline: none;
+  }
+
+  .dialog-scrim {
+    transition: opacity var(--dur-moderate) var(--ease-out);
+  }
+
+  .dialog-scrim[data-starting-style],
+  .dialog-scrim[data-ending-style] {
+    opacity: 0;
+  }
+
+  .dialog {
+    position: fixed;
+    z-index: var(--z-modal);
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: min(420px, calc(100vw - 32px));
+    padding: 20px;
+    background: var(--raised);
+    background-clip: padding-box;
+    border: var(--hairline) solid var(--stroke-3);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--elev-sheet);
+    outline: none;
+    transition:
+      transform var(--dur-moderate) var(--ease-out),
+      opacity var(--dur-moderate) var(--ease-out);
+  }
+
+  .dialog[data-starting-style],
+  .dialog[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  .dialog[data-ending-style],
+  .dialog-scrim[data-ending-style] {
+    transition-duration: var(--dur-base);
+  }
+
+  .toaster {
+    position: fixed;
+    z-index: var(--z-toast);
+    top: calc(var(--titlebar) + 8px);
+    left: 0;
+    right: 0;
+    display: grid;
+    justify-items: center;
+    pointer-events: none;
+  }
+
+  .toast {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: min(440px, calc(100vw - 32px));
+    min-height: var(--control-lg);
+    padding: 4px 4px 4px 12px;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--fg) 94%, var(--surface));
+    color: var(--surface);
+    box-shadow: var(--elev-pop);
+    pointer-events: auto;
+    transition:
+      transform var(--dur-moderate) var(--ease-out),
+      opacity var(--dur-moderate) var(--ease-out);
+  }
+
+  @starting-style {
+    .toast {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Leaves by the edge it came from, one step faster. */
+  .toast[data-leaving="true"] {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition-duration: var(--dur-base);
+  }
+
+  .toast-action {
+    height: var(--control-sm);
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--surface) 14%, transparent);
+    color: var(--surface);
+    font-weight: var(--font-weight-medium);
+    outline-color: var(--surface);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .toast-action:hover {
+      background: color-mix(in srgb, var(--surface) 24%, transparent);
+      transition-duration: 0s, 0s, var(--dur-moderate);
+    }
+  }
+
+  .dim {
+    opacity: 0.5;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  .undim {
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+}
+
+/* Actions started from the keyboard do not animate. The two wait indicators
+   keep their 150 ms show-delay, which is a timing rule and not motion. */
+:root[data-modality="keyboard"] *:not(.skeleton, .spinner),
+:root[data-modality="keyboard"] *::before,
+:root[data-modality="keyboard"] *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+:root[data-modality="keyboard"] .pop-in {
+  animation-duration: 0s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --press-scale: 1;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-property: opacity, background-color, color, border-color, visibility !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .sheet[data-open="false"],
+  .rail[data-open="false"],
+  .toast,
+  .toast[data-leaving="true"],
+  .select-popup,
+  .dialog,
+  .tooltip {
+    transform: none !important;
+  }
+  /* Panels only fade, at the base duration, and hide once the fade has ended. */
+  .sheet,
+  .rail {
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      visibility 0s !important;
+  }
+
+  .sheet[data-open="false"],
+  .rail[data-open="false"] {
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      visibility 0s linear var(--dur-base) !important;
+  }
+}

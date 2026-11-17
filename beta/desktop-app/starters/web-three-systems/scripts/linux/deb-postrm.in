@@ -1,0 +1,16 @@
+#!/bin/sh
+# After the files of @PRODUCT_NAME@ are removed.
+set -e
+PROFILE_TARGET=/etc/apparmor.d/@LINUX_NAME@
+case "$1" in
+  remove|purge)
+    if [ -f "$PROFILE_TARGET" ]; then
+      if command -v apparmor_status >/dev/null 2>&1 && apparmor_status --enabled >/dev/null 2>&1; then
+        if ! { [ -x /usr/bin/ischroot ] && /usr/bin/ischroot; }; then apparmor_parser --remove "$PROFILE_TARGET" || true; fi
+      fi
+      rm -f "$PROFILE_TARGET"
+    fi
+    if command -v update-desktop-database >/dev/null 2>&1; then update-desktop-database -q /usr/share/applications || true; fi
+    ;;
+esac
+exit 0

@@ -1,0 +1,240 @@
+{
+  "meta": {
+    "name": "Content app tokens",
+    "version": 1,
+    "note": "Single source for the web build: tokens/build.mjs writes src/styles/tokens.css. Sizes are CSS px. Colours are OKLCH. Tier values are the percentage of the foreground colour mixed into transparent. Values come from the installed-app steal list (Claude Desktop, Grok Bot, Linear, Discord, Spotify), proven in 1 build."
+  },
+  "color": {
+    "light": {
+      "chrome": "oklch(0.968 0.003 95)",
+      "surface": "oklch(1 0 0)",
+      "raised": "oklch(1 0 0)",
+      "fg": "oklch(0.22 0.004 95)",
+      "accent": "oklch(0.55 0.19 258)",
+      "on-accent": "oklch(1 0 0)",
+      "success": "oklch(0.5 0.13 152)",
+      "warning": "oklch(0.51 0.12 68)",
+      "danger": "oklch(0.53 0.2 27)",
+      "shadow": "oklch(0.22 0.004 95)",
+      "scrim": "oklch(0.22 0.004 95 / 0.28)"
+    },
+    "dark": {
+      "chrome": "oklch(0.185 0.003 95)",
+      "surface": "oklch(0.218 0.003 95)",
+      "raised": "oklch(0.255 0.003 95)",
+      "fg": "oklch(0.96 0.003 95)",
+      "accent": "oklch(0.74 0.14 255)",
+      "on-accent": "oklch(0.18 0.03 258)",
+      "success": "oklch(0.79 0.15 152)",
+      "warning": "oklch(0.83 0.13 82)",
+      "danger": "oklch(0.75 0.15 25)",
+      "shadow": "oklch(0 0 0)",
+      "scrim": "oklch(0 0 0 / 0.52)"
+    },
+    "tier": {
+      "fg-2": 78,
+      "fg-3": 66,
+      "fg-4": 46,
+      "fill-1": 4,
+      "fill-2": 7,
+      "fill-3": 11,
+      "fill-4": 16,
+      "stroke-1": 7,
+      "stroke-2": 11,
+      "stroke-3": 18
+    }
+  },
+  "font": {
+    "sans": "\"Inter Variable\", \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif",
+    "mono": "\"Cascadia Mono\", \"Cascadia Code\", Consolas, ui-monospace, monospace",
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600
+    }
+  },
+  "type": {
+    "small": {
+      "size": 12,
+      "line": 16,
+      "tracking": "0"
+    },
+    "base": {
+      "size": 13,
+      "line": 18,
+      "tracking": "-0.003em"
+    },
+    "body": {
+      "size": 14,
+      "line": 20,
+      "tracking": "-0.006em"
+    },
+    "reading": {
+      "size": 15,
+      "line": 24,
+      "tracking": "-0.006em"
+    },
+    "subhead": {
+      "size": 17,
+      "line": 24,
+      "tracking": "-0.008em"
+    },
+    "title": {
+      "size": 20,
+      "line": 28,
+      "tracking": "-0.012em"
+    }
+  },
+  "space": [
+    2,
+    4,
+    6,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32,
+    40,
+    48,
+    64
+  ],
+  "control": {
+    "xs": 24,
+    "sm": 28,
+    "md": 32,
+    "lg": 36
+  },
+  "radius": {
+    "xs": 2,
+    "sm": 4,
+    "md": 6,
+    "lg": 8,
+    "xl": 12,
+    "2xl": 16,
+    "full": 9999
+  },
+  "border": {
+    "hairline": 0.5
+  },
+  "shadow": {
+    "darkAlphaScale": 2.6,
+    "card": [
+      {
+        "x": 0,
+        "y": 1,
+        "blur": 2,
+        "spread": 0,
+        "alpha": 4
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "blur": 8,
+        "spread": 0,
+        "alpha": 3.5
+      }
+    ],
+    "low": [
+      {
+        "x": 0,
+        "y": 1,
+        "blur": 2,
+        "spread": 0,
+        "alpha": 6
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "blur": 8,
+        "spread": 0,
+        "alpha": 8
+      }
+    ],
+    "pop": [
+      {
+        "x": 0,
+        "y": 2,
+        "blur": 6,
+        "spread": 0,
+        "alpha": 8
+      },
+      {
+        "x": 0,
+        "y": 8,
+        "blur": 24,
+        "spread": 0,
+        "alpha": 12
+      }
+    ],
+    "sheet": [
+      {
+        "x": 0,
+        "y": 2,
+        "blur": 6,
+        "spread": 0,
+        "alpha": 6
+      },
+      {
+        "x": 0,
+        "y": 12,
+        "blur": 28,
+        "spread": -2,
+        "alpha": 10
+      },
+      {
+        "x": 0,
+        "y": 24,
+        "blur": 48,
+        "spread": -8,
+        "alpha": 10
+      }
+    ]
+  },
+  "focus": {
+    "width": 2,
+    "offset": 2,
+    "haloWidth": 4,
+    "haloAlpha": 24
+  },
+  "duration": {
+    "instant": 60,
+    "fast": 120,
+    "base": 150,
+    "moderate": 200,
+    "slow": 300,
+    "sheet": 450
+  },
+  "easing": {
+    "out": "cubic-bezier(0, 0, 0.2, 1)",
+    "emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+    "snap": "cubic-bezier(0.32, 0.72, 0, 1)",
+    "out-quint": "cubic-bezier(0.23, 1, 0.32, 1)",
+    "spring": "linear(0, 0.2459, 0.6526, 0.9468, 1.0764, 1.0915, 1.0585, 1.0219, 0.9993, 0.9914, 0.9921, 0.9957, 0.9988, 1.0004, 1)"
+  },
+  "press": {
+    "scale": 0.97
+  },
+  "z": {
+    "base": 0,
+    "raised": 10,
+    "sheet": 30,
+    "modal": 40,
+    "popover": 50,
+    "tooltip": 55,
+    "toast": 60
+  },
+  "layout": {
+    "titlebar-note": "36 px: it matches the title bar overlay height in app.config.json (titleBarHeight), so the system's window buttons and this bar are one strip on every system. Change both together.",
+    "titlebar": 36,
+    "caption-reserve-note": "Fallbacks only. The bar lays itself out inside env(titlebar-area-*), which the shell reports on every system (build 2 measured 137 px on Windows, 82 px on macOS, 113 px on Linux in a container with Electron's default button layout). These apply only when the page runs outside the shell.",
+    "caption-reserve": 138,
+    "mac-inset": 78,
+    "statusbar-note": "The status bar's one height, in every state (premium-bar rule 74): a long message is cut at its end, never wrapped.",
+    "statusbar": 40,
+    "rail": 380,
+    "rail-compact": 332,
+    "gutter": 8,
+    "label-col": 64
+  }
+}

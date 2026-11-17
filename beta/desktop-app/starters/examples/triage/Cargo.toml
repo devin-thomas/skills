@@ -1,0 +1,10 @@
+[package]
+name = "triage"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fastwin = { path = "../../fastwin" }
+
+
+# The release profile lives in the workspace root Cargo.toml; Cargo ignores profiles in workspace members.

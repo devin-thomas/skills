@@ -1,0 +1,10 @@
+[package]
+name = "hello"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fastwin = { path = "../../fastwin" }
+
+# The release profile (opt-level z, lto, codegen-units 1, panic abort, strip) lives in the workspace root
+# Cargo.toml; Cargo ignores profiles in workspace members.

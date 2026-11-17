@@ -1,0 +1,12 @@
+[workspace]
+resolver = "2"
+members = ["fastwin", "examples/hello", "examples/triage"]
+
+# Cargo applies only the workspace root's profile to members, so this one governs every crate here.
+# Standalone apps made by new-app.ps1 carry their own copy.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

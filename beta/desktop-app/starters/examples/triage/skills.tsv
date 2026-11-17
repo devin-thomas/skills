@@ -1,0 +1,9 @@
+name	source	context	tokens7d	uses	last_used	user_only	description
+agent-cli	skills	80	96900000	6	today	false	Use when delegating a bounded task through an installed agent CLI, starting an interactive agent chat, or handing a workspace to another CLI agent.
+agent-prompt	skills	40	0	0	never	false	Build or refine branded agent-prompt controls, copyable task prompts and project handoffs.
+branded-sign-in	skills	60	1200000	2	yesterday	false	Use when creating or editing authentication interfaces, or reviewing provider and method buttons and logo rendering.
+execute-task	skills	140	0	0	never	false	Complete a selected repository task through automatic repair, verification and authorized delivery.
+grill-to-build	skills	110	0	0	never	false	Turn a rough product or feature idea into an implementation-ready build pack through focused discovery, decisions, a specification and tickets.
+immutable-reports	local	70	350000	1	3d	true	Preserve implementation plans and verification walkthroughs as numbered, append-only Markdown snapshots with a synchronized ledger.
+no-useless-copy	upstream	30	0	0	never	false	Remove filler, repetition, decorative labels and leaked implementation text from user-facing interface copy.
+surface-sweep	skills	40	0	0	never	false	Broad visual QA and correction for existing web apps: responsive overflow, broken interaction states and screenshot-backed polish.

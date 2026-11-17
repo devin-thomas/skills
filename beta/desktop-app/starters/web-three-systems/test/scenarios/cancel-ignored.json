@@ -1,0 +1,28 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "inputs": 0
+   }
+  },
+  {
+   "stage": "working",
+   "staging": true
+  },
+  {
+   "delay_ms": 60000
+  }
+ ],
+ "exit": 0,
+ "cancel": "ignore"
+}

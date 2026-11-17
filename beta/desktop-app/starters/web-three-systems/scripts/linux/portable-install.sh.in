@@ -1,0 +1,23 @@
+#!/bin/sh
+# Adds @PRODUCT_NAME@ to this user's application menu, pointing at this folder.
+# Nothing is installed system-wide and no administrator rights are used.
+# Run it again after moving the folder. Remove with: ./install-for-user.sh --remove
+set -eu
+HERE=$(cd "$(dirname "$0")" && pwd)
+DATA=${XDG_DATA_HOME:-$HOME/.local/share}
+ENTRY="$DATA/applications/@APP_ID@.desktop"
+if [ "${1:-}" = "--remove" ]; then
+  rm -f "$ENTRY"
+  for f in "$HERE"/share/icons/*.png; do s=$(basename "$f" .png); rm -f "$DATA/icons/hicolor/$s/apps/@APP_ID@.png"; done
+  echo "removed $ENTRY"
+  exit 0
+fi
+mkdir -p "$DATA/applications"
+sed "s|@INSTALL_DIR@|$HERE|g" "$HERE/share/@APP_ID@.desktop" > "$ENTRY"
+for f in "$HERE"/share/icons/*.png; do
+  s=$(basename "$f" .png)
+  mkdir -p "$DATA/icons/hicolor/$s/apps"
+  cp "$f" "$DATA/icons/hicolor/$s/apps/@APP_ID@.png"
+done
+if command -v update-desktop-database >/dev/null 2>&1; then update-desktop-database -q "$DATA/applications" || true; fi
+echo "installed $ENTRY"

@@ -1,0 +1,28 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "inputs": 0
+   }
+  },
+  {
+   "event": {
+    "type": "error",
+    "code": "OUTPUT_IN_USE",
+    "message": "the output is open in another program",
+    "details": {}
+   }
+  }
+ ],
+ "exit": 1
+}

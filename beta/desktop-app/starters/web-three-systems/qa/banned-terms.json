@@ -1,0 +1,21 @@
+{
+  "note": "Words that may not appear in any text a person can read, Details and About included: internal identifiers, protocol terms and implementation nouns for this product. Matched as whole words; `terms` ignore case, `exact` match case (use it for codes and capitalised names). Start the list on day one from the spec's glossary and the tool's field names and error codes. Developer text reaches a person only through Copy details, which copies it without showing it.",
+  "terms": [
+    "idempotency",
+    "manifest",
+    "stdout",
+    "stderr",
+    "stdin",
+    "exit code",
+    "payload",
+    "localStorage",
+    "fixture",
+    "stand-in",
+    "schema",
+    "executable",
+    "null",
+    "undefined",
+    "NaN"
+  ],
+  "exact": ["CLI", "JSON", "TOOL_NOT_FOUND", "TOOL_CRASHED", "TOOL_STALLED", "TOOL_INCOMPATIBLE", "TOOL_PROTOCOL", "OUTPUT_IN_USE", "SOMETHING_NEW", "example-tool"]
+}

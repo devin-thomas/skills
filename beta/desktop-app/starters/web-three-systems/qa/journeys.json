@@ -1,0 +1,21 @@
+{
+  "note": "The essential journeys, each with the most steps it may take. One step is one run of typing or one key combination. The audit runs each journey by keyboard alone, once with each key family (Ctrl, and Command), and fails when a script is missing, fails, or passes its budget. Raising a budget is a recorded decision in docs/DECISIONS.md.",
+  "journeys": [
+    {
+      "id": "note-with-item",
+      "name": "Write a titled note and add one item from the list",
+      "stepBudget": 7
+    },
+    {
+      "id": "run-example",
+      "name": "Run the example job and see that it finished",
+      "stepBudget": 1
+    }
+  ],
+  "commandsWithoutShortcut": [
+    {
+      "label": "About Starter",
+      "reason": "Opened rarely; not a repeated action."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "productName": "Starter",
+  "exeName": "Starter",
+  "appId": "com.example.starter",
+  "company": "Example",
+  "description": "Starter content app",
+  "storagePrefix": "starter",
+  "titleBarHeight": 36,
+  "memory": { "budgetMB": 300, "ceilingMB": 680 },
+  "cli": { "shim": "", "scriptFallback": "", "versionArgs": ["--version"] }
+}

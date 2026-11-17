@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Electron compiles JavaScript at run time. -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/>
+  <!-- Needed only because this build is signed ad hoc. With the hardened
+       runtime, a program may load only libraries signed by Apple or by its own
+       team, and an ad-hoc signature has no team, so the app could not load its
+       own Electron Framework ("mapping process and mapped file (non-platform)
+       have different Team IDs"). A build signed with a Developer ID uses
+       entitlements.app.plist, which leaves library validation on. -->
+  <key>com.apple.security.cs.disable-library-validation</key>
+  <true/>
+</dict>
+</plist>

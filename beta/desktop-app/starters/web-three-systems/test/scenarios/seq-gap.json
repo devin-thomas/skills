@@ -1,0 +1,26 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "seq": 5,
+    "t_ms": 1,
+    "inputs": 0
+   },
+   "verbatim": true
+  },
+  {
+   "delay_ms": 5000
+  }
+ ],
+ "exit": 0
+}
