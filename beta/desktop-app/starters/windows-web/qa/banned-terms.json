@@ -1,0 +1,15 @@
+{
+  "note": "Words that may not appear in text a person reads without opening a Details control: internal identifiers, protocol terms and implementation nouns for this product. Start the list on day one from the spec's glossary and the CLI's field names. An element marked data-details is exempt.",
+  "terms": [
+    "idempotency",
+    "manifest",
+    "stdout",
+    "stderr",
+    "exit code",
+    "payload",
+    "localStorage",
+    "fixture",
+    "null",
+    "undefined"
+  ]
+}

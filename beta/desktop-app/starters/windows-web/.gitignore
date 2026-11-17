@@ -1,0 +1,14 @@
+node_modules/
+dist/
+out/
+build/icon.ico
+build/icon-*.png
+src/styles/tokens.css
+
+# QA and measurement output.
+qa/shots/
+qa/evidence/
+qa/audit.json
+qa/data/
+measure/out/
+*.log

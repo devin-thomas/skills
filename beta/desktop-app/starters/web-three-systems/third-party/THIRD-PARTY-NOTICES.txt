@@ -1,0 +1,7 @@
+Third-party notices
+
+This file ships inside the app beside the bundled programs (resources/THIRD-PARTY-NOTICES.txt) and is reachable from About.
+
+The starter bundles no third-party program. When the app bundles one (a converter, a runtime, a library linked into the tool), replace this file with its licence texts, where its exact source can be had, and how each shipped copy was built, and rebuild it in scripts/package.mjs on every package run so it can never be stale.
+
+Electron's own LICENSE and LICENSES.chromium.html are added by the packager beside the executable on Windows and Linux. On macOS the packager leaves them next to the .app, not inside it.

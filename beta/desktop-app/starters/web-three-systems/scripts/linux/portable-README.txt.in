@@ -1,0 +1,25 @@
+@PRODUCT_NAME@ @VERSION@, portable build for Linux
+
+Run it:            ./@LINUX_NAME@
+Add it to the application menu for your user:   ./install-for-user.sh
+Remove it from the menu:                        ./install-for-user.sh --remove
+
+Nothing here needs administrator rights. The folder can live anywhere; run
+install-for-user.sh again after moving it.
+
+If it does not start on Ubuntu 23.10 or later
+
+Those systems stop an ordinary program from creating the user namespace that
+the built-in sandbox uses, and this folder cannot carry the root-owned helper
+that is the alternative. The app then stops at start with a message about
+"chrome-sandbox". Either install the .deb package instead, which sets this up,
+or give the helper in this folder to root once:
+
+  sudo chown root:root chrome-sandbox && sudo chmod 4755 chrome-sandbox
+
+Do not start the app with --no-sandbox.
+
+Third-party software
+
+resources/THIRD-PARTY-NOTICES.txt   the bundled programs: licences, build configuration, source
+LICENSE, LICENSES.chromium.html     Electron and Chromium

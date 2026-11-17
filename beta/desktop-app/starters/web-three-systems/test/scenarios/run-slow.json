@@ -1,0 +1,602 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "inputs": 0
+   }
+  },
+  {
+   "stage": "working",
+   "staging": true
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 0,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 2,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 4,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 6,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 8,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 10,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 12,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 14,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 16,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 18,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 20,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 22,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 24,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 26,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 28,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 30,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 32,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 34,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 36,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 38,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 40,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 42,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 44,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 46,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 48,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 50,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 52,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 54,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 56,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 58,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 60,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 62,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 64,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 66,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 68,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 70,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 72,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 74,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 76,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 78,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 80,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 82,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 84,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 86,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 88,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 90,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 92,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 94,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 96,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 98,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 100,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 200
+  },
+  {
+   "event": {
+    "type": "stage",
+    "stage": "publishing"
+   }
+  },
+  {
+   "publish": true
+  },
+  {
+   "event": {
+    "type": "result",
+    "output": {
+     "bytes": 15
+    }
+   }
+  }
+ ],
+ "exit": 0
+}

@@ -1,0 +1,28 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "inputs": 0
+   }
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 10,
+    "total": 100,
+    "fraction": null
+   }
+  }
+ ],
+ "exit": 3
+}

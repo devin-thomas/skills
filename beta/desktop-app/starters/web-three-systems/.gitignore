@@ -1,0 +1,22 @@
+node_modules/
+dist/
+out/
+build/icon.ico
+build/icon.icns
+build/icon.png
+build/icon-*.png
+build/icons/
+src/styles/tokens.css
+
+# Helper binaries for the packager (scripts/stage.mjs) and the tool's own builds.
+staging/
+tool/dist/
+tool/build/
+
+# QA and measurement output.
+qa/shots/
+qa/evidence/
+qa/audit.json
+qa/data/
+measure/out/
+*.log

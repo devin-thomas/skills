@@ -1,0 +1,30 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "inputs": 0
+   }
+  },
+  {
+   "event": {
+    "type": "error",
+    "code": "INTERNAL",
+    "message": "something else went wrong",
+    "details": {
+     "os_error": 5
+    }
+   }
+  }
+ ],
+ "exit": 1
+}

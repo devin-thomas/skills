@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=@PRODUCT_NAME@
+Comment=@DESCRIPTION@
+Exec=@EXEC@
+Icon=@APP_ID@
+Terminal=false
+Categories=@CATEGORIES@
+StartupWMClass=@APP_ID@
+StartupNotify=true

@@ -1,0 +1,71 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "inputs": 0
+   }
+  },
+  {
+   "stage": "working",
+   "staging": true
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 0,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 40
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 50,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "delay_ms": 40
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 100,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "event": {
+    "type": "stage",
+    "stage": "publishing"
+   }
+  },
+  {
+   "publish": true
+  },
+  {
+   "event": {
+    "type": "result",
+    "output": {
+     "bytes": 15
+    }
+   }
+  }
+ ],
+ "exit": 0
+}

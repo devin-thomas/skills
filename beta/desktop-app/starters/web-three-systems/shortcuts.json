@@ -1,0 +1,14 @@
+{
+  "about": "The one table of commands and their keys. The page's key handler, the palette, the tooltips, the macOS menu (electron/menu.cjs) and the shell check (measure/shell-check.mjs) all read this file, so a shortcut cannot exist in one place only. `mod` is Ctrl on Windows and Linux and Command on macOS. A command with null has no shortcut and is listed in qa/journeys.json commandsWithoutShortcut with the reason. None uses a key that edits text or a key the system keeps (Q, W, M, H, X, C, V, A, Z, Y with the modifier; F10 and F11 on Linux).",
+  "commands": {
+    "command-palette": { "key": "k", "mod": true },
+    "focus-title": { "key": "t", "mod": true, "shift": true },
+    "focus-body": { "key": "m", "mod": true, "shift": true },
+    "show-items": { "key": "r", "mod": true, "shift": true },
+    "clear-note": { "key": "d", "mod": true, "shift": true },
+    "toggle-theme": { "key": "l", "mod": true, "shift": true },
+    "run-example": { "key": "e", "mod": true, "shift": true },
+    "cancel-example": { "key": ".", "mod": true },
+    "about": null
+  }
+}

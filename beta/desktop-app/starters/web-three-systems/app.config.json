@@ -1,0 +1,14 @@
+{
+  "productName": "Starter",
+  "exeName": "Starter",
+  "appId": "com.example.starter",
+  "company": "Example",
+  "description": "Starter content app",
+  "storagePrefix": "starter",
+  "titleBarHeight": 36,
+  "window": { "width": 1280, "height": 800, "minWidth": 720, "minHeight": 540 },
+  "memory": { "budgetMB": 300, "ceilingMB": 680 },
+  "tool": { "name": "example-tool", "binaries": ["example-tool"] },
+  "linux": { "categories": "Utility;", "mimeTypes": "" },
+  "mac": { "category": "public.app-category.productivity" }
+}

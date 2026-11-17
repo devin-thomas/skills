@@ -1,0 +1,31 @@
+#!/bin/sh
+# After the files of @PRODUCT_NAME@ are in place.
+set -e
+APP=/opt/@LINUX_NAME@
+
+# The Chromium sandbox helper must be owned by root with mode 4755. The package
+# already carries it that way; this repairs it if the archive was repacked.
+chown root:root "$APP/chrome-sandbox" || true
+chmod 4755 "$APP/chrome-sandbox" || true
+
+if command -v update-desktop-database >/dev/null 2>&1; then update-desktop-database -q /usr/share/applications || true; fi
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true; fi
+
+# AppArmor profile, for Ubuntu 23.10 and later, where an unprivileged process
+# may create a user namespace only if a profile allows it. Installed only when
+# AppArmor is on and its parser accepts the profile (older parsers do not know
+# the 4.0 ABI, and there the app needs no profile).
+PROFILE_SOURCE="$APP/resources/apparmor-profile"
+PROFILE_TARGET=/etc/apparmor.d/@LINUX_NAME@
+if command -v apparmor_status >/dev/null 2>&1 && apparmor_status --enabled >/dev/null 2>&1; then
+  if apparmor_parser --skip-kernel-load --debug "$PROFILE_SOURCE" >/dev/null 2>&1; then
+    cp -f "$PROFILE_SOURCE" "$PROFILE_TARGET"
+    # Loading into the running kernel makes no sense inside a chroot.
+    if ! { [ -x /usr/bin/ischroot ] && /usr/bin/ischroot; }; then
+      apparmor_parser --replace --write-cache --skip-read-cache "$PROFILE_TARGET" || true
+    fi
+  else
+    echo "@PRODUCT_NAME@: this system's AppArmor does not accept the bundled profile; not installing it."
+  fi
+fi
+exit 0

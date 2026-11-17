@@ -1,0 +1,13 @@
+# Lets @PRODUCT_NAME@ create the user namespace its Chromium sandbox uses on
+# systems that restrict unprivileged user namespaces (Ubuntu 23.10 and later).
+# The app is otherwise unconfined. Installed by the package only where the
+# system's AppArmor understands this file.
+abi <abi/4.0>,
+include <tunables/global>
+
+profile @LINUX_NAME@ /opt/@LINUX_NAME@/@LINUX_NAME@ flags=(unconfined) {
+  userns,
+
+  # Site-specific additions and overrides. See local/README for details.
+  include if exists <local/@LINUX_NAME@>
+}

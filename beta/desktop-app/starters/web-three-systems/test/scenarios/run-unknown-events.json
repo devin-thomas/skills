@@ -1,0 +1,57 @@
+{
+ "steps": [
+  {
+   "event": {
+    "type": "hello",
+    "schema": "example-events",
+    "schema_version": "1.0",
+    "tool": "example-tool",
+    "tool_version": "0.1.0"
+   }
+  },
+  {
+   "event": {
+    "type": "start",
+    "inputs": 0,
+    "extra_field": true
+   }
+  },
+  {
+   "event": {
+    "type": "telemetry",
+    "anything": 1
+   }
+  },
+  {
+   "stage": "working",
+   "staging": true
+  },
+  {
+   "event": {
+    "type": "progress",
+    "done": 100,
+    "total": 100,
+    "fraction": null
+   }
+  },
+  {
+   "event": {
+    "type": "stage",
+    "stage": "publishing"
+   }
+  },
+  {
+   "publish": true
+  },
+  {
+   "event": {
+    "type": "result",
+    "output": {
+     "bytes": 15
+    },
+    "new_field": "ignored"
+   }
+  }
+ ],
+ "exit": 0
+}

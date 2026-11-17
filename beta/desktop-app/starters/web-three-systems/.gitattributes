@@ -1,0 +1,16 @@
+# Shell scripts, templates and container files run on macOS and Linux: LF on every checkout,
+# including a Windows one with core.autocrlf on. Windows scripts keep CRLF.
+* text=auto
+*.sh text eol=lf
+*.in text eol=lf
+*.conf text eol=lf
+Dockerfile text eol=lf
+*.dockerignore text eol=lf
+*.plist text eol=lf
+*.cjs text eol=lf
+*.mjs text eol=lf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.png binary
+*.ico binary
+*.icns binary

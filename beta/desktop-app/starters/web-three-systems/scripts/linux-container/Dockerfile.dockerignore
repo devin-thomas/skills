@@ -1,0 +1,12 @@
+# Kept out of the image: everything that is built, downloaded or measured.
+.git
+node_modules
+dist
+out
+measure/out
+qa/shots
+qa/evidence
+qa/data
+tool/build
+tool/out
+**/*.log
