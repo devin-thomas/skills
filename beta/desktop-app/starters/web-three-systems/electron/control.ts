@@ -10,6 +10,6 @@ import * as channel from '@uppercut-labs/electron-control-channel';
 export type { Channel, Info, LaunchKind, Reply } from '@uppercut-labs/electron-control-channel';
 export const { VERSION, serves, endpoint, readInfo, infoPath, serve, send } = channel;
 
-export const COMMAND_FLAGS: readonly string[] = [...channel.DEFAULT_COMMAND_FLAGS];
+export const COMMAND_FLAGS: readonly string[] = [...channel.DEFAULT_COMMAND_FLAGS, 'qa-crash-renderer', 'qa-page='];
 export const isCommandFlag = (arg: string): boolean => channel.isCommandFlag(arg, { commandFlags: COMMAND_FLAGS });
 export const classify = (argv: readonly string[]): channel.LaunchKind => channel.classify(argv, { commandFlags: COMMAND_FLAGS });

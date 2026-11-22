@@ -32,3 +32,6 @@ node_modules/
 dist/
 build/
 coverage/
+
+# The starter app icon is source, not build output.
+!beta/desktop-app/starters/web-three-systems/build/

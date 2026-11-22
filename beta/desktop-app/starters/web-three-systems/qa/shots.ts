@@ -24,15 +24,16 @@ const SCALES = quick ? [1] : [1, 1.25];
 // Dark is the default theme (D-020): a critique round sees it alone, a full run adds light.
 const THEMES = quick ? (['dark'] as const) : (['dark', 'light'] as const);
 
+/** The steps that reach a state, given the page and the key family's modifier. */
+type Steps = (page: Page, mod: 'Meta' | 'Control') => Promise<unknown>;
+
 // Every step is given the key family's modifier ("Control" or "Meta"): a page told it runs on
 // macOS answers Command, not Control (pressing Control there timed out every keyboard state).
-const filterItems = async (page: Page, text: string, mod: string) => {
+const filterItems = async (page: Page, text: string, mod: 'Meta' | 'Control') => {
   await page.keyboard.press(`${mod}+Shift+R`);
   await page.waitForFunction(() => document.activeElement?.id === 'rail-filter');
   await page.keyboard.type(text);
 };
-
-type Steps = (page: Page, mod: string) => Promise<unknown>;
 
 /** Name, the steps that reach the state, and the stand-in fixture. Rewrite for the app; include every designed empty, error and dense state. */
 const STATES: [string, Steps, string?][] = [
@@ -97,7 +98,8 @@ async function capture(dir: string, name: string, steps: Steps, options: PageOpt
     await park(page);
     await settle(page);
     // animations: 'disabled' finishes every CSS animation and transition before the capture, so
-    // two runs of the same state give the same picture.
+    // two runs of the same state give the same picture (an entrance caught mid-way differed by
+    // up to 95% between identical runs; qa/visual.ts compares these pictures).
     await page.screenshot({ path: join(dir, `${name}.png`), animations: 'disabled' });
     count += 1;
   } catch (error) {
@@ -122,6 +124,12 @@ try {
     const dir = join(outDir, `${platform}-${W.width}x${W.height}-dark`);
     await mkdir(dir, { recursive: true });
     for (const [name, steps, fixture] of STATES) await capture(dir, name, steps, { width: W.width, height: W.height, scale: 1, theme: 'dark' }, fixture, platform);
+  }
+  // A system contrast theme (forced colours), on a dark and a light system, at the default size.
+  for (const theme of ['dark', 'light'] as const) {
+    const dir = join(outDir, `forced-colors-${W.width}x${W.height}-${theme}`);
+    await mkdir(dir, { recursive: true });
+    for (const [name, steps, fixture] of STATES) await capture(dir, name, steps, { width: W.width, height: W.height, scale: 1, theme, forcedColors: 'active' }, fixture);
   }
   // The 200% zoom case: the default window zoomed to 200% lays out at half its size in CSS px.
   const zoomDir = join(outDir, `zoom-200-of-${W.width}x${W.height}`);

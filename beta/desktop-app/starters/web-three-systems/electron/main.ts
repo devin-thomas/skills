@@ -29,9 +29,11 @@ import './no-dialog.ts';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { app, ipcMain, Menu, net, protocol, screen } from 'electron';
-import type { BrowserWindow, Rectangle } from 'electron';
+import { app, ipcMain, Menu, net, protocol, session, shell } from 'electron';
+import type { BrowserWindow } from 'electron';
 import config from '../app.config.json' with { type: 'json' };
+import * as boundary from './boundary.ts';
+import type { Boundary } from './boundary.ts';
 import * as control from './control.ts';
 import type { Channel, Reply } from './control.ts';
 import { ROOT } from './paths.ts';
@@ -98,13 +100,6 @@ function writeState(patch: Record<string, unknown>): void {
   }
 }
 
-function onScreen(bounds: Rectangle): boolean {
-  return screen.getAllDisplays().some((d) => {
-    const a = d.workArea;
-    return bounds.x < a.x + a.width - 80 && bounds.x + bounds.width > a.x + 80 && bounds.y >= a.y - 8 && bounds.y < a.y + a.height - 80;
-  });
-}
-
 // ---- IPC ------------------------------------------------------------------
 
 /** The sender of an IPC message, as far as trusted() reads it (Electron's events, and the menu kit's). */
@@ -144,6 +139,7 @@ async function diagnostics() {
     window: win && !win.isDestroyed() ? { visible: win.isVisible(), focused: win.isFocused(), bounds: win.getBounds(), title: win.getTitle() } : null,
     quit: { approved: quitApproved },
     control: channel ? { endpoint: channel.endpoint } : null,
+    boundary: guard ? guard.describe() : null, // permissions allowed and recent decisions (electron/boundary.ts)
     shell: await appShell.describe(), // system, window, menu, life cycle, memory (electron/shell.ts)
     at: new Date().toISOString(),
   };
@@ -280,7 +276,6 @@ function createWindow({ inactive = appShell.quiet() }: { inactive?: boolean } = 
     preload: path.join(ROOT, 'dist', 'electron', 'preload.cjs'),
     saved: readState(),
     save: writeState,
-    onScreen,
     inactive,
   });
   win = target;
@@ -330,6 +325,7 @@ function createWindow({ inactive = appShell.quiet() }: { inactive?: boolean } = 
 
 const launchKind = control.classify(process.argv);
 let channel: Channel | null = null;
+let guard: Boundary | null = null;
 
 function forward(waitMs: number): Promise<Reply> {
   return control.send(app.getPath('userData'), process.argv.slice(1), { cwd: process.cwd(), waitMs, timeoutMs: 120_000 });
@@ -351,6 +347,9 @@ function start(): void {
   appShell.start({ app, config, getWindow: () => win, createWindow, handleCommands, diagnostics });
 
   void app.whenReady().then(() => {
+    // Before any web contents exists: permissions denied but the allowed few, no navigation
+    // away, no new windows, no <webview> (electron/boundary.ts).
+    guard = boundary.install({ app, session, origin: ORIGIN, openExternal: (url) => void shell.openExternal(url) });
     appShell.installMenu({ app, Menu, ipcMain, facts: appShell.platform.facts(app), productName: config.productName, trusted, getWindow: () => win, openWindow: () => createWindow() });
     protocol.handle('app', async (request) => {
       const url = new URL(request.url);

@@ -35,6 +35,10 @@
 //   shortcuts  every command is in the palette with its shortcut written as the system writes
 //              it, tooltips show shortcuts, and each shortcut works on both key families [46]
 //   overlay    keys typed straight after the key that opens an overlay land in it [6]
+//   forced     under a system contrast theme (forced colours), on a light and a dark system,
+//              every keyboard-focusable element in every state still changes on focus [109]
+//   tokens     no colour literal or palette colour in src/ outside the token layer, and every
+//              theme defines the same colour names [110]
 //   job        cancel is acknowledged at once; each failure's filled button can succeed for
 //              its cause; "Copy details" copies the developer text without showing it, into
 //              a clipboard the audit captures (never the machine's) [50, 58, 65, 73]
@@ -42,7 +46,7 @@
 // The states, the journey scripts, the shortcut effects and the job fixtures below
 // describe the starter screen. Rewrite those blocks for the app; the gates stay.
 import { AxeBuilder } from '@axe-core/playwright';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Page } from 'playwright-core';
@@ -131,6 +135,8 @@ interface Gates {
   restore?: { restoredAfterReload: boolean; survivesCorruptStorage: boolean };
   journeys?: Record<string, { name: string; steps: number; stepBudget: number; passed: boolean }>;
   shortcuts?: Record<string, ShortcutResult>;
+  forced?: { stateAndThemeRuns: number; focusableElementsChecked: number };
+  tokens?: { filesRead: number; linesRead: number; themes: string[] };
   overlay?: Record<string, { query: string | null; body: string }>;
   job?: JobGate;
 }
@@ -717,13 +723,18 @@ const PAGE_CHECKS = async (terms: BannedTerms) => {
     })
     .map(describe);
 
+  // What a person could see change on focus: only paint that exists. An outline or border colour
+  // counts only where a line is drawn (a colour on an outline of style none is not a change, and
+  // under forced colours it is the only part of a ring that still shows).
   const signature = (el: HTMLElement): string => {
     const parts: string[] = [];
     let node: HTMLElement | null = el;
     for (let depth = 0; node && depth < 5; depth++, node = node.parentElement) {
       const s = getComputedStyle(node);
       const before = getComputedStyle(node, '::before');
-      parts.push([s.outlineStyle, s.outlineWidth, s.outlineColor, s.boxShadow, s.backgroundColor, s.borderTopColor, before.backgroundColor].join('|'));
+      const outline = s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0 ? `${s.outlineStyle} ${s.outlineWidth} ${s.outlineColor}` : 'no outline';
+      const border = s.borderTopStyle !== 'none' && parseFloat(s.borderTopWidth) > 0 ? s.borderTopColor : 'no border';
+      parts.push([outline, s.boxShadow, s.backgroundColor, border, before.backgroundColor].join('|'));
     }
     const active = el.getAttribute('aria-activedescendant');
     const activeEl = active ? document.getElementById(active) : el.querySelector?.('[data-active="true"]');
@@ -889,6 +900,74 @@ async function stateGates() {
   report.gates.language = { bannedTerms: bannedTerms.terms.length + bannedTerms.exact.length };
   report.gates.desktop = { statesChecked: Object.keys(axe).length };
   report.info = { targetsUnder24px: [...targets] };
+}
+
+// --------------------------------------------------------------- forced ---
+// A system contrast theme (Windows "Contrast themes", forced colours): Chromium replaces the
+// page's colours with the system's few and drops box shadows, so a focus ring drawn as a shadow
+// vanishes. Every state, on a light and a dark system: every keyboard-focusable element still
+// changes appearance on focus, and no page error.
+
+async function forcedGate(): Promise<void> {
+  let checked = 0;
+  let states = 0;
+  for (const theme of (['light', 'dark'] as const)) {
+    for (const name of Object.keys(STATES)) {
+      await inState(name, { ...VIEW, theme, forcedColors: 'active' }, async (page) => {
+        states += 1;
+        const active = await page.evaluate(() => matchMedia('(forced-colors: active)').matches);
+        if (!active) fail('forced', `${name}/${theme}: forced colours did not take effect, so this gate proves nothing`);
+        await page.keyboard.press('Shift');
+        await page.evaluate(() => (document.documentElement.dataset.modality = 'keyboard'));
+        const c = await page.evaluate(PAGE_CHECKS, bannedTerms);
+        checked += c.focusableCount;
+        c.noFocusStyle.forEach((t) => fail('forced', `${name}/${theme}: no visible focus change under forced colours: ${t}`));
+      });
+    }
+  }
+  report.gates.forced = { stateAndThemeRuns: states, focusableElementsChecked: checked };
+}
+
+// --------------------------------------------------------------- tokens ---
+// Colour comes only from the token layer (tokens/design-tokens.json, built into
+// src/styles/tokens.css): no colour literal in the page's code or its own stylesheet, and no
+// Tailwind palette colour that bypasses the semantic names. An alpha mask (mask-image) may use
+// #000 and transparent, which are not colours a person sees.
+
+/** The parts of tokens/design-tokens.json that the audit reads. */
+interface DesignTokens {
+  color?: Record<string, Record<string, unknown> | undefined>;
+}
+
+function tokensGate(): void {
+  const LITERAL = /#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch|oklab|lab|lch|hwb|color)\(/;
+  const PALETTE = /\b(?:bg|text|border|ring|fill|stroke|outline|from|to|via|shadow|decoration|divide|accent|caret)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|black|white)(?:-\d{2,3})?\b|\b(?:bg|text|border)-\[#/;
+  const files: string[] = [];
+  const walk = (dir: string): void => {
+    for (const entry of readdirSync(join(root, dir), { withFileTypes: true })) {
+      const rel = `${dir}/${entry.name}`;
+      if (entry.isDirectory()) walk(rel);
+      else if (/\.(tsx?|css)$/.test(entry.name) && rel !== 'src/styles/tokens.css') files.push(rel);
+    }
+  };
+  walk('src');
+  let lines = 0;
+  for (const file of files) {
+    readFileSync(join(root, file), 'utf8').split('\n').forEach((text, i) => {
+      lines += 1;
+      const code = text.replace(/\/\/.*$|\/\*.*?\*\//g, '');
+      if (/mask-image/.test(code) && !LITERAL.test(code.replace(/#000\b/g, ''))) return;
+      if (LITERAL.test(code)) fail('tokens', `${file}:${i + 1}: a colour literal outside the token layer: ${text.trim().slice(0, 100)}`);
+      if (PALETTE.test(code)) fail('tokens', `${file}:${i + 1}: a palette colour that bypasses the semantic tokens: ${text.trim().slice(0, 100)}`);
+    });
+  }
+  // The light and dark themes define the same colour names (other groups under `color`, such
+  // as `tier`, are shared by both and are not themes).
+  const tokens = JSON.parse(readFileSync(join(root, 'tokens', 'design-tokens.json'), 'utf8')) as DesignTokens;
+  const themes: string[] = (['light', 'dark'] as const).filter((t) => tokens.color?.[t]);
+  const keys = themes.map((t) => Object.keys(tokens.color?.[t] ?? {}).sort().join());
+  if (themes.length < 2 || new Set(keys).size !== 1) fail('tokens', `tokens/design-tokens.json: the themes (${themes.join(', ')}) do not define the same colour names`);
+  report.gates.tokens = { filesRead: files.length, linesRead: lines, themes };
 }
 
 // ------------------------------------------------------------- overflow ---
@@ -1214,6 +1293,8 @@ try {
   await motionGate();
   await listGate();
   await stateGates();
+  await forcedGate();
+  tokensGate();
   await overflowGate();
   await restoreGate();
   await journeyGate();
@@ -1236,6 +1317,8 @@ console.log(`css        ${g.css?.declarationsRead ?? 0} declarations, longest ${
 console.log(`list       ${g.list ? `${g.list.top.domRows} to ${g.list.end.domRows} DOM rows of ${g.list.top.totalRows}` : 'not run'}`);
 console.log(`axe        ${g.axe ? `${g.axe.violations} violations in ${g.axe.statesChecked} state and theme runs` : 'not run'}`);
 console.log(`focus      ${g.focus?.focusableElementsChecked ?? 0} focus checks; names ${g.names?.interactiveElementsChecked ?? 0}; smallest text ${g.text?.smallestTextPx ?? '?'} px`);
+console.log(`forced     ${g.forced ? `${g.forced.focusableElementsChecked} focus checks in ${g.forced.stateAndThemeRuns} state and theme runs under forced colours` : 'not run'}`);
+console.log(`tokens     ${g.tokens ? `${g.tokens.linesRead} lines in ${g.tokens.filesRead} files, themes ${g.tokens.themes.join(', ')}` : 'not run'}`);
 console.log(`overflow   ${g.overflow ? Object.keys(g.overflow).length : 0} layout cases at ${SIZES.length} sizes, spill and stable checked in each`);
 console.log(`restore    ${g.restore ? `reload ${g.restore.restoredAfterReload}, corrupt storage ${g.restore.survivesCorruptStorage}` : 'not run'}`);
 console.log(`journeys   ${g.journeys ? Object.entries(g.journeys).map(([id, j]) => `${id} ${j.steps}/${j.stepBudget} steps`).join(', ') : 'not run'}`);

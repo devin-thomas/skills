@@ -20,7 +20,8 @@
 //      Windows-only (PresentMon).
 //   8. No script reaches the running app through a second instance (see the rule below).
 //   9. The network service runs in the main process only while the page makes no network request.
-//  10. The packaged app leaves out the development-only test instrumentation.
+//  10. The secure desktop boundary (see the rule below).
+//  11. The packaged app leaves out the development-only test instrumentation.
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -86,6 +87,8 @@ const FOCUS_ALLOWED = [
   { file: 'shell.ts', line: '&& !quiet()) win.restore()', why: 'macOS open-file: restores a window put in the Dock only when the last launch did not ask for no focus' },
   { file: 'shell.ts', line: 'platform.show(win, app, quiet())', why: "macOS activate: follows the last launch's request" },
   { file: 'tool/index.ts', line: 'dialog.showMessageBox(', why: 'the quit question while a job runs; confirmQuitDuringJob answers a quiet request without it' },
+  { file: 'window.ts', line: 'if (maximizeAfterReveal) win.maximize();', why: 'restores a window saved maximized; maximizeAfterReveal is false for a launch that asked for no focus on Windows, the one system where maximizing activates' },
+  { file: 'window.ts', line: '.showMessageBox(win,', why: 'the crash-loop notice, inside `if (!inactive)`: a launch that asked for no focus is never shown it' },
 ];
 const FOCUS_CALL = /\.(show|focus|restore|maximize|moveTop|showInactive|blurWebView|setAlwaysOnTop)\(|show(Open|Save)Dialog|showMessageBox|showErrorBox|app\.focus\(|activateIgnoringOtherApps/;
 for (const file of mainFiles) {
@@ -249,7 +252,89 @@ let scriptCount = 0;
   if (inProcess) ok(/connect-src 'none'/.test(csp), "electron/main.ts runs the network service in the main process, but the page's Content-Security-Policy allows network requests: set NETWORK_SERVICE_IN_PROCESS to false or keep connect-src 'none'");
 }
 
-// 10. The test instrumentation (electron/qa.ts, built to dist/electron/qa.mjs) is development-only:
+// 10. The secure desktop boundary, read from the source (premium bar, "Secure desktop boundary").
+//   (a) Every BrowserWindow keeps isolation, the sandbox and web security, and turns on nothing
+//       that loosens them.
+//   (b) electron/boundary.ts is installed inside whenReady before the first window: permissions
+//       denied but its allow-list, no navigation away, no new windows, no <webview>.
+//   (c) The page's Content-Security-Policy allows no eval, no plugins, no base or form targets.
+//   (d) Every IPC listener checks its sender: ipcMain.handle only through handle() in main.ts
+//       (which checks), every ipcMain.on body calls trusted(event).
+//   (e) Packaging flips the fuses in scripts/lib/fuses.ts, and they close the Node.js doors.
+let ipcListeners = 0;
+{
+  const strip = (s: string) =>
+    s
+      .split('\n')
+      .filter((line) => !/^\s*(\/\/|\*)/.test(line))
+      .join('\n');
+  const sources: Record<string, string> = Object.fromEntries(mainFiles.map((f) => [f, strip(read(join('electron', f)))]));
+  // (a)
+  const windows = Object.entries(sources).flatMap(([f, s]) => [...s.matchAll(/new BrowserWindow\(/g)].map((m) => [f, s.slice(m.index, m.index + 2500)] as const));
+  ok(windows.length >= 1, 'could not find the BrowserWindow in the main process');
+  for (const [f, body] of windows) {
+    const prefs = body.match(/webPreferences:\s*\{([^}]*)\}/)?.[1] ?? '';
+    for (const [key, value] of [
+      ['contextIsolation', 'true'],
+      ['sandbox', 'true'],
+      ['nodeIntegration', 'false'],
+      ['webSecurity', 'true'],
+    ]) {
+      ok(new RegExp(`\\b${key}:\\s*${value}\\b`).test(prefs), `electron/${f}: a BrowserWindow's webPreferences must set ${key}: ${value}`);
+    }
+    for (const loose of ['allowRunningInsecureContent', 'experimentalFeatures', 'webviewTag', 'nodeIntegrationInWorker', 'nodeIntegrationInSubFrames', 'enableBlinkFeatures']) {
+      ok(!new RegExp(`\\b${loose}\\b`).test(prefs), `electron/${f}: a BrowserWindow sets ${loose}, which loosens the boundary`);
+    }
+  }
+  for (const [f, s] of Object.entries(sources)) {
+    ok(!/\bnew BrowserView\(|\bnew WebContentsView\(|<webview|\bwebviewTag\b/.test(s) || f === 'boundary.ts', `electron/${f} creates another web view; give it the same preferences and review this rule`);
+  }
+  // (b)
+  const main = sources['main.ts'] ?? '';
+  const ready = main.indexOf('app.whenReady().then(');
+  const installAt = main.indexOf('boundary.install(', ready);
+  const firstWindow = main.indexOf('createWindow()', ready);
+  ok(ready !== -1 && installAt > ready && installAt < firstWindow, 'electron/main.ts must call boundary.install(...) inside whenReady, before the first createWindow()');
+  const boundarySource = sources['boundary.ts'] ?? '';
+  for (const piece of ['setPermissionRequestHandler(', 'setPermissionCheckHandler(', 'setDevicePermissionHandler(', "'web-contents-created'", "'will-navigate'", "'will-attach-webview'", "action: 'deny'"]) {
+    ok(boundarySource.includes(piece), `electron/boundary.ts no longer has ${piece}`);
+  }
+  // (c)
+  const csp = read('electron/main.ts').match(/'Content-Security-Policy',\s*"([^"]+)"/)?.[1] ?? '';
+  for (const need of ["object-src 'none'", "base-uri 'none'", "form-action 'none'", "default-src 'self'"]) ok(csp.includes(need), `the page's Content-Security-Policy lacks ${need}`);
+  ok(!/unsafe-eval|wasm-unsafe-eval|\*/.test(csp), "the page's Content-Security-Policy allows eval or a wildcard source");
+  // (d) ipcMain.handle only inside main.ts's own handle(), the function that checks the sender:
+  // the nearest declaration before the call must be `handle`.
+  for (const [f, s] of Object.entries(sources)) {
+    for (const m of s.matchAll(/ipcMain\.(handle|handleOnce)\(/g)) {
+      ipcListeners += 1;
+      const enclosing = s.slice(Math.max(s.lastIndexOf('\nconst ', m.index), s.lastIndexOf('\nfunction ', m.index)) + 1, m.index);
+      ok(f === 'main.ts' && /^(const handle\b|function handle\()/.test(enclosing) && /if \(!trusted\(event\)\) throw/.test(s.slice(m.index, m.index + 300)), `electron/${f}: ipcMain.${m[1]} outside main.ts's handle(), which checks the sender; use the handle passed to registerIpc`);
+    }
+    for (const m of s.matchAll(/ipcMain\.(on|once)\(\s*'[^']+',\s*\(([^)]*)\)\s*=>\s*\{/g)) {
+      ipcListeners += 1;
+      // The listener's own body: up to its closing "});" (never into the next listener).
+      const end = s.indexOf('\n  });', m.index);
+      const body = s.slice(m.index, end === -1 ? m.index + 600 : end);
+      ok(/trusted\(\s*(event|e|_event)\s*\)/.test(body), `electron/${f}: an ipcMain.${m[1]} listener does not call trusted(event) first: ${body.split('\n')[0]?.trim()}`);
+    }
+  }
+  ok(ipcListeners >= 3, `could not find the IPC listeners (found ${ipcListeners})`);
+  // (e)
+  const packaging = read('scripts/package.ts');
+  ok(/from '\.\/lib\/fuses\.ts'/.test(packaging) && /flipFuses\(/.test(packaging), 'scripts/package.ts must flip the fuses from scripts/lib/fuses.ts');
+  const fuseConfig = read('scripts/lib/fuses.ts');
+  for (const closed of ['EnableNodeOptionsEnvironmentVariable', 'EnableNodeCliInspectArguments']) {
+    ok(new RegExp(`\\[FuseV1Options\\.${closed}\\]:\\s*false`).test(fuseConfig), `scripts/lib/fuses.ts must set ${closed} to false`);
+  }
+  // RunAsNode off, or on with a recorded reason of real length.
+  const runAsNodeOn = /\[FuseV1Options\.RunAsNode\]:\s*true/.test(fuseConfig);
+  ok(runAsNodeOn || /\[FuseV1Options\.RunAsNode\]:\s*false/.test(fuseConfig), 'scripts/lib/fuses.ts must set RunAsNode explicitly');
+  if (runAsNodeOn) ok((fuseConfig.match(/RUN_AS_NODE_REASON =\s*'(\\'|[^'])+'/)?.[0]?.length ?? 0) > 120, 'scripts/lib/fuses.ts leaves RunAsNode on without a RUN_AS_NODE_REASON');
+  ok(/\[FuseV1Options\.OnlyLoadAppFromAsar\]:\s*true/.test(fuseConfig), 'scripts/lib/fuses.ts must set OnlyLoadAppFromAsar to true');
+}
+
+// 11. The test instrumentation (electron/qa.ts, built to dist/electron/qa.mjs) is development-only:
 // the main bundle never imports it by name, and packaging leaves it out.
 {
   const packaging = read('scripts/package.ts');
@@ -266,5 +351,5 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(
-  `shell check passed: ${ids.length} commands in the macOS menu with the table's keys, ${shellKeys.length} shell keys clear of the page's keys, ${mainFiles.length} main-process sources and ${built.length} built files parse, the no-dialog handler comes first in the bundle, and the main process takes focus only in the ${FOCUS_ALLOWED.length} reviewed places, launches go through scripts/lib/launch.ts, none of ${scriptCount} scripts reaches the app through a second instance, the network service runs in the main process only with connect-src 'none', and packaging leaves out the test instrumentation`,
+  `shell check passed: ${ids.length} commands in the macOS menu with the table's keys, ${shellKeys.length} shell keys clear of the page's keys, ${mainFiles.length} main-process sources and ${built.length} built files parse, the no-dialog handler comes first in the bundle, and the main process takes focus only in the ${FOCUS_ALLOWED.length} reviewed places, launches go through scripts/lib/launch.ts, none of ${scriptCount} scripts reaches the app through a second instance, the network service runs in the main process only with connect-src 'none', every window keeps the sandbox and isolation, the boundary is installed before the first window, ${ipcListeners} IPC listeners check their sender, packaging closes the Node.js fuses and leaves out the test instrumentation`,
 );

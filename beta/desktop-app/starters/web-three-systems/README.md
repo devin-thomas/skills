@@ -37,7 +37,12 @@ Bring these to the build. Each has a recommended answer.
 - **Stand-ins:** `src/bridge.fake.ts` (the shell, for the page) chosen by the address's fragment; `test/standin-tool.ts` (the tool, for the adapter) replaying scenarios.
 - **Launch rules (`scripts/lib/launch.ts`):** every scripted launch uses absolute paths, passes `pnpm shell:check` first, runs with `--no-activate`, a throwaway data folder and a time limit, talks to the app only through the control channel (`app.ask()`), quits it through the channel when the limit passes, and then ends only the process it started, by its id.
 - **Windowless scripts on Windows (`scripts/run-as-user.ps1`):** anything handed to Explorer runs PowerShell under `conhost.exe --headless`, a console with no window. A visible console (even a Minimized shortcut, once Windows Terminal is the default terminal) takes the foreground and, when it closes, hands it to whatever app is entitled to it.
-- **Decisions already recorded:** `docs/DECISIONS.md`, D-001 to D-019.
+- **Crash recovery and window restoration (`electron/window.ts`, `electron/bounds.ts`, rules 104 and 105):** a crashed or killed renderer is reloaded in the same process into the page's saved state, and more than 3 crashes in 60 s stop the reloads, keep the work and tell the person (never under `--no-activate`). The window opens on the display it was saved on when that display is still connected, else centred on the primary one; it always fits the work area, and one saved maximized opens maximized (not on Windows under `--no-activate`, where maximizing activates). The placement is a pure function, `initialBounds` in `electron/bounds.ts`.
+- **Security boundary (`electron/boundary.ts`, `electron/main.ts`, rules 106 and 107):** every window keeps context isolation, the sandbox and web security; before the first window the boundary denies every permission but a short allow-list with a reason (the starter allows clipboard writing, for Copy details) and refuses navigation away, new windows and `<webview>`; the page's policy allows no eval; every IPC listener checks its sender. `measure/shell-check.ts` reads all of it from the source.
+- **Fuses (`scripts/lib/fuses.ts`, `scripts/package.ts`, rule 108):** flipped on the freshly extracted Electron before signing: no `NODE_OPTIONS`, no `--inspect`, the app only from `app.asar`, integrity validation on macOS, no extra file-protocol privileges. `RunAsNode` stays on with a written reason (`RUN_AS_NODE_REASON`): the installed checks run the app's own binary as Node.
+- **Contrast themes, colour tokens and screenshot baselines (rules 109 to 111):** the audit checks focus under forced colours (`forced`) and that colour comes only from the token layer (`tokens`); `qa/visual.ts` compares every screenshot with the accepted baseline for the system.
+- **Checks that prove themselves (`qa/planted-breaks.ts`):** `pnpm qa:planted` makes one break per rule 104 to 111 in a throwaway copy and requires the check to fail. A check that stops failing is as broken as the rule it guards.
+- **Decisions already recorded:** `docs/DECISIONS.md`, D-001 to D-021.
 
 ## What you still choose
 
@@ -47,13 +52,31 @@ The screens, the journeys, the banned terms, the accent colour and product mark,
 
 1. Copy this folder to the project, outside any Git checkout of this template. Edit `app.config.json`, the `name` and `productName` in `package.json`, the title in `index.html` and `build/icon.svg`.
 2. `pnpm install --frozen-lockfile`, then `pnpm electron:install`. Electron 45 has no install script, so its binary is absent until this runs; the real-shell scripts need it. On a Mac without pnpm, `npx pnpm@11.9.0`.
-3. `pnpm typecheck`, `pnpm build`, `pnpm test`, `pnpm shell:check`, `pnpm qa:audit`. All five pass on the untouched starter (about 2 minutes for the audit on an Apple silicon Mac). This is the baseline: a later failure is from the app's own change.
+3. `pnpm typecheck`, `pnpm build`, `pnpm test`, `pnpm shell:check`, `pnpm qa:audit`. All five pass on the untouched starter (about 2 minutes for the audit on an Apple silicon Mac). This is the baseline: a later failure is from the app's own change. Then `pnpm qa:crash` (it starts the real shell without focus, so on the owner's machine only when he has said it is free).
 4. Write `docs/TOOL-CONTRACT.md`, `src/bridge.ts` with `docs/BRIDGE.md`, `docs/JOURNEYS.md` with `qa/journeys.json`, and `shortcuts.json`, before any builder starts. Builders change none of them.
 5. Replace the example: the screen in `src/App.tsx` and `src/components/StatusBar.tsx`, the job in `src/state/job.ts` and `electron/tool/index.ts`, the contract names in `electron/tool/contract.ts`, the stand-in scenarios in `test/scenarios/` and fixtures in `src/bridge.fake.ts`, the menu in `electron/menu.ts`, and the marked blocks in `qa/audit.ts` (states, journey scripts, shortcut effects, job fixtures), `qa/shots.ts`, `qa/lib.ts` (`fill()`), `electron/qa.ts` and `measure/workload.js`.
-6. `pnpm qa:shots`, hand the screenshots alone to a critic that did not build the app, fix, and turn each class of finding into an audit gate. Repeat until a round has no must-fix item.
-7. Run the real shell on each system. Linux: `scripts/linux-container/run.sh` on a Mac with Docker. macOS: `pnpm shell:evidence` on a Mac nobody is using. Windows: `pnpm qa:typing`, `pnpm qa:kill`, `pnpm shell:evidence` and `uv run measure/run.py` only when the owner has said the machine is free, because each opens a window. Before any claim about focus on Windows, run `pnpm measure:focus -- --work <folder> --first explorer --route explorer` (also when he has said the machine is free): launches from an agent's own session cannot show the problem, because that session holds no right to the foreground.
-8. Build the tool for each target and stage it (`node scripts/stage.ts tool <target> <file>`, or the placeholder in `tool/placeholder/`), then `pnpm icon` and `pnpm package:win`, `pnpm package:mac`, `pnpm package:linux-arm64`, `pnpm package:linux-x64` on the machine for each.
-9. Install and check each (below), then hand over each system's launcher path, the evidence folders, the verdict per premium-bar group and per system, and what was not verified. The owner's use decides whether it is premium.
+6. `pnpm qa:visual --update` once the screens are reviewed, then `pnpm qa:visual` on every change: commit `qa/baselines/<system>/` and delete the `qa/baselines/` line in `.gitignore`. Baselines are per system, because fonts are drawn differently on each. After packaging, `pnpm fuses:check <target>` on the target's own system. When a check is changed, `pnpm qa:planted` shows it still fails on its break.
+7. `pnpm qa:shots`, hand the screenshots alone to a critic that did not build the app, fix, and turn each class of finding into an audit gate. Repeat until a round has no must-fix item.
+8. Run the real shell on each system. Linux: `scripts/linux-container/run.sh` on a Mac with Docker. macOS: `pnpm shell:evidence` on a Mac nobody is using. Windows: `pnpm qa:typing`, `pnpm qa:kill`, `pnpm shell:evidence` and `uv run measure/run.py` only when the owner has said the machine is free, because each opens a window. Before any claim about focus on Windows, run `pnpm measure:focus -- --work <folder> --first explorer --route explorer` (also when he has said the machine is free): launches from an agent's own session cannot show the problem, because that session holds no right to the foreground.
+9. Build the tool for each target and stage it (`node scripts/stage.ts tool <target> <file>`, or the placeholder in `tool/placeholder/`), then `pnpm icon` and `pnpm package:win`, `pnpm package:mac`, `pnpm package:linux-arm64`, `pnpm package:linux-x64` on the machine for each.
+10. Install and check each (below), then hand over each system's launcher path, the evidence folders, the verdict per premium-bar group and per system, and what was not verified. The owner's use decides whether it is premium.
+
+## Checks
+
+Every check is a pnpm command that exits non-zero when its rule is broken. The rules are in the skill's `references/premium-bar.md`.
+
+| Command | Rules | What it proves | Opens a window |
+| --- | --- | --- | --- |
+| `pnpm typecheck` | style | strict TypeScript for the page, the main process, the scripts and the QA code | no |
+| `pnpm test` | 105, 106 and the tool adapter | window placement against every display change (`test/bounds.test.ts`), the permission decision (`test/boundary.test.ts`), the adapter against the stand-in tool, the control channel, the dark default, the kit-only rules | no |
+| `pnpm shell:check` | 106, 107, 108 and the shell's rules | the shell read from its source: sandbox and isolation on, the boundary installed before the first window, the page's policy, every IPC listener checking its sender, the fuse configuration, focus taken only in reviewed places | no |
+| `pnpm qa:audit` | 109, 110 and the page's rules | the page, headless, in every state and both themes, including focus under forced colours and the token layer | headless browser |
+| `pnpm qa:crash` | 104, 105, 106 | the real shell through its control channel: a crashed renderer reloaded with the typed text back, a crash loop stopped, the page's view of its permissions, a window saved maximized and one saved on a missing display | yes, without focus |
+| `pnpm qa:visual` | 111 | every screenshot against the accepted baseline for this system | headless browser |
+| `pnpm fuses:check <target>` | 108 | the fuse wire read back from the packaged app; on the app's own system each closed door tried | no window (command launches) |
+| `pnpm qa:planted` | 104 to 111 | one break per rule in a throwaway copy; each must fail its check | as the checks it runs |
+| `pnpm qa:kill`, `pnpm qa:typing` | 44, 25 | text survives a kill; typing latency | yes, without focus |
+| `pnpm shell:evidence` | the shell's seams | the real shell on this system, reached only through its control channel | yes, without focus |
 
 ## Shared code
 
@@ -91,16 +114,18 @@ shortcuts.json         the one command and shortcut table: page, palette, toolti
 electron/main.ts      app:// protocol, saved state, IPC, diagnostics, quitting while a job runs, what kind of launch this is
 electron/control.ts   the control channel: the server in the app, the client for scripts (plain Node)
 electron/platform.ts  the one place that knows which system this is
-electron/window.ts    the window recipe; shell.ts life cycle; menu.ts menus; memory.ts memory
+electron/window.ts    the window recipe and crash recovery; shell.ts life cycle; menu.ts menus; memory.ts memory
+electron/bounds.ts    where the window opens, from what was saved and the displays connected now (pure)
+electron/boundary.ts  what the page may ask Chromium for, and what any web contents may become
 electron/preload.ts   the page's only bridge
 electron/tool/         the tool adapter (plain Node) and its Electron glue (index.ts)
 electron/qa.ts        development-only instrumentation (typing, kill, marks, workload); not packaged
 src/                   the starter screen, the stand-in bridge and the reusable parts
 tokens/                design-tokens.json and the generator for src/styles/tokens.css
-qa/                    audit, screenshots, typing latency, kill test, journeys, banned terms
+qa/                    audit, screenshots, screenshot baselines, crash test, planted breaks, typing latency, kill test, journeys, banned terms
 measure/               shell check, shell evidence, PresentMon and memory harness, foreground sampler, focus and
                        memory experiments (Windows)
-scripts/               launch rules, control channel clients, windowless runner, icon, stage, package, install,
+scripts/               launch rules, control channel clients, windowless runner, icon, stage, package, fuses and their check, install,
                        installed checks, memory per system, Linux packaging templates, macOS entitlements, the Linux
                        container harness
 test/                  adapter tests against the stand-in tool, the host-kill test, the bridge check, the control channel
@@ -124,4 +149,9 @@ Run again on 2026-11-21 after the strict TypeScript conversion and the move to t
 
 Run again on 2026-11-21 on this folder exactly as published in the beta, after the dark-by-default change, on a fresh app made the same way, with no private package installed (`node_modules` held only the published `@uppercut-labs` packages), macOS 27 on Apple silicon, Node 26: `pnpm install --frozen-lockfile`, `electron:install`, `typecheck`, `build`, `test` (49 pass, including the four dark-default tests: a fresh profile renders dark with the system set to light and set to dark, and a saved light choice is kept), `shell:check`, `qa:audit` (passed: 0 axe violations in 30 state and theme runs, 60 layout cases at 4 sizes). Then the placeholder tool built and staged, `icon`, `package:mac`, `install.sh` into a folder on the internal disk, and `scripts/installed-check.sh` through `list` (no failures, with a space in the product name), `helpers`, `launch` (the app was not in front, PATH empty), `memory` (147 MB, within budget), `collect` (reached through the control channel only, 0 second launches), `quit` and `uninstall`.
 
-Not run: the Linux container, the Windows installed check, `qa:typing`, `qa:kill`, `measure:focus`, `shell:evidence` on this exact copy, `uv run measure/run.py` beyond resolving its package, and the scripted checks for premium-bar rules 104 to 111, which this starter does not have.
+Run on 2026-11-21 after rules 104 to 111 were ported (premium-bar "Trust, restoration and visual baselines"), on a fresh app made from the starter as step 1 says (renamed "Proof Notes"), with no private package installed:
+
+- macOS 27 on Apple silicon, Node 26: `typecheck`, `build`, `test` (64 pass, including the window-placement and permission tests), `shell:check` (rule 10 included), `qa:audit` (passed: 224 focus checks under forced colours in 30 state and theme runs, the token gate over 2,645 lines), `qa:crash` (recovery in the same process, the crash loop, permission states, a window saved maximized, one saved on a missing display), `qa:kill`, `qa:typing`, `qa:shots` (150 pictures), `qa:visual` (60 pictures; three identical runs pass, largest difference 0.015%), `shell:evidence`, the placeholder tool, `icon`, `package:mac` with `fuses:check darwin-arm64` (the wire and every probe, including the changed `app.asar`), and `qa:planted` (all 14 breaks caught).
+- Windows 10 (a second PC, over ssh in a session with no desktop, so no window could take focus), Node 24: `typecheck`, `build`, `test` (64 pass), `shell:check`, `qa:crash` (the `maximized` trial expects the Windows exception), `qa:kill`, `qa:typing`, `qa:audit` (passed, Edge), `qa:visual` (60 pictures, 0.000%), a stand-in tool staged, `icon`, `package:win` with `fuses:check win32-x64` (the wire and every probe), and `qa:planted` for rules 104 to 108 and 111 (all 12 breaks caught).
+
+Not run: the Linux container and `fuses:check` for Linux, the Windows installed check, `measure:focus`, `measure:memory`, `uv run measure/run.py` beyond resolving its package, `qa:planted` rules 109 and 110 on Windows (the page gates run the same browser code on every system).

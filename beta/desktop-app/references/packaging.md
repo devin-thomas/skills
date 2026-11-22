@@ -62,16 +62,16 @@ Each runs `@electron/packager` 20 with an explicit keep-list (package.json, app.
 
 ## Fuses
 
-Electron's fuses are switches in the Electron binary that close doors an app does not use. Flip them on the freshly extracted Electron (the packager's `afterExtract`), before the rename, the Windows resource edit and macOS signing; on Apple silicon the flip voids Electron's own ad-hoc signature, so sign it again and let the packager's signing follow. **The current starter's `scripts/package.ts` does not flip them yet** (premium bar, rule 108). An earlier JavaScript version of the starter did, and proved it on 2026-11-19 on macOS arm64 with every probe below, on Linux arm64 by reading the wire back only, and not on Windows. After flipping, read the wire back from the packaged app and, on the app's own system, try each door.
+`scripts/package.ts` flips Electron's fuses from `scripts/lib/fuses.ts` in the freshly extracted Electron (packager's `afterExtract`), before the rename, the Windows resource edit and macOS signing; on Apple silicon the flip voids Electron's own ad-hoc signature, so `resetAdHocDarwinSignature` re-signs it and the packager's signing follows. `pnpm fuses:check <target>` reads the wire back from the packaged app and, on the app's own system, tries each door (premium bar, rule 108). Proven 2026-11-21 in the starter on macOS arm64 and on Windows 10 (x64), the wire and every probe on each; Linux not run.
 
 | Fuse | Value | Why |
 | --- | --- | --- |
 | EnableNodeOptionsEnvironmentVariable | off | `NODE_OPTIONS=--require=<file>` would run that file inside the app; Electron logs that it ignored it |
 | EnableNodeCliInspectArguments | off | `--inspect` would open a debugger into the main process. Playwright's `_electron` needs it, so drive the development app, which is never fused |
 | OnlyLoadAppFromAsar | on | the app's code is read only from `app.asar` |
-| EnableEmbeddedAsarIntegrityValidation | on, macOS only | the packager records the archive's hash in Info.plist; a changed byte inside a file the app loads stops it. Appending bytes is not detected (the check covers the header and each file's blocks), so the probe edits the main process file inside the archive. Turn it on for another system only after its packaged app has started with it |
+| EnableEmbeddedAsarIntegrityValidation | on, macOS only | the packager records the archive's hash in Info.plist; a changed byte inside a file the app loads stops it. Appending bytes is not detected (the check covers the header and each file's blocks), so the probe changes one byte inside `dist/electron/main.mjs` in the archive. Turn it on for another system only after its packaged app has started with it |
 | GrantFileProtocolExtraPrivileges | off | the page is served from `app://`, never `file://`; `protocol.handle` still reads `dist/` through `net.fetch` |
-| RunAsNode | on, with a written reason | the installed checks run the installed app's own binary as Node (step `helpers`, and `scripts/control.cjs` on macOS and Linux). Next step: move those to system Node or to a control-channel command, re-prove the installed check on all three systems, then turn it off |
+| RunAsNode | on, with `RUN_AS_NODE_REASON` | the installed checks run the installed app's own binary as Node (step `helpers`, and `scripts/control.cjs` on macOS and Linux). Next step: move those to system Node or to a control-channel command, re-prove the installed check on all three systems, then turn it off |
 | EnableCookieEncryption | default (off) | on macOS it asks the Keychain for a key, which can raise a Keychain dialog that takes focus; the page sets no cookies |
 
 ## Checking the installed app

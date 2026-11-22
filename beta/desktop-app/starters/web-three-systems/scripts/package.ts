@@ -20,12 +20,14 @@
 //   resources/THIRD-PARTY-NOTICES.txt
 // (Contents/Resources/... on macOS). The helpers come from staging/bin/<target>/,
 // which scripts/stage.ts fills. See the desktop-app skill's references/packaging.md.
+import { flipFuses } from '@electron/fuses';
 import { packager } from '@electron/packager';
 import type { OfficialArch, OfficialPlatform, Options } from '@electron/packager';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { chmodSync, copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fusesFor } from './lib/fuses.ts';
 import { names, TARGETS } from './lib/names.ts';
 import { root } from './lib/root.ts';
 
@@ -112,6 +114,18 @@ const options: Options = {
   icon: join(root, icon),
   appCopyright: config.company,
   extraResource: [join(extra, 'bin'), join(root, 'third-party', 'THIRD-PARTY-NOTICES.txt')],
+  // Fuses (scripts/lib/fuses.ts), flipped in the freshly extracted Electron before anything
+  // else touches it: before the rename, the resource edit on Windows and the signature on macOS.
+  // Flipping invalidates Electron's own ad-hoc signature on Apple silicon; resetAdHocDarwinSignature
+  // re-signs it so the packager's signing step starts from a valid binary.
+  afterExtract: [
+    async ({ buildPath, platform: p }: { buildPath: string; platform: string }) => {
+      // The extracted, not yet renamed, Electron (this file never starts it).
+      const binary = ({ darwin: join(buildPath, 'Electron.app'), win32: `${join(buildPath, 'electron')}.exe`, linux: join(buildPath, 'electron') } as Record<string, string>)[p];
+      if (!binary) throw new Error(`no Electron binary is known for ${p}`);
+      await flipFuses(binary, { ...fusesFor(p), resetAdHocDarwinSignature: p === 'darwin' && process.platform === 'darwin' });
+    },
+  ],
   ignore: (file: string) => {
     if (file === '') return false;
     if (DEVELOPMENT_ONLY.includes(file)) return true;

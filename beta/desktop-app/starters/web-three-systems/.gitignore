@@ -20,3 +20,6 @@ qa/audit.json
 qa/data/
 measure/out/
 *.log
+qa/visual/
+# Screenshot baselines (qa/visual.ts). The starter keeps none; an app deletes this line and commits its own.
+qa/baselines/

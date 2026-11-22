@@ -4,8 +4,9 @@
 // What differs per system comes from platform.ts.
 import fs from 'node:fs';
 import path from 'node:path';
-import { app, BrowserWindow, Menu, screen, shell } from 'electron';
+import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron';
 import type { BrowserWindowConstructorOptions, MenuItemConstructorOptions, Point, Rectangle } from 'electron';
+import * as placement from './bounds.ts';
 import * as platform from './platform.ts';
 import type { AppConfig, Colours, Facts, Theme } from './platform.ts';
 import * as shellMenu from './menu.ts';
@@ -19,15 +20,16 @@ const sizes = (config: AppConfig) => ({
 });
 
 type Reveal = { trigger: string; afterMs: number; call: 'show' | 'showInactive'; withoutFocusAsked: boolean; withoutFocusPossible: boolean };
-type Bounds = { x?: number; y?: number; width: number; height: number };
 /** What was chosen for the current window, kept for --diagnostics. */
 export interface Chosen {
   theme: Theme;
-  initial: Bounds;
+  initial: placement.Placement['bounds'];
+  placement: { why: string; displayId: number; savedMaximized: boolean; maximizeAfterReveal: boolean; maximizedAtReveal: boolean | null };
   options: BrowserWindowConstructorOptions;
   barHeight: number;
   reveal: Reveal | null;
   fullScreen: ['enter' | 'leave', number][];
+  renderer: { crashes: { reason: string; exitCode: number; atMs: number }[]; reloads: number; gaveUp: boolean; unresponsive: number };
   growth?: { width: number; height: number };
 }
 let chosen: Chosen | null = null;
@@ -47,20 +49,23 @@ function testOverride(): BrowserWindowConstructorOptions {
   }
 }
 
-const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
-
-function initialBounds(saved: unknown, onScreen: (bounds: Rectangle) => boolean, facts: Facts, { DEFAULT_SIZE, MIN_SIZE }: ReturnType<typeof sizes>): Bounds {
-  const area = screen.getPrimaryDisplay().workArea;
-  const size = { width: Math.min(DEFAULT_SIZE.width, area.width), height: Math.min(DEFAULT_SIZE.height, area.height) };
-  const s = saved !== null && typeof saved === 'object' ? (saved as Partial<Record<'x' | 'y' | 'width' | 'height', unknown>>) : {};
-  const kept = finite(s.width) && finite(s.height) ? { width: s.width, height: s.height } : null;
-  if (!facts.positionIsReal) {
-    // The compositor places the window; only the size is ours to restore.
-    return kept ? { width: Math.max(MIN_SIZE.minWidth, kept.width), height: Math.max(MIN_SIZE.minHeight, kept.height) } : size;
-  }
-  if (kept && finite(s.x) && finite(s.y) && onScreen({ x: s.x, y: s.y, ...kept })) return { x: s.x, y: s.y, width: kept.width, height: kept.height };
-  return { ...size, x: Math.round(area.x + (area.width - size.width) / 2), y: Math.round(area.y + (area.height - size.height) / 2) };
+/** Where the window opens: electron/bounds.ts, fed the displays connected now. */
+function initialBounds(saved: unknown, facts: Facts, { DEFAULT_SIZE, MIN_SIZE }: ReturnType<typeof sizes>) {
+  return placement.initialBounds({
+    saved,
+    displays: screen.getAllDisplays().map((d) => ({ id: d.id, workArea: d.workArea })),
+    primaryId: screen.getPrimaryDisplay().id,
+    positionIsReal: facts.positionIsReal,
+    defaultSize: DEFAULT_SIZE,
+    minSize: MIN_SIZE,
+  });
 }
+
+// A renderer that crashes is reloaded into the page's saved state (its drafts come back through
+// app:bootstrap). More than CRASH_LIMIT crashes inside CRASH_WINDOW_MS is a crash loop: the app
+// stops reloading, keeps the saved work on disk, and says so (premium bar, "Crash recovery").
+const CRASH_LIMIT = 3;
+const CRASH_WINDOW_MS = 60_000;
 
 /** The saved window state main.ts keeps in window.json. */
 export interface SavedWindow {
@@ -77,7 +82,6 @@ export interface SavedWindow {
  *   preload   path of the preload script
  *   saved     the saved window state ({ theme, bounds }) or {}
  *   save      (patch) => void, merges into the saved window state
- *   onScreen  (bounds) => boolean, true when the bounds are on a connected display
  *   inactive  show without taking focus (--no-activate)
  */
 export interface CreateOptions {
@@ -87,17 +91,20 @@ export interface CreateOptions {
   preload: string;
   saved: SavedWindow;
   save: (patch: Record<string, unknown>) => void;
-  onScreen: (bounds: Rectangle) => boolean;
   inactive: boolean;
 }
 
 /** Create the main window and start loading the page. */
-export function create({ config, origin, colours, preload, saved, save, onScreen, inactive }: CreateOptions): BrowserWindow {
+export function create({ config, origin, colours, preload, saved, save, inactive }: CreateOptions): BrowserWindow {
   const facts = platform.facts(app);
   const size = sizes(config);
   // Dark unless the person saved light (electron/theme.ts, D-020). The system's setting is not read.
   const theme: Theme = initialTheme(saved.theme);
-  const initial = initialBounds(saved.bounds, onScreen, facts, size);
+  const place = initialBounds(saved.bounds, facts, size);
+  const initial = place.bounds;
+  // Windows activates a window it maximizes (ShowWindow with SW_MAXIMIZE has no inactive form),
+  // so a launch that asked for no focus opens at the normal bounds there and records why.
+  const maximizeAfterReveal = place.maximized && !(inactive && facts.system === 'windows');
   const perSystem: BrowserWindowConstructorOptions = { ...platform.windowOptions({ theme, config, colours }), ...testOverride() };
   const createdAt = Date.now();
 
@@ -117,7 +124,16 @@ export function create({ config, origin, colours, preload, saved, save, onScreen
       spellcheck: true,
     },
   });
-  const record: Chosen = { theme, initial, options: perSystem, barHeight: platform.barHeight(config), reveal: null, fullScreen: [] };
+  const record: Chosen = {
+    theme,
+    initial,
+    placement: { why: place.why, displayId: place.displayId, savedMaximized: place.maximized, maximizeAfterReveal, maximizedAtReveal: null },
+    options: perSystem,
+    barHeight: platform.barHeight(config),
+    reveal: null,
+    fullScreen: [],
+    renderer: { crashes: [], reloads: 0, gaveUp: false, unresponsive: 0 },
+  };
   chosen = record;
 
   // Reveal at first paint, with a fallback so the window can never stay hidden.
@@ -126,6 +142,8 @@ export function create({ config, origin, colours, preload, saved, save, onScreen
     if (shown || win.isDestroyed()) return;
     shown = true;
     const call = platform.show(win, app, inactive);
+    if (maximizeAfterReveal) win.maximize();
+    record.placement.maximizedAtReveal = win.isMaximized();
     record.reveal = { trigger, afterMs: Date.now() - createdAt, call, withoutFocusAsked: inactive, withoutFocusPossible: facts.canShowInactive };
     // --reveal-record=<file>: say how the window was shown and whether it has focus, half a
     // second on. A test reads this in place of asking the running app, because asking (any
@@ -189,14 +207,49 @@ export function create({ config, origin, colours, preload, saved, save, onScreen
   const created = win.getBounds();
   const grow = { width: created.width - initial.width, height: created.height - initial.height };
   record.growth = grow;
+  // Maximized, the normal bounds are saved (getNormalBounds), so the window reopens maximized
+  // over the place it returns to when unmaximized. Minimized and full screen save nothing.
   const saveBounds = () => {
-    if (win.isDestroyed() || win.isMinimized() || win.isMaximized() || win.isFullScreen()) return;
-    const b = win.getBounds();
-    const kept = { width: b.width - grow.width, height: b.height - grow.height };
-    save({ bounds: facts.positionIsReal ? { x: b.x, y: b.y, ...kept } : kept });
+    if (win.isDestroyed() || win.isMinimized() || win.isFullScreen()) return;
+    const maximized = win.isMaximized();
+    const b = maximized ? win.getNormalBounds() : win.getBounds();
+    const normal = { width: b.width - grow.width, height: b.height - grow.height };
+    save({ bounds: { ...(facts.positionIsReal ? { x: b.x, y: b.y } : {}), ...normal, maximized } });
   };
   win.on('resized', saveBounds);
   win.on('moved', saveBounds);
+  win.on('maximize', saveBounds);
+  win.on('unmaximize', saveBounds);
+
+  // A crashed or killed renderer comes back by itself, into the state the page saved
+  // (premium bar, "Crash recovery"). A clean exit is the window closing; nothing to do.
+  const renderer = record.renderer;
+  win.webContents.on('render-process-gone', (_event, details) => {
+    if (details.reason === 'clean-exit' || win.isDestroyed()) return;
+    const now = Date.now();
+    renderer.crashes.push({ reason: details.reason, exitCode: details.exitCode, atMs: now - createdAt });
+    const recent = renderer.crashes.filter((c) => now - createdAt - c.atMs < CRASH_WINDOW_MS);
+    process.stderr.write(`renderer gone (${details.reason}, exit ${details.exitCode}); ${recent.length} in the last ${CRASH_WINDOW_MS / 1000} s
+`);
+    // A renderer that could not start, or whose files failed their integrity check, fails the
+    // same way on reload: stop at once instead of looping up to the limit.
+    const hopeless = details.reason === 'launch-failed' || details.reason === 'integrity-failure';
+    if (hopeless || recent.length > CRASH_LIMIT) {
+      renderer.gaveUp = true;
+      // A person is told; a launch that asked for no focus is not (the dialog would take it).
+      if (!inactive) {
+        void dialog
+          .showMessageBox(win, { type: 'error', message: `${config.productName} stopped working`, detail: 'The window closed unexpectedly several times in a row. Your saved work is kept and will be there when you open the app again.', buttons: ['Quit'], defaultId: 0, noLink: true })
+          .then(() => app.quit());
+      }
+      return;
+    }
+    renderer.reloads += 1;
+    void win.loadURL(`${origin}/index.html#theme=${record.theme}`);
+  });
+  win.on('unresponsive', () => {
+    renderer.unresponsive += 1;
+  });
   if (facts.system === 'linux') {
     // "resized" and "moved" are not sent on Linux; save a moment after the last change instead.
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -221,6 +274,7 @@ export function create({ config, origin, colours, preload, saved, save, onScreen
 /** The page changed theme: repaint the parts of the window the system draws. */
 export function applyTheme(win: BrowserWindow | null, theme: unknown, { config, colours }: { config: AppConfig; colours: Colours }): void {
   if (!win || win.isDestroyed() || (theme !== 'light' && theme !== 'dark')) return;
+  if (chosen) chosen.theme = theme; // a reload after a renderer crash opens in this theme
   win.setBackgroundColor(colours.chrome[theme]);
   // The traffic lights on macOS colour themselves; elsewhere the glyph colour is ours.
   if (platform.facts(app).overlayColours) win.setTitleBarOverlay({ color: '#00000000', symbolColor: colours.symbol[theme], height: platform.barHeight(config) });

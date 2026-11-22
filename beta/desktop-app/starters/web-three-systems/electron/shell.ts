@@ -19,6 +19,8 @@
 //                            script's launch with this flag is handed over through the channel too)
 //   --qa-press=<keys>        development builds only: one key press into the page ("Control+Q", "F11")
 //   --qa-menu-state=<json>   development builds only: which commands can run, as the page reports it
+//   --qa-crash-renderer      development builds only: end the page's renderer process as a crash would (qa/crash-test.ts)
+//   --qa-page=<file>         development builds only: what the page holds and what it sees of its permissions
 // A flag for the first launch, besides --no-activate and --data-dir in main.ts:
 //   --reveal-record=<file>   write how the window was first shown and whether it has focus
 // A file named on the command line is opened with the app (see "files opened with the app").
@@ -226,6 +228,37 @@ async function commands(argv: string[]): Promise<boolean> {
     } catch {
       // Not JSON: ignore it.
     }
+    handled = true;
+  }
+
+  // Development builds only: end the page's renderer process as a crash would (qa/crash-test.ts).
+  const crashWindow = live();
+  if (has('qa-crash-renderer', argv) && !app.isPackaged && crashWindow) {
+    crashWindow.webContents.forcefullyCrashRenderer();
+    handled = true;
+  }
+
+  // Development builds only: what the page holds now and what Chromium tells it about its
+  // permissions (qa/crash-test.ts). Never asks for a permission, so nothing is shown.
+  const pageFile = arg('qa-page', argv);
+  const pageWindow = live();
+  if (pageFile && !app.isPackaged && pageWindow) {
+    const probe = `(async () => {
+      const field = document.getElementById('field-body');
+      const names = ['camera', 'microphone', 'geolocation', 'notifications', 'clipboard-write', 'clipboard-read', 'midi'];
+      const permissions = {};
+      for (const name of names) {
+        try { permissions[name] = (await navigator.permissions.query({ name })).state; } catch (e) { permissions[name] = 'unsupported: ' + e.name; }
+      }
+      return { url: location.href, body: field ? field.value : null, permissions };
+    })()`;
+    let page: unknown;
+    try {
+      page = await Promise.race([pageWindow.webContents.executeJavaScript(probe) as Promise<unknown>, new Promise((r) => setTimeout(() => r({ error: 'the page did not answer in 5 s' }), 5000))]);
+    } catch (error) {
+      page = { error: String(error) };
+    }
+    writeJson(pageFile, page);
     handled = true;
   }
 
