@@ -11,10 +11,13 @@ revisions of `devin-thomas/starter-pack`, plus `vidchopper-cli` copied from
 in the catalog. See the [package notice](packages/skills-cli/NOTICE.md) for the
 exact sources and scope of the release permission.
 
-This MIT grant is scoped to the approved npm bundle. It does not license the
-rest of this repository or change the separate Starter Pack repository's
-rights notice, application, course, curriculum, or other unbundled material.
-Third-party software and services referenced by a skill keep their own terms.
+The MIT grant in the package license covers the approved npm bundle. The
+skills in the `beta/` folder are MIT licensed under
+[their own license](https://github.com/devin-thomas/skills/blob/beta/beta/LICENSE),
+Copyright (c) 2026 Uppercut Labs. Neither grant licenses the rest of this
+repository or changes the separate Starter Pack repository's rights notice,
+application, course, curriculum, or other unbundled material. Third-party
+software and services referenced by a skill keep their own terms.
 
 The standalone `branded-sign-in` guidance is also MIT licensed under
 [its own license](branded-sign-in/LICENSE). No provider artwork is distributed by it.
