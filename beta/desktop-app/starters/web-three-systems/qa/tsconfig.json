@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.node.json",
+  "compilerOptions": {
+    "lib": ["ES2024", "DOM", "DOM.Iterable"]
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["./data", "./evidence", "./shots", "./visual"]
+}

@@ -99,7 +99,7 @@ for variant in ${VARIANTS:-$DEFAULT}; do
     no-session-type)
       # A session that sets WAYLAND_DISPLAY but not XDG_SESSION_TYPE, as a compositor started
       # from a console does. Electron would choose X11 and, with no X server, not start; the
-      # app notices and starts itself again on Wayland (electron/platform.cjs). Each launch
+      # app notices and starts itself again on Wayland (electron/platform.ts). Each launch
       # here hands over to a second process, so this variant waits instead of watching one.
       (
         unset XDG_SESSION_TYPE
@@ -109,7 +109,7 @@ for variant in ${VARIANTS:-$DEFAULT}; do
         mkdir -p "$dir"
         "$electron" "$PROJECT" --no-activate "--data-dir=$data" >"$dir/app.log" 2>&1 &
         sleep 8
-        # Requests go through the app's control channel (electron/control.cjs), never a second instance.
+        # Requests go through the app's control channel (electron/control.ts), never a second instance.
         node "$PROJECT/scripts/control.cjs" --data-dir "$data" -- "--diagnostics=$dir/diagnostics.json" >/dev/null 2>&1
         sleep 4
         OBSERVE_OUT=$dir OBSERVE_NAME=window APP_PID=$(grep -m1 -o '"pid": [0-9]*' "$dir/diagnostics.json" | grep -o '[0-9]*$') "$HERE/observe.sh"

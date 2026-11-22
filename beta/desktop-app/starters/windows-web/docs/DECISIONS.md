@@ -4,7 +4,7 @@ Append-only. Each entry says what was decided, by whom, when, and what it change
 
 ## D-001 Electron shell and web UI
 
-Inherited default. The page is React and TypeScript; the shell is Electron; the app is its own program with its own processes. Memory is summed as private bytes over the process tree: about 300 MB is the budget and 680 MB is the ceiling no build may pass . Both numbers live in `app.config.json`.
+Inherited default. The page is React and TypeScript; the shell is Electron; the app is its own program with its own processes. Memory is summed as private bytes over the process tree: about 300 MB is the budget and 680 MB is the ceiling no build may pass. Both numbers live in `app.config.json`.
 
 ## D-002 Logic stays outside the page
 
@@ -28,4 +28,4 @@ Inherited default. Web-styled buttons scale to 0.97 while pressed. List rows, me
 
 ## Preferences ledger
 
-Every preference the app offers is listed here with the reason a default could not serve. The starter has one: the theme, because the system setting cannot say which a person wants for this app alone.
+Every preference the app offers is listed here with the reason a default could not serve. The starter has one: the theme, which starts dark whatever the system setting is and keeps a person's saved choice.

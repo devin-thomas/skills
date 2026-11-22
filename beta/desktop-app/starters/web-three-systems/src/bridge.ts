@@ -1,5 +1,5 @@
-// What the page may ask of the desktop shell. electron/preload.cjs is the other
-// half; the two must list the same functions (test/preload.test.cjs). The
+// What the page may ask of the desktop shell. electron/preload.ts is the other
+// half; the two must list the same functions (test/preload.test.ts). The
 // stand-in in src/bridge.fake.ts implements it for a plain browser, so the
 // headless audit and the screenshots reach every state without Electron or the
 // tool. This file is one of the two seam files written before any builder

@@ -4,7 +4,7 @@
 - **Creator:** Griffin Wooldridge. **URL:** https://youtu.be/zsCGS-Yzjnw. **Published:** 2026-11-07. **Duration:** 4:26.
 - **Independent title:** Three kinds of UI library, and how to make an AI coding agent use them instead of improvising components
 - **Media identity:** 1280x720 AV1 + Opus capture, sha256 `ae6cd56218ef68f983d408aaa7785e1946b5ef345f5c28a335a9027cd7be70f6`.
-- **Analysis run (outside git, on the Grok Bot box):** `/workspace/video-analysis/zsCGS-Yzjnw/run-20261116-0800/` (`analysis.json`, `analysis.md`, `provenance.json`, `transcript-corrected.md`, `glossary-corrections.json`).
+- **Analysis run (outside git, on a Linux test host):** `/workspace/video-analysis/zsCGS-Yzjnw/run-20261116-0800/` (`analysis.json`, `analysis.md`, `provenance.json`, `transcript-corrected.md`, `glossary-corrections.json`).
 - **Coverage:** audio fully transcribed with local faster-whisper (medium, CPU). Visual coverage is **partial**: 33 sampled frames over the whole timeline (8 s spacing, viewed as contact sheets) plus 14 exact-offset captures viewed individually or in sheets. Continuous playback, animation and motion between samples were not reviewed. The video is mostly narration over staged overlays and screenshots; no live coding session is shown.
 - Status words: `observed` (seen on screen), `speaker-claimed`, `external-verified` (checked against a primary source on 2026-11-16), `tested` (run by the skill author), `uncertain`.
 
@@ -33,7 +33,7 @@
 
 - npm latest: sonner 2.0.8, vaul 1.1.2 (last published 2024-12-14; GitHub repo not archived, last push 2025-10-03), cmdk 1.1.1 (2025-08-27), @number-flow/react 0.6.2, @base-ui/react 1.9.0, radix-ui 1.8.1, shadcn 4.23.0.
 - shadcn docs: `add sonner`, `add drawer` ("built on top of Vaul"), `add command` ("uses cmdk"), `init --base base|radix|aria`.
-- Fixture test on the Grok Bot box: Vite react-ts project, `shadcn init -t vite -b radix`, `add sonner drawer command @magicui/marquee @aceternity/background-beams`, `npm i @number-flow/react`, a small App using `toast`, `NumberFlow`, `Button`. First `npm run build` failed with TS6133 inside the Aceternity file (unused `path` parameter); renaming it to `_path` made the build pass. A prior attempt also hit a host npm setting (see tooling-notes.md).
+- Fixture test on a Linux test host: Vite react-ts project, `shadcn init -t vite -b radix`, `add sonner drawer command @magicui/marquee @aceternity/background-beams`, `npm i @number-flow/react`, a small App using `toast`, `NumberFlow`, `Button`. First `npm run build` failed with TS6133 inside the Aceternity file (unused `path` parameter); renaming it to `_path` made the build pass. A prior attempt also hit a host npm setting (see tooling-notes.md).
 - Browser click-through on the same fixture, later on 2026-11-16: Playwright 1.65.1 against `vite preview` at 1280×800. First pass found: (1) shadcn 4 `CommandDialog` without a `<Command>` wrapper crashed the page blank (`Cannot read properties of undefined (reading 'subscribe')`) while the build stayed green; wrapping the items in `<Command>` fixed it. (2) Command menu and other portaled surfaces rendered in the light theme until `dark` was moved from `<main>` to `<html>`. (3) Aceternity background beams were nearly invisible until stroke width/opacity and the mask were increased in the copied file. (4) Generated files imported `cn` from the npm package `cn` instead of `@/lib/utils`. (5) The Vaul bottom drawer spanned the full viewport until `max-w-md mx-auto` was applied. After those fixes, a second pass opened toast, Number Flow, command menu, dropdown, popover, tooltip, tabs, sheet, drawer, and dialog; no `pageerror` or console errors; theme and desktop widths were checked on the shots. Additional shadcn items (`popover`, `dropdown-menu`, `tabs`, `tooltip`, `sheet`, `card`, `badge`, `skeleton`) and Magic UI `shimmer-button` plus `border-beam` were installed through the CLI and used on the same page. One high-motion hero effect (beams) was kept; border-beam was used as a card accent.
 
 ## Excluded from runtime instructions
@@ -52,3 +52,7 @@ Sonar to Sonner, Vol to Vaul, Command K (library) to cmdk, Aseternity to Acetern
 - Browser click-through of toast, Number Flow, command menu (type to filter), dropdown, popover, tooltip, tabs, sheet, drawer, and dialog was run on the fixture and passed after the gotchas above were fixed. Drawer drag on a touch-emulated viewport, firing three toasts to confirm stacking, and cmdk arrow/Enter selection were not separately scripted.
 - The video's "Claude uses them when you name them" claim and the pick skill's effect on agent output were not measured.
 - Visual review of the source video is sampled, not continuous.
+
+## Related video
+
+A second video from the same creator, "How to Make AI-Generated UI Look Expensive (7 Fixes)" (https://youtu.be/eQ74n4huAcA, 2026-11-08), covers page-level polish rather than library choice. It is a separate job from this skill, and nothing in this skill's steps was derived from it.

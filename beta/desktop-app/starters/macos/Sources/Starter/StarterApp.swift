@@ -9,11 +9,14 @@ struct StarterApp: App {
         WindowGroup("Starter") {
             ContentView(items: Item.samples(count: 1_000), bench: appDelegate.bench)
                 .frame(minWidth: 640, minHeight: 420)
+                // Desktop apps are dark by default, whatever the system's appearance is.
+                .preferredColorScheme(.dark)
         }
         .defaultSize(width: 860, height: 560)
 
         Settings {
             SettingsView()
+                .preferredColorScheme(.dark)
         }
     }
 }

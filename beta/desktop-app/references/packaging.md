@@ -1,10 +1,10 @@
 # Packaging a content app for Windows, macOS and Linux
 
-How a content app (an Electron shell over a bundled command-line tool) becomes something a person installs on each system, and how an agent checks the installed app without taking the owner's focus. The scripts are in the three-system starter (`scripts/package.mjs`, `scripts/stage.mjs`, `scripts/install.*`, `scripts/installed-check.*`, `scripts/linux/`, `scripts/mac/`). **Proven in 1 build** (the media converter, 2026-11-15) unless marked; Windows install through Explorer is proven in 2 (the mail app too). Nothing uses a hosted build service: Windows builds on the owner's Windows machine, macOS and Linux on a Mac (Linux in containers).
+How a content app (an Electron shell over a bundled command-line tool) becomes something a person installs on each system, and how an agent checks the installed app without taking the owner's focus. The scripts are in the three-system starter (`scripts/package.ts`, `scripts/stage.ts`, `scripts/install.*`, `scripts/installed-check.*`, `scripts/linux/`, `scripts/mac/`). **Proven in 1 build** (the media converter, 2026-11-15) unless marked; Windows install through Explorer is proven in 2 (the mail app too). Nothing uses a hosted build service: Windows builds on the owner's Windows machine, macOS and Linux on a Mac (Linux in containers).
 
 ## The owner's distribution decisions
 
-From build 2 . They are standing defaults for this branch; record any change in the app's decisions file.
+From build 2. They are standing defaults for this branch; record any change in the app's decisions file.
 
 - **No Apple Developer ID.** The macOS build is signed ad hoc and not notarized, and it may still be released to other people with short instructions for opening an app from an unidentified developer ("other users can still launch what I release and we can give simple instructions for users").
 - **Bundled helpers ship in what is released**, with their notices ("if it's simpler for users to have it bundled I would prefer that").
@@ -24,7 +24,7 @@ Each runs `@electron/packager` 20 with an explicit keep-list (package.json, app.
 
 ## Helpers inside the app
 
-- One binary per system and processor in `staging/bin/<platform>-<arch>/`, a folder Git ignores; `scripts/stage.mjs` puts the real tool or the placeholder there and records which. The packager copies the folder beside `app.asar` (`resources/bin/<platform>-<arch>/`, `Contents/Resources/bin/...` on macOS) with a `manifest.json` of sizes and hashes, plus `THIRD-PARTY-NOTICES.txt`.
+- One binary per system and processor in `staging/bin/<platform>-<arch>/`, a folder Git ignores; `scripts/stage.ts` puts the real tool or the placeholder there and records which. The packager copies the folder beside `app.asar` (`resources/bin/<platform>-<arch>/`, `Contents/Resources/bin/...` on macOS) with a `manifest.json` of sizes and hashes, plus `THIRD-PARTY-NOTICES.txt`.
 - Never inside the asar archive: a program there cannot be started. Make archives of Linux and macOS builds on their own family so the executable bits survive.
 - **Build your own third-party binaries when the published ones are big.** Build 2 built an audio-only LGPL FFmpeg with LAME for all five targets from one configure line (about 3.5 MB per program, 7 MB the pair), instead of the published LGPL builds (264 MB added to the Windows app and 281 MB to the Linux x64 app, linking 43 to 45 libraries, each needing its notice). One configure line also means the tool sees the same FFmpeg everywhere.
 - **Notices.** One UTF-8 file, rebuilt on every package run so it can never be stale: the statement of each licence, where the exact source is (address and checksum), that it is unmodified, the configure line of each shipped copy, and the full licence texts, including the run-time libraries linked into the copies (mingw-w64 and winpthreads on Windows, musl on Linux). Reachable from About. An engineer's reading, not legal advice: one read by someone qualified is due before a public release.
@@ -38,7 +38,7 @@ Each runs `@electron/packager` 20 with an explicit keep-list (package.json, app.
 - Arguments given when starting a shortcut are added after the shortcut's own, so `launch` starts the real shortcut and still passes `--no-activate` and `--data-dir`; a PATH emptied in the launching process reaches the app.
 - **Never a second launch to reach the running app.** Build 2's `collect` step (a second launch asking for diagnostics, from a PowerShell Explorer had started) brought the running app's window to the foreground twice, although it asked for no focus: Chromium's process singleton calls `AllowSetForegroundWindow` for the running app in the second process before any app code runs, and the visible console's closing gave that right its moment. `collect`, `about` and `quit` now go through the app's control channel (`scripts\control.ps1`, a pipe client in PowerShell that starts no program), which grants nothing. They need the `data-dir` the `launch` step used (the channel is found through `control.json` there), and `launch` must have had `no-activate`, which also makes the app serve the channel. (1 build.)
 - **Installing never quits a running app.** `install.ps1` stops and says to close the app first: asking it to quit by starting its exe again is a second launch, and the running copy may be the owner's own window.
-- **Focus on Windows: what proves it.** Run `measure\foreground-sampler.ps1 -App <installed exe>` in the agent's own shell from before the install to after the quit; it records every change of the foreground window and fails if the app's window was ever in front. Launches from an agent's own session cannot show the problem (that session holds no right to the foreground), so before claiming a change keeps focus, run `measure/focus-experiment.mjs --first explorer --route explorer` against the development app. Build 2, after both fixes: the installed check through Explorer with the sampler running recorded no change of the foreground at all, 3 requests through the channel, 0 second launches.
+- **Focus on Windows: what proves it.** Run `measure\foreground-sampler.ps1 -App <installed exe>` in the agent's own shell from before the install to after the quit; it records every change of the foreground window and fails if the app's window was ever in front. Launches from an agent's own session cannot show the problem (that session holds no right to the foreground), so before claiming a change keeps focus, run `measure/focus-experiment.ts --first explorer --route explorer` against the development app. Build 2, after both fixes: the installed check through Explorer with the sampler running recorded no change of the foreground at all, 3 requests through the channel, 0 second launches.
 
 ## macOS
 
@@ -60,6 +60,20 @@ Each runs `@electron/packager` 20 with an explicit keep-list (package.json, app.
 - **A tarball, not an AppImage, when the sandbox helper is needed.** An AppImage cannot hold a root-owned setuid file (its mount is `nosuid`), so on Ubuntu 23.10 and later it needs `--no-sandbox`. The portable tarball has the same limit but says so in its README and offers the fix. The Ubuntu restriction itself is a kernel setting a container does not have, so it was never reproduced; it needs one pass on a real Ubuntu.
 - **Containers.** Debian 12 and Ubuntu 24.04 and 26.04 arm64 containers on a Mac (OrbStack), with `--security-opt seccomp=unconfined` so the sandbox can make its namespaces; in a default container the app stops at start rather than run unsandboxed. x64 ran only under emulation, where its memory figure means nothing.
 
+## Fuses
+
+Electron's fuses are switches in the Electron binary that close doors an app does not use. Flip them on the freshly extracted Electron (the packager's `afterExtract`), before the rename, the Windows resource edit and macOS signing; on Apple silicon the flip voids Electron's own ad-hoc signature, so sign it again and let the packager's signing follow. **The current starter's `scripts/package.ts` does not flip them yet** (premium bar, rule 108). An earlier JavaScript version of the starter did, and proved it on 2026-11-19 on macOS arm64 with every probe below, on Linux arm64 by reading the wire back only, and not on Windows. After flipping, read the wire back from the packaged app and, on the app's own system, try each door.
+
+| Fuse | Value | Why |
+| --- | --- | --- |
+| EnableNodeOptionsEnvironmentVariable | off | `NODE_OPTIONS=--require=<file>` would run that file inside the app; Electron logs that it ignored it |
+| EnableNodeCliInspectArguments | off | `--inspect` would open a debugger into the main process. Playwright's `_electron` needs it, so drive the development app, which is never fused |
+| OnlyLoadAppFromAsar | on | the app's code is read only from `app.asar` |
+| EnableEmbeddedAsarIntegrityValidation | on, macOS only | the packager records the archive's hash in Info.plist; a changed byte inside a file the app loads stops it. Appending bytes is not detected (the check covers the header and each file's blocks), so the probe edits the main process file inside the archive. Turn it on for another system only after its packaged app has started with it |
+| GrantFileProtocolExtraPrivileges | off | the page is served from `app://`, never `file://`; `protocol.handle` still reads `dist/` through `net.fetch` |
+| RunAsNode | on, with a written reason | the installed checks run the installed app's own binary as Node (step `helpers`, and `scripts/control.cjs` on macOS and Linux). Next step: move those to system Node or to a control-channel command, re-prove the installed check on all three systems, then turn it off |
+| EnableCookieEncryption | default (off) | on macOS it asks the Keychain for a key, which can raise a Keychain dialog that takes focus; the page sets no cookies |
+
 ## Checking the installed app
 
 The same steps on every system (`installed-check.ps1` on Windows, `installed-check.sh` on macOS and Linux), through files, never input events:
@@ -67,7 +81,7 @@ The same steps on every system (`installed-check.ps1` on Windows, `installed-che
 | Step | What it proves |
 | --- | --- |
 | `list` | What is installed and where; on macOS each signature, the entitlements and Gatekeeper's verdict; on Linux the package, sandbox helper, desktop entry, icons and libraries |
-| `helpers` | Every helper is inside the app, executable, matches the manifest, and runs from there. **The installed app's own executable runs the check as Node** (`ELECTRON_RUN_AS_NODE=1`), so the helpers are started by the program that starts them in use, by absolute path, with PATH emptied. This needs Electron's RunAsNode fuse, which is on by default |
+| `helpers` | Every helper is inside the app, executable, matches the manifest, and runs from there. **The installed app's own executable runs the check as Node** (`ELECTRON_RUN_AS_NODE=1`), so the helpers are started by the program that starts them in use, by absolute path, with PATH emptied. This needs Electron's RunAsNode fuse, which is on by default and which rule 108 keeps on for this reason alone (see Fuses) |
 | `launch` | The app starts from its real launcher: the Start Menu shortcut, `open -g` on the bundle, the desktop entry's command; with `--no-activate`, a throwaway `--data-dir` and an empty PATH |
 | `memory` | Private memory over the app's processes by each system's definition, read from outside, against the budget and ceiling ([measurement](measurement.md)) |
 | `collect` | The running app is the installed, packaged one, where it found its helpers, and that the check reached it only through its control channel (its count of second launches is 0). Run it after `memory`: asking changes the figure |
@@ -85,4 +99,4 @@ The control channel is found through `control.json` in the data folder, so `coll
 
 ## Not done
 
-A Windows installer, code signing or update feed; Developer ID, notarization, a DMG, universal or Intel macOS builds; rpm, AppImage, Flatpak or Snap; Electron's licence files inside the macOS bundle (the packager leaves them beside the `.app`, so the zip does not carry them); Windows on arm64; any Linux desktop session outside a container; x64 Linux on real hardware.
+Turning the RunAsNode fuse off (see Fuses); asar integrity on Windows and Linux; a Windows installer, code signing or update feed; Developer ID, notarization, a DMG, universal or Intel macOS builds; rpm, AppImage, Flatpak or Snap; Electron's licence files inside the macOS bundle (the packager leaves them beside the `.app`, so the zip does not carry them); Windows on arm64; any Linux desktop session outside a container; x64 Linux on real hardware.

@@ -4,7 +4,7 @@ How two builds measured displayed frames, typing latency, data safety, start-up 
 
 ## Before any window opens
 
-These runs open a real window, shown without activation. On the owner's machine run them only when he has said it is free, one at a time, through the starter's `scripts/lib/launch.mjs` (absolute paths, the shell check first, `--no-activate`, a throwaway data folder, a time limit), on the CRT rather than the main display, and stop anything left running by its exact process id. A Chromium window that is fully covered stops rendering, so the numbers are void if another window sits on top. Record the display's rate and scale with every result; the scripts write both.
+These runs open a real window, shown without activation. On the owner's machine run them only when he has said it is free, one at a time, through the starter's `scripts/lib/launch.ts` (absolute paths, the shell check first, `--no-activate`, a throwaway data folder, a time limit), on the CRT rather than the main display, and stop anything left running by its exact process id. A Chromium window that is fully covered stops rendering, so the numbers are void if another window sits on top. Record the display's rate and scale with every result; the scripts write both.
 
 ## What each tool proves
 
@@ -40,13 +40,13 @@ Traps, each seen in build 2:
 
 ## What Windows idle memory is made of
 
-Build 2 (the media converter, 2026-11-15, Windows 11 on a desktop PC with an RTX 4090): the development app with an empty list, five idle minutes, private bytes per process read from outside by `measure/memory-experiment.mjs`, one change at a time.
+Build 2 (the media converter, 2026-11-15, Windows 11 on a desktop PC with an RTX 4090): the development app with an empty list, five idle minutes, private bytes per process read from outside by `measure/memory-experiment.ts`, one change at a time.
 
 | Run | Total | Processes | What changed | Kept |
 | --- | ---: | ---: | --- | --- |
 | Baseline | 306.8 MB | 4 | main 92.8, GPU 110.9, network service 68.1, renderer 35.0 | |
 | Network service in the main process (`--enable-features=NetworkServiceInProcess2`) | 237.9 MB | 3 | the network process is gone; main +1.7 MB | yes |
-| The same, set in `electron/main.cjs` | 238.0 MB | 3 | main 94.9, GPU 108.1, renderer 35.0 | yes |
+| The same, set in `electron/main.ts` | 238.0 MB | 3 | main 94.9, GPU 108.1, renderer 35.0 | yes |
 | libuv's pool held to one thread (`UV_THREADPOOL_SIZE=1`) | 307.1 MB | 4 | nothing: the pool is not running at idle | no |
 | GPU process inside the main process too (`--in-process-gpu`), for information | 233.2 MB | 2 | the GPU work's ~103 MB moves into the main process; 4.8 MB saved | no: a GPU driver fault would end the app, and the GPU work leaves its sandbox |
 

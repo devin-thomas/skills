@@ -2,7 +2,7 @@
 # (and one at the start) to -Out. Stops when -StopFile exists or after -Seconds.
 # Windows only. It reads, it never acts.
 #
-# Started by measure/focus-experiment.mjs and measure/memory-experiment.mjs. For an
+# Started by measure/focus-experiment.ts and measure/memory-experiment.ts. For an
 # installed-app check, start it in the agent's own shell before the first step and
 # write the stop file after the last; with -App it then judges the run:
 #

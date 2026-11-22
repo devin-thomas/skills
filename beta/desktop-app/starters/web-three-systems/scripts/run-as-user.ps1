@@ -20,7 +20,7 @@
 # 12464). Worse, when PowerShell then hides that window Windows activates another
 # one, and an app this script started earlier holds the right to take it: that is
 # how build 2's installed check put its app in front of the owner's work twice
-# (measure/focus-experiment.mjs reproduces it; the desktop-app skill's
+# (measure/focus-experiment.ts reproduces it; the desktop-app skill's
 # references/packaging.md, "Focus on Windows"). Run measure\foreground-sampler.ps1
 # with -App in the agent's own shell from before the first step to after the last.
 #

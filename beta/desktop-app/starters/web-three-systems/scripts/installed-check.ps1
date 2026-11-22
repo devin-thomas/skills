@@ -50,7 +50,7 @@ function Common {
   if ($noActivate) { $a += '--no-activate' }
   return $a
 }
-# Hands a command to the running app through its control channel (electron\control.cjs) with
+# Hands a command to the running app through its control channel (electron\control.ts) with
 # scripts\control.ps1, a named-pipe client that starts no program. Never a second launch of the
 # exe: that reaches the app through Chromium's process singleton, which grants it the right to
 # take the foreground (the desktop-app skill's references/packaging.md, "Focus on Windows"). The

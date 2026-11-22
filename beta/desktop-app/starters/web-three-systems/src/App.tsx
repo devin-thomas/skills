@@ -26,7 +26,7 @@ import { toast } from './state/toast';
 type Theme = 'light' | 'dark';
 
 function useTheme(desktop: DesktopBridge): [Theme, () => void] {
-  const [theme, setTheme] = useState<Theme>(() => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'));
+  const [theme, setTheme] = useState<Theme>(() => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'));
   // Keep the window's own colours (background, window-button glyphs) in step with the page.
   useEffect(() => {
     desktop.setTheme(theme);
@@ -64,7 +64,13 @@ export const FIELD = { title: 'field-title', body: 'field-body', filter: 'rail-f
 function focusField(id: string) {
   const el = document.getElementById(id);
   el?.focus();
-  if (document.activeElement !== el) requestAnimationFrame(() => document.getElementById(id)?.focus());
+  if (document.activeElement === el) return;
+  // The element may not be rendered yet: try once more next frame, but only if focus has not moved
+  // since. A dialog opened in between (a shortcut pressed straight after) keeps its focus.
+  const from = document.activeElement;
+  requestAnimationFrame(() => {
+    if (document.activeElement === from || document.activeElement === document.body) document.getElementById(id)?.focus();
+  });
 }
 
 const WORDS = ['Amber', 'Birch', 'Cedar', 'Delta', 'Ember', 'Flint', 'Grove', 'Harbor', 'Indigo', 'Juniper', 'Kestrel', 'Lumen', 'Meadow', 'Nimbus', 'Orchard', 'Pebble'];

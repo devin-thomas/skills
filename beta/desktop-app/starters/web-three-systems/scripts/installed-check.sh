@@ -35,7 +35,7 @@
 # On macOS keep DATA_DIR and EVIDENCE on the internal disk. An app started by
 # `open` that touches a removable or network volume waits for a privacy prompt
 # that nobody is there to answer, and stops at its first file call.
-#   PACKAGE_ENV    the names file package.mjs wrote (default out/package.env)
+#   PACKAGE_ENV    the names file package.ts wrote (default out/package.env)
 set -u
 STEP=${1:-list}
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -85,7 +85,7 @@ pids() {
 count() { pids | wc -l | tr -d ' '; }
 # The installed app acting as Node, for the checks written in JavaScript. No window opens.
 as_node() { ELECTRON_RUN_AS_NODE=1 "$BIN" "$@"; }
-# Hands a command to the running app through its control channel (electron/control.cjs),
+# Hands a command to the running app through its control channel (electron/control.ts),
 # sent by scripts/control.cjs run by the installed app acting as Node: no window, and no
 # second instance of the app, which on Windows could hand the app the foreground. The app
 # serves the channel because the launch step started it with --no-activate (or --control),
@@ -107,7 +107,8 @@ case "$STEP" in
     if [ "$OS" = Darwin ]; then
       say "bundle id: $(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist"), version $(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist"), minimum macOS $(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$APP/Contents/Info.plist")"
       if codesign --verify --deep --strict "$APP" >>"$OUT" 2>&1; then say "codesign --verify --deep --strict: passes"; else say "FAILED: codesign --verify --deep --strict"; fi
-      for f in "$APP" $(for h in $HELPERS; do printf '%s ' "$RES/bin/$TARGET/$h"; done); do
+      # One path per line, so a product name with a space is one path, not two words.
+      { printf '%s\n' "$APP"; for h in $HELPERS; do printf '%s\n' "$RES/bin/$TARGET/$h"; done; } | while IFS= read -r f; do
         info=$(codesign -dv "$f" 2>&1)
         say "signature of ${f#"$APP"/}: $(echo "$info" | grep -E '^(Signature|TeamIdentifier)=' | tr '\n' ' ')$(echo "$info" | grep -o 'flags=[^ ]*')"
         case "$info" in *runtime*) ;; *) say "FAILED: ${f#"$APP"/} lacks the hardened runtime flag" ;; esac

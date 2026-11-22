@@ -25,8 +25,8 @@ Counts: 9 constants, 20 defaults, 7 parameters, 13 lessons, 13 one-offs left beh
 
 **Constants** (true for the class; owner rules marked):
 
-1. 680 MB ceiling on private memory over the process tree .
-2. About 300 MB budget per content app, each its own program .
+1. 680 MB ceiling on private memory over the process tree.
+2. About 300 MB budget per content app, each its own program.
 3. Premium is the owner's verdict after use; the bar is a floor.
 4. Logic lives outside the page.
 5. Test windows never take focus, and open only when the owner has said the machine is free (owner rule).
@@ -46,7 +46,7 @@ Counts: 9 constants, 20 defaults, 7 parameters, 13 lessons, 13 one-offs left beh
 7. Narrow preload with an origin check on every handler.
 8. System `node.exe` runs the npm shim's script with an argument array, bounded.
 9. Frozen attempt with one key, three outcomes, never an automatic resend (a note, not code).
-10. One-step irreversible action with a 5 second undo window .
+10. One-step irreversible action with a 5 second undo window.
 11. Saved work written atomically by the main process within 250 ms of a change.
 12. One command registry, one shortcut table, palette on Ctrl+K.
 13. Plain language, with a banned-term scan and a Details control.
@@ -88,4 +88,4 @@ Instance: a Melee Replay browser for Windows. Method: a paper walk by the extrac
 
 ## Still a hypothesis
 
-Everything here rests on one build. The parts carried over without a run in this starter are listed in its README. Run this extraction again after the second content app ships (the Lil Gohan app for Windows, a Melee Replay browser or a Guilty Gear tooling dashboard): raise what repeated to proven in 2, retire what the second app overrode, and move the frozen-attempt record, the file pickers or a sign-in screen into the starter only if that app needed them too. Run it sooner if the owner's first days of use contradict a default.
+Everything here rests on one build. The parts carried over without a run in this starter are listed in its README. Run this extraction again after the second content app ships: raise what repeated to proven in 2, retire what the second app overrode, and move the frozen-attempt record, the file pickers or a sign-in screen into the starter only if that app needed them too. Run it sooner if the owner's first days of use contradict a default.

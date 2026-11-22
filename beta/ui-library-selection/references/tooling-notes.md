@@ -1,6 +1,6 @@
 # Tooling notes (conditional)
 
-Read only when an install or typecheck fails. Host details below were observed on the Grok Bot Linux box on 2026-11-16 and may not apply elsewhere.
+Read only when an install or typecheck fails. Host details below were observed on a Linux test host on 2026-11-16 and may not apply elsewhere.
 
 ## npm `allow-scripts` conflict (host-specific)
 

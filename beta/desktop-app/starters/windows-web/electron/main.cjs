@@ -15,7 +15,7 @@
 //   --quit               close the window as if its close button was pressed
 'use strict';
 
-const { app, BrowserWindow, Menu, ipcMain, nativeTheme, net, protocol, screen, shell } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, net, protocol, screen, shell } = require('electron');
 const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const path = require('node:path');
@@ -192,7 +192,7 @@ function registerIpc() {
 
 function createWindow() {
   const state = readState();
-  const theme = state.theme === 'light' || state.theme === 'dark' ? state.theme : nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+  const theme = state.theme === 'light' || state.theme === 'dark' ? state.theme : 'dark';
   const primary = screen.getPrimaryDisplay().workArea;
   const size = { width: Math.min(1280, primary.width), height: Math.min(800, primary.height) };
   const saved = state.bounds && onScreen(state.bounds) ? state.bounds : null;

@@ -4,7 +4,7 @@ Fill this in before choosing components. The audit and the measurement scripts r
 
 ## Essential journeys
 
-Five to fifteen things a person comes to this app to do, each as one sentence and a step budget. A step is one run of typing or one key combination. Add each to `qa/journeys.json` and give it a script in `qa/audit.mjs`.
+Five to fifteen things a person comes to this app to do, each as one sentence and a step budget. A step is one run of typing or one key combination. Add each to `qa/journeys.json` and give it a script in `qa/audit.ts`.
 
 | Id | Journey | Step budget | Why this many |
 | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ The audit runs every journey twice: with Ctrl (Windows and Linux) and with Comma
 
 ## Latency budgets
 
-Each named interaction has a budget. `qa/typing.mjs` checks the first two in the real shell.
+Each named interaction has a budget. `qa/typing.ts` checks the first two in the real shell.
 
 | Interaction | Budget | How it is measured |
 | --- | --- | --- |

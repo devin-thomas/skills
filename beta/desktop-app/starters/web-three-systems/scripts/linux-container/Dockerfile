@@ -1,5 +1,5 @@
 # The app on arm64 Linux, for the checks in scripts/linux-container/run.sh.
-# Built from the recipe proven in research report 10: Debian 12, GTK 3, Xvfb
+# Built from the recipe proven in build 2: Debian 12, GTK 3, Xvfb
 # with openbox for X11, sway and weston (both headless) for Wayland.
 # Build context is the project root: run.sh passes it.
 FROM node:24-bookworm-slim
@@ -27,7 +27,9 @@ WORKDIR /home/app/project
 
 # Dependencies first, so a change to the app's own files does not reinstall them.
 # Electron 42 and later do not download their binary on install; electron:install does.
-COPY --chown=app:app package.json pnpm-lock.yaml ./
+# pnpm-workspace.yaml carries pnpm settings such as minimumReleaseAgeExclude; the wildcard
+# copies it when the app has one and skips it when it does not.
+COPY --chown=app:app package.json pnpm-lock.yaml pnpm-workspace.yam[l] ./
 RUN pnpm install --frozen-lockfile && pnpm electron:install
 
 COPY --chown=app:app . .

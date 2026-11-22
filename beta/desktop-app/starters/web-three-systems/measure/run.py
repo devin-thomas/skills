@@ -1,4 +1,17 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["uppercut-windows-window-capture==0.1.0"]
+# ///
 """Measure the app in its development shell: start-up, displayed frames, memory, idle CPU.
+
+Run with uv, which installs the package this script declares above:
+
+    uv run measure/run.py [--startup N] [--idle 300] [--workload 18] [--out measure/out]
+
+The picture of the window comes from uppercut-windows-window-capture (PrintWindow: a covered
+window is captured too, and the window is never brought forward). PresentMon is still called
+directly and summarized by measure/analyze.py: uppercut-presentmon-measure does not yet read
+msBetweenDisplayChange or start a delayed capture on a chosen process, so the swap waits for it.
 
 Needs PresentMon (the Intel PresentMon service and PresentMonCli.exe) and a built page (pnpm build).
 The window opens on the primary display without taking focus. Run it only when the owner has said
@@ -6,7 +19,7 @@ the machine is free: a covered or occluded Chromium window stops rendering, and 
 only about the display the window is on.
 
 Timeline for a full run (seconds after the page's first frame):
-  12   screenshot of the window
+  12   picture of the window
   15   memory snapshot "launch"
   16   idle CPU over 10 s
   30   the workload starts inside the page (measure/workload.js waits until then)
@@ -44,6 +57,7 @@ CONFIG = json.loads((ROOT / "app.config.json").read_text(encoding="utf-8"))
 
 sys.path.insert(0, str(HERE))
 from analyze import summarize  # noqa: E402
+from uppercut_windows_window_capture import capture_window, enable_dpi_awareness, find_window  # noqa: E402
 
 
 def powershell(script: str) -> str:
@@ -71,21 +85,18 @@ $gpu = @(Get-CimInstance Win32_Process | Where-Object { $ids.Contains([int]$_.Pr
 } | ConvertTo-Json -Compress
 """
 
-SHOT = r"""
-Add-Type @'
-using System; using System.Runtime.InteropServices;
-public class W { [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
-  [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
-  public struct RECT { public int L, T, R, B; } }
-'@
-[W]::SetProcessDPIAware() | Out-Null
-Add-Type -AssemblyName System.Drawing
-$h = (Get-Process -Id %d).MainWindowHandle
-$r = New-Object W+RECT; [W]::GetWindowRect($h, [ref]$r) | Out-Null
-$bmp = New-Object System.Drawing.Bitmap ($r.R - $r.L), ($r.B - $r.T)
-$g = [System.Drawing.Graphics]::FromImage($bmp); $g.CopyFromScreen($r.L, $r.T, 0, 0, $bmp.Size)
-$bmp.Save('%s'); "$($r.R - $r.L)x$($r.B - $r.T)"
-"""
+
+
+def window_picture(pid: int, file: Path) -> str:
+    """The app's window, captured with PrintWindow; never brought to the front."""
+    try:
+        enable_dpi_awareness()
+        window = find_window(pid=pid, prefer_largest=True, timeout=5)
+        shot = capture_window(window, crop_to_frame=True)
+        shot.save(str(file))
+        return f"{shot.width}x{shot.height}"
+    except Exception as error:  # a missing picture is a finding, not a crash
+        return f"no picture: {error}"
 
 
 def tree(pid: int) -> dict:
@@ -143,12 +154,12 @@ def full(out: Path, data: Path, scenario: Path, idle: int, workload: int) -> dic
     frame = first_frame(marks, 60)
     if frame is None:
         proc.kill()
-        raise SystemExit("The page never reported a first frame. Is dist/ built?")
+        raise SystemExit("The page never reported a first frame. Is the app built (pnpm build)?")
     result: dict = {"launchToFirstFrameMs": round(frame - t0, 1), "display": read_marks(marks).get("display")}
     hz = float((result["display"] or {}).get("hz") or 60)
     at = lambda s: time.sleep(max(0.0, (frame / 1000.0 + s) - time.time()))  # noqa: E731
     at(12)
-    result["screenshot"] = powershell(SHOT % (proc.pid, str(out / "window.png")))
+    result["screenshot"] = window_picture(proc.pid, out / "window.png")
     at(15)
     result["memoryLaunch"] = tree(proc.pid)
     gpu = (result["memoryLaunch"].get("gpu") or [proc.pid])[0]
@@ -190,8 +201,8 @@ def main() -> int:
     parser.add_argument("--idle", type=int, default=300, help="seconds to sit idle before the last memory snapshot")
     parser.add_argument("--workload", type=int, default=18, help="seconds the scenario runs after its 30 s wait")
     args = parser.parse_args()
-    if not ELECTRON.exists() or not (ROOT / "dist" / "index.html").exists():
-        raise SystemExit("Run pnpm install and pnpm build first.")
+    if not ELECTRON.exists() or not (ROOT / "dist" / "page" / "index.html").exists() or not (ROOT / "dist" / "electron" / "main.mjs").exists():
+        raise SystemExit("Run pnpm install, pnpm electron:install and pnpm build first.")
     if not args.startup and not Path(PRESENTMON).exists():
         raise SystemExit(f"PresentMon was not found at {PRESENTMON}.")
     args.out.mkdir(parents=True, exist_ok=True)

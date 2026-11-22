@@ -3,6 +3,9 @@
 // every state without Electron or the tool. It is loaded only when
 // `window.desktop` is absent (src/desktop.ts), as its own chunk.
 //
+// The parts every stand-in needs (call log, menu hook, storage, timers, address options) come
+// from @uppercut-labs/electron-bridge-test-double; this file holds the app's fixtures.
+//
 // The scenario comes from the address's fragment, so every state can be opened
 // and photographed directly:
 //
@@ -28,66 +31,26 @@
 // For the scripts only: every call is appended to `window.__desktopCalls`, the
 // last menu state is `window.__menuState`, and `window.__menuCommand(id)` sends
 // a command as the shell's menu would.
-import type { Bootstrap, DesktopBridge, JobUpdate, Platform } from './bridge';
-
-declare global {
-  interface Window {
-    __desktopCalls?: Array<{ name: string; args: unknown[] }>;
-    __menuState?: Record<string, boolean>;
-    __menuCommand?: (command: string) => void;
-  }
-}
-
-function options() {
-  const params = new URLSearchParams(location.hash.replace(/^#/, ''));
-  const platform = params.get('platform');
-  return {
-    fixture: params.get('fixture') ?? 'default',
-    platform: (platform === 'macos' || platform === 'linux' ? platform : 'windows') as Platform,
-  };
-}
+import { createBridgeHarness, instrument, parseHashParams } from '@uppercut-labs/electron-bridge-test-double';
+import type { Bootstrap, DesktopBridge, JobUpdate } from './bridge';
 
 export function createFakeBridge(storagePrefix: string): DesktopBridge {
-  const { fixture, platform } = options();
-  const calls: Array<{ name: string; args: unknown[] }> = (window.__desktopCalls = []);
-  const record = (name: string, ...args: unknown[]) => calls.push({ name, args });
-  const jobListeners = new Set<(u: JobUpdate) => void>();
-  const menuListeners = new Set<(c: string) => void>();
-  const timers = new Set<number>();
+  const h = createBridgeHarness({ storagePrefix });
+  const fixture = parseHashParams().get('fixture') ?? 'default';
+  const platform = h.option('platform', ['windows', 'macos', 'linux'] as const, 'windows');
+  const jobUpdates = h.channel<JobUpdate>('job');
+  const saved = h.storage.load();
   let jobs = 0;
   let running: string | null = null;
 
   const emit = (update: JobUpdate) => {
     if (update.state !== 'running') running = null;
-    jobListeners.forEach((l) => l(update));
+    jobUpdates.emit(update);
   };
-  const later = (ms: number, run: () => void) => {
-    const id = window.setTimeout(() => {
-      timers.delete(id);
-      run();
-    }, ms);
-    timers.add(id);
-  };
-  const stopTimers = () => {
-    timers.forEach((id) => clearTimeout(id));
-    timers.clear();
-  };
+  const later = (ms: number, run: () => void) => void h.scheduler.after(ms, run);
 
-  window.__menuCommand = (command) => menuListeners.forEach((l) => l(command));
-
-  const saved: Record<string, string> = {};
-  try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith(`${storagePrefix}.`)) saved[key] = localStorage.getItem(key) ?? '';
-    }
-  } catch {
-    // Storage is unavailable: start empty.
-  }
-
-  return {
+  const bridge: DesktopBridge = {
     async bootstrap(): Promise<Bootstrap> {
-      record('bootstrap');
       return {
         stored: saved,
         platform,
@@ -98,19 +61,11 @@ export function createFakeBridge(storagePrefix: string): DesktopBridge {
             : { state: 'ready', code: null, details: 'example-tool 0.1.0 (stand-in)' },
       };
     },
-    setTheme(theme) {
-      record('setTheme', theme);
-    },
+    setTheme() {},
     saveState(key, json) {
-      record('saveState', key);
-      try {
-        localStorage.setItem(key, json);
-      } catch {
-        // The page keeps its work in memory.
-      }
+      h.storage.save(key, json);
     },
-    async startJob(request) {
-      record('startJob', request);
+    async startJob() {
       if (running) return { jobId: running, refused: 'busy' };
       const jobId = `job-${++jobs}`;
       running = jobId;
@@ -140,21 +95,14 @@ export function createFakeBridge(storagePrefix: string): DesktopBridge {
       return { jobId };
     },
     cancelJob(jobId) {
-      record('cancelJob', jobId);
       if (running !== jobId) return;
-      stopTimers();
+      h.scheduler.cancelAll();
       later(120, () => emit({ jobId, state: 'cancelled' }));
     },
-    onJob(listener) {
-      jobListeners.add(listener);
-      return () => jobListeners.delete(listener);
-    },
-    onMenuCommand(listener) {
-      menuListeners.add(listener);
-      return () => menuListeners.delete(listener);
-    },
-    setMenuState(enabled) {
-      window.__menuState = enabled;
-    },
+    onJob: (listener) => jobUpdates.add(listener),
+    onMenuCommand: (listener) => h.menuCommands.add(listener),
+    setMenuState: (enabled) => h.menu.setMenuState(enabled),
   };
+  // Every call is logged first; saveState logs only its key, as the document can be large.
+  return instrument(bridge, h.log, { saveState: (args) => [args[0]] });
 }

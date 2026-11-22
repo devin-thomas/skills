@@ -1,6 +1,6 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Plus } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 // A virtualized listbox: 10,000 rows cost about as many DOM nodes as fit on
 // screen. Keyboard navigation jumps and never animates.
@@ -26,6 +26,21 @@ export function ItemList({ rows, label, onPick }: { rows: Item[]; label: string;
     overscan: 6,
   });
   const current = Math.min(active, rows.length - 1);
+
+  // Where the scrollbar is an overlay that takes no space (macOS by default, some Linux
+  // desktops), nothing shows at rest that more rows are below: fade the lower edge instead
+  // (.scroll-cue). Where the scrollbar takes space (Windows), the list is left as it is, so the
+  // scroll measured there does not pay for a mask. Read again when the window resizes.
+  const [overlayBar, setOverlayBar] = useState(false);
+  useLayoutEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    const read = () => setOverlayBar(el.scrollHeight > el.clientHeight && el.offsetWidth - el.clientWidth === 0);
+    read();
+    const observer = new ResizeObserver(read);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [rows.length]);
 
   function move(to: number) {
     const next = Math.max(0, Math.min(rows.length - 1, to));
@@ -72,7 +87,7 @@ export function ItemList({ rows, label, onPick }: { rows: Item[]; label: string;
   return (
     <div
       ref={scroller}
-      className="listbox min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-gutter:stable]"
+      className={`listbox min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-gutter:stable]${overlayBar ? ' scroll-cue' : ''}`}
       role="listbox"
       tabIndex={0}
       aria-label={label}

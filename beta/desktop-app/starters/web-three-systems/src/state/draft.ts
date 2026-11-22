@@ -5,7 +5,7 @@ import { read, write } from './storage';
 // The starter's one document: a title and a body. Replace it with the app's own
 // state, and keep the save rule: every change is saved within 250 ms, and at
 // once when the window loses focus or is hidden, so a kill loses at most the
-// last moment of typing (qa/kill-test.mjs checks this in the real shell).
+// last moment of typing (qa/kill-test.ts checks this in the real shell).
 
 export const DRAFT_KEY = `${config.storagePrefix}.draft.v1`;
 

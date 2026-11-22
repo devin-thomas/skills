@@ -1,6 +1,6 @@
 import { Dialog } from '@base-ui/react/dialog';
 import { Search } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { keysOf, type Shortcut } from '../state/shortcuts';
 import { Kbd } from './ui';
 
@@ -41,6 +41,32 @@ export function CommandPalette({
   const input = useRef<HTMLInputElement>(null);
   const list = useRef<HTMLDivElement>(null);
   const focusAfter = useRef<string | null>(null);
+
+  // Where focus was before the palette opened. The app usually opens it from a shortcut by
+  // setting `open`, not through a Base UI trigger, so Base UI has no trigger to return focus to
+  // and focus fell to the page body on close. The last element focused outside the palette is
+  // kept here and focus returns to it.
+  const opener = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const note = (event: FocusEvent) => {
+      const el = event.target;
+      if (el instanceof HTMLElement && !el.closest('.palette')) opener.current = el;
+    };
+    document.addEventListener('focusin', note);
+    return () => document.removeEventListener('focusin', note);
+  }, []);
+
+  // Every opening starts empty, however it was opened (a shortcut sets `open` directly and
+  // never passes through onOpenChange below), so typed keys never append to the last query.
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (open && !wasOpen.current) {
+      setQuery('');
+      setActive(0);
+      focusAfter.current = null;
+    }
+    wasOpen.current = open;
+  }, [open]);
 
   const visible = commands.filter((c) => matches(c, query));
   const current = Math.min(active, Math.max(0, visible.length - 1));
@@ -91,7 +117,9 @@ export function CommandPalette({
           initialFocus={input}
           finalFocus={() => {
             const id = focusAfter.current;
-            return id ? document.getElementById(id) : true;
+            if (id) return document.getElementById(id);
+            const back = opener.current;
+            return back && back.isConnected ? back : true;
           }}
         >
           <Dialog.Title className="sr-only">Commands</Dialog.Title>

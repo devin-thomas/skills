@@ -1,5 +1,5 @@
 #!/bin/bash
-# Runs inside the container while the app is up (measure/shell-evidence.mjs
+# Runs inside the container while the app is up (measure/shell-evidence.ts
 # calls it through --observe). Records what only the display side can show:
 # a picture of the whole display, so the window's buttons, frame and shadow are
 # in it; what the window manager or compositor knows about the window; and

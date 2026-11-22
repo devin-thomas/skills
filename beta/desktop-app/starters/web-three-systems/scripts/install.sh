@@ -9,7 +9,7 @@
 #   INSTALL_TO   macOS: the Applications folder (default ~/Applications; /Applications also works)
 #                Linux portable: the folder to unpack into (default ~/.local/opt)
 #   EVIDENCE     where install-log.txt goes (default <project>/qa/evidence)
-#   PACKAGE_ENV  the names file package.mjs wrote (default <project>/out/package.env)
+#   PACKAGE_ENV  the names file package.ts wrote (default <project>/out/package.env)
 #
 # Nothing here needs administrator rights except the Linux package, which is
 # how packages are installed. Windows has install.ps1.

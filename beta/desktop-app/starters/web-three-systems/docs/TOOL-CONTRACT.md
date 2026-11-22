@@ -54,4 +54,4 @@ Codes the adapter makes itself: `TOOL_NOT_FOUND`, `TOOL_INCOMPATIBLE`, `TOOL_CRA
 
 ## The stand-in
 
-`test/standin-tool.cjs` takes these flags and replays a scenario from `test/scenarios/`. Every code in the table above has a scenario, and the adapter's tests run against them on every system (`pnpm test`).
+`test/standin-tool.ts` takes these flags and replays a scenario from `test/scenarios/`. Every code in the table above has a scenario, and the adapter's tests run against them on every system (`pnpm test`).

@@ -4,15 +4,15 @@ Append-only. Each entry says what was decided, by whom, when, and what it change
 
 ## D-001 Electron shell and web UI
 
-Inherited default. The page is React and TypeScript; the shell is Electron; the app is its own program with its own processes. Memory is summed as private bytes over the process tree: about 300 MB is the budget and 680 MB is the ceiling no build may pass . Both numbers live in `app.config.json`.
+Inherited default. The page is React and TypeScript; the shell is Electron; the app is its own program with its own processes. Memory is summed as private bytes over the process tree: about 300 MB is the budget and 680 MB is the ceiling no build may pass. Both numbers live in `app.config.json`.
 
 ## D-002 Logic stays outside the page
 
-Inherited default. The page asks the main process through the functions in `electron/preload.cjs`; the main process runs the installed command-line tool or core. The page holds no credentials and makes no network request (`connect-src 'none'`). An app that needs a server names its origins in the Content-Security-Policy in `electron/main.cjs` and records why here.
+Inherited default. The page asks the main process through the functions in `electron/preload.ts`; the main process runs the installed command-line tool or core. The page holds no credentials and makes no network request (`connect-src 'none'`). An app that needs a server names its origins in the Content-Security-Policy in `electron/main.ts` and records why here.
 
 ## D-003 The tool ships inside the app
 
-Default from build 2. The command-line tool and every program it drives ship inside the app, one binary per system and processor under `resources/bin/<platform>-<arch>/`, and are started by absolute path with an argument array, never through a shell or PATH (`electron/tool/locate.cjs`). This replaces round 1's npm-global tool started through the system `node.exe`, which is still in the `windows-web` starter for an app whose tool is an npm global.
+Default from build 2. The command-line tool and every program it drives ship inside the app, one binary per system and processor under `resources/bin/<platform>-<arch>/`, and are started by absolute path with an argument array, never through a shell or PATH (`electron/tool/locate.ts`). This replaces round 1's npm-global tool started through the system `node.exe`, which is still in the `windows-web` starter for an app whose tool is an npm global.
 
 ## D-004 Plain language in the interface
 
@@ -28,7 +28,7 @@ Inherited default. Web-styled buttons scale to 0.97 while pressed. List rows, me
 
 ## D-007 One codebase for Windows, macOS and Linux
 
-Default from build 2 (owner, 2026-11-15: "It needs to be fully cross-platform across Windows, Mac, and Linux"). One page, one stylesheet, one main process. Everything that differs between the systems is decided in `electron/platform.cjs`, and the page learns the system from `bootstrap().platform`. A Mac-only app is SwiftUI instead (the skill's macOS branch).
+Default from build 2 (owner, 2026-11-15: "It needs to be fully cross-platform across Windows, Mac, and Linux"). One page, one stylesheet, one main process. Everything that differs between the systems is decided in `electron/platform.ts`, and the page learns the system from `bootstrap().platform`. A Mac-only app is SwiftUI instead (the skill's macOS branch).
 
 ## D-008 Closing and quitting follow the system
 
@@ -36,20 +36,52 @@ Default from build 2. Closing the last window quits on Windows and Linux; on mac
 
 ## D-009 macOS has a real menu bar; Windows and Linux have none
 
-Default from build 2. On macOS the menu bar holds every command with its shortcut, in Apple's order, with the system's roles for editing, hiding and quitting (`electron/menu.cjs`). On Windows and Linux there is no menu bar (a menu there would draw a bar inside the window); the page's palette lists every command, and on Linux the shell handles Ctrl+Q, Ctrl+W, F11 and F10 itself.
+Default from build 2. On macOS the menu bar holds every command with its shortcut, in Apple's order, with the system's roles for editing, hiding and quitting (`electron/menu.ts`). On Windows and Linux there is no menu bar (a menu there would draw a bar inside the window); the page's palette lists every command, and on Linux the shell handles Ctrl+Q, Ctrl+W, F11 and F10 itself.
 
-## D-010 Launches by agents follow scripts/lib/launch.mjs
+## D-010 Launches by agents follow scripts/lib/launch.ts
 
 Default from build 2, where agent launches took the owner's focus three times. Every scripted launch uses absolute paths, runs the shell check first, passes `--no-activate`, a throwaway data folder and a time limit, and ends the process it started by its exact id. No script uses a second instance to control the running app (D-011).
 
 ## D-011 Scripts reach the running app only through the control channel
 
-Default from build 2 (the media converter, its D-018), found after agent checks took the owner's focus on Windows. A script never starts the app's executable a second time to talk to a running one: on Windows that hands the running app the right to come to the front (Chromium's process singleton calls `AllowSetForegroundWindow` for it before any app code runs). An app started with `--no-activate` or `--control` serves a named pipe (Windows) or a Unix socket (macOS, Linux), `electron/control.cjs`, and writes where it listens to `control.json` in its data folder; an app a person started serves none. The executable started with a command flag forwards it through the channel and ends without asking for the single-instance lock. The app counts second launches, and every check that asks it anything expects 0. Scripts on Windows that Explorer runs start under `conhost.exe --headless`, with no console window. A person's own second launch still brings the window forward.
+Default from build 2 (the media converter, its D-018), found after agent checks took the owner's focus on Windows. A script never starts the app's executable a second time to talk to a running one: on Windows that hands the running app the right to come to the front (Chromium's process singleton calls `AllowSetForegroundWindow` for it before any app code runs). An app started with `--no-activate` or `--control` serves a named pipe (Windows) or a Unix socket (macOS, Linux), `electron/control.ts`, and writes where it listens to `control.json` in its data folder; an app a person started serves none. The executable started with a command flag forwards it through the channel and ends without asking for the single-instance lock. The app counts second launches, and every check that asks it anything expects 0. Scripts on Windows that Explorer runs start under `conhost.exe --headless`, with no console window. A person's own second launch still brings the window forward.
 
 ## D-012 The network service runs in the main process
 
-Default from build 2 (D-019 there), with one condition: the page makes no network request (`connect-src 'none'`). The separate network process then isolates nothing, and running it in the main process took Windows idle memory from 304.4 MB to 243.2 MB installed (306.8 to 238.0 MB in development); macOS and Linux dropped about 10 MB. An app whose page talks to a server sets `NETWORK_SERVICE_IN_PROCESS` to false in `electron/main.cjs` and records why here; `pnpm shell:check` fails the switch without `connect-src 'none'`.
+Default from build 2 (D-019 there), with one condition: the page makes no network request (`connect-src 'none'`). The separate network process then isolates nothing, and running it in the main process took Windows idle memory from 304.4 MB to 243.2 MB installed (306.8 to 238.0 MB in development); macOS and Linux dropped about 10 MB. An app whose page talks to a server sets `NETWORK_SERVICE_IN_PROCESS` to false in `electron/main.ts` and records why here; `pnpm shell:check` fails the switch without `connect-src 'none'`.
+
+## D-013 Everything is strict TypeScript; the main process is bundled
+
+Owner, 2026-11-19 and 2026-11-21: strict typing everywhere and no hand-written JavaScript where TypeScript can go, following the owner's other TypeScript apps. The main process is `electron/*.ts` and `electron/tool/*.ts`, bundled by rolldown (`scripts/build-electron.ts`) into `dist/electron/main.mjs`, an ES module and `package.json`'s `main`, with the runtime kit packages inside it, so the package carries no `node_modules`. The preload is bundled to `dist/electron/preload.cjs`, one CommonJS file that requires only `electron`, because the window is sandboxed; its object `satisfies DesktopBridge`. The page builds to `dist/page/`. The no-dialog handler is its own module, imported first; the shell check holds that it comes first in the bundle. Electron 45 loads an ES-module main, and an error thrown while it loads still reaches `process.on('uncaughtException')`.
+
+## D-014 The test instrumentation never reaches the package
+
+`electron/qa.ts` is built to `dist/electron/qa.mjs` and loaded by a path computed at run time, only in an unpackaged app with a `--qa-*` flag. Its measurement package stays outside the bundle. `scripts/package.ts` leaves the file out, and the shell check fails if `main.ts` imports it by name or `main.mjs` contains it.
+
+## D-015 Scripts, measurements, QA and tests run by Node's type stripping
+
+`scripts/`, `measure/`, `qa/`, `test/` and `tokens/` are `.ts` that Node 24 and later run directly, with erasable syntax only (`erasableSyntaxOnly` in `tsconfig.node.json`). `qa/tsconfig.json` adds the DOM types for the functions Playwright runs in the page; `pnpm typecheck` checks the page, the main process, the scripts and `qa/`. `node --check` passes a broken ES-module `.ts`, so `scripts/lib/syntax.ts` strips the types first.
+
+## D-016 The plain-Node scripts are built from TypeScript and committed
+
+`scripts/control.cjs`, `installed-helpers.cjs` and `installed-diagnostics.cjs` are built from their `.ts` sources by `scripts/emit-plain-node.ts` and committed. The installed checks run them by those names with the installed app acting as Node, often from a checkout that was never built, and Electron's Node strips types only from `.ts` files. `test/plain-node.test.ts` fails when one differs from its source.
+
+## D-017 measure/workload.js stays JavaScript
+
+Its text is the expression the page evaluates for `--qa-bench`, and `measure/run.py` names the file, so it cannot be a module or need a build. It is type-checked with the page (`checkJs`).
+
+## D-018 Shared code comes from the kit packages, and only from them
+
+Owner, 2026-11-21. Code every app had been copying comes from published packages: `@uppercut-labs/electron-command-menu` (the menus), `electron-child-process-runner` (starting and stopping the tool), `electron-qa-measurements` (typing, palette, launch marks, the kill test), `electron-bridge-test-double` (the stand-in bridge), `browser-qa-harness` (serving the build and launching the browser for the audit) and `app-icon-generator` (icons) from npm, and `uppercut-windows-window-capture` from PyPI for the window picture in `measure/run.py`. The PresentMon capture stays in `measure/run.py` and `analyze.py` until `uppercut-presentmon-measure` reads displayed-frame times (`msBetweenDisplayChange`) and starts a delayed capture on a chosen process; moving earlier would quietly change what the numbers mean. `test/kit-only.test.ts` fails when a hand-rolled copy of any of them or a direct PresentMon call comes back, and names the package to use. A package that lacks something the app needs is extended; its code is not copied here.
+
+## D-019 The control channel, memory reading and line reader are packages too
+
+The control channel is `@uppercut-labs/electron-control-channel` (`electron/control.ts` names the app's command flags), the memory reading is `@uppercut-labs/electron-private-memory` (`electron/memory.ts` gives it the budget and ceiling), and the bounded line reader is `createLineReader` from `@uppercut-labs/electron-child-process-runner` 0.2.0. `scripts/control.cjs` is built from `scripts/control.ts` with the package bundled in, so installed checks still run it with no `node_modules`. `test/kit-only.test.ts` holds all three.
+
+## D-020 Desktop apps are dark by default
+
+Owner, 2026-11-21. A generated app starts dark on first run and with any fresh data folder, whatever the operating system's theme is. Light is a choice the person made and the app saved; the saved choice wins on every later start. `electron/theme.ts` holds the one rule (`initialTheme`), `electron/window.ts` paints the window with it, and `index.html` sets the page the same way before first paint (the shell names its theme in the address, a plain browser reads `localStorage`, and with neither the theme is dark). The system setting is never read. `test/dark-default.test.ts` fails when a fresh profile renders anything but dark, with the operating system set to light. The QA helpers open pages dark, and a critique round (`pnpm qa:shots --quick`) photographs dark alone; the audit still checks both themes, because light stays available.
 
 ## Preferences ledger
 
-Every preference the app offers is listed here with the reason a default could not serve. The starter has one: the theme, because the system setting cannot say which a person wants for this app alone.
+Every preference the app offers is listed here with the reason a default could not serve. The starter has one: the theme, which starts dark and keeps a person's saved choice (D-020).

@@ -14,7 +14,7 @@
   ],
   "commandsWithoutShortcut": [
     {
-      "label": "About Starter",
+      "label": "About {productName}",
       "reason": "Opened rarely; not a repeated action."
     }
   ]

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark light" />
     <title>Starter</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%231c1c1b'/%3E%3C/svg%3E" />
     <script>
@@ -11,9 +11,8 @@
       (function () {
         var theme = null;
         try { theme = localStorage.getItem('app.theme'); } catch (e) {}
-        if (theme !== 'light' && theme !== 'dark') {
-          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        // Dark by default: with no saved choice the theme is dark, whatever the system's setting is.
+        if (theme !== 'light' && theme !== 'dark') theme = 'dark';
         document.documentElement.dataset.theme = theme;
       })();
     </script>

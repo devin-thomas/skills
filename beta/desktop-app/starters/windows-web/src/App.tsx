@@ -22,7 +22,7 @@ import { toast } from './state/toast';
 type Theme = 'light' | 'dark';
 
 function useTheme(): [Theme, () => void] {
-  const [theme, setTheme] = useState<Theme>(() => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'));
+  const [theme, setTheme] = useState<Theme>(() => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'));
   // Keep the window's caption buttons and background in step with the page.
   useEffect(() => {
     bridge?.setTheme(theme);

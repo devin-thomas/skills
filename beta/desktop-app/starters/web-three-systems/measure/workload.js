@@ -2,26 +2,39 @@
 // Phases: list scroll (10 s), typing in the main text field (4 s), command palette (2.4 s).
 // It waits 30 s first so the harness can take its launch and idle readings.
 // The selectors match the starter screen; change them with the app's first screen.
+//
+// JavaScript on purpose: the file's text is the expression the page evaluates (electron/qa.ts
+// reads it and passes it to executeJavaScript, and measure/run.py names this file), so it cannot
+// be a module or need a build. Its types are checked with the page's (tsconfig.json, checkJs).
 (async () => {
+  /** @param {number} ms */
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  /** @returns {Promise<number>} */
   const frame = () => new Promise((r) => requestAnimationFrame(r));
+  /** @param {HTMLInputElement | HTMLTextAreaElement} el @param {string} value */
   const setValue = (el, value) => {
     const proto = el.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
-    Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, value);
+    Object.getOwnPropertyDescriptor(proto, 'value')?.set?.call(el, value);
     el.dispatchEvent(new Event('input', { bubbles: true }));
   };
+  /** @param {string} name @param {number[]} gaps */
   const stats = (name, gaps) => {
     const s = gaps.slice().sort((a, b) => a - b);
-    const at = (p) => s[Math.min(s.length - 1, Math.floor((p / 100) * s.length))];
+    /** @param {number} p */
+    const at = (p) => s[Math.min(s.length - 1, Math.floor((p / 100) * s.length))] ?? 0;
     const period = s.length ? at(50) : 0;
-    return { name, frames: s.length, p50: +at(50).toFixed(2), p99: +at(99).toFixed(2), max: +s[s.length - 1].toFixed(2), late: s.filter((g) => g > 1.5 * period).length };
+    return { name, frames: s.length, p50: +at(50).toFixed(2), p99: +at(99).toFixed(2), max: +(s[s.length - 1] ?? 0).toFixed(2), late: s.filter((g) => g > 1.5 * period).length };
   };
+  /** @param {string} name @param {number} ms @param {(t: number) => void} step */
   const timed = async (name, ms, step) => {
+    /** @type {number[]} */
     const gaps = []; let last = performance.now(); const end = last + ms;
-    while (performance.now() < end) { const t = await frame(); gaps.push(t - last); last = t; await step(t); }
+    while (performance.now() < end) { const t = await frame(); gaps.push(t - last); last = t; step(t); }
     return stats(name, gaps);
   };
+  /** @type {string[]} */
   const notes = [];
+  /** @type {ReturnType<typeof stats>[]} */
   const phases = [];
   await sleep(30000);
   const t0 = Date.now();
@@ -41,7 +54,7 @@
   // 2. change the main text field every other frame (so the display presents at half its rate here)
   const body = document.getElementById('field-body');
   const text = 'The second section still needs a decision before Thursday, and the list has to hold ten thousand rows. ';
-  if (body) {
+  if (body instanceof HTMLInputElement || body instanceof HTMLTextAreaElement) {
     let i = 0;
     phases.push(await timed('typing', 4000, () => { i += 1; if (i % 2 === 0) setValue(body, body.value + text[(i / 2) % text.length]); }));
   } else notes.push('no body field');

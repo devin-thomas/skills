@@ -1,0 +1,12 @@
+minimumReleaseAgeExclude:
+  - '@uppercut-labs/electron-child-process-runner@0.1.0'
+  - '@uppercut-labs/electron-child-process-runner@0.2.0'
+  - '@uppercut-labs/electron-control-channel@0.1.0'
+  - '@uppercut-labs/electron-private-memory@0.1.0'
+  - '@uppercut-labs/electron-command-menu@0.1.0'
+  - '@uppercut-labs/app-icon-generator@0.1.0'
+  - '@uppercut-labs/browser-qa-harness@0.1.0'
+  - '@uppercut-labs/electron-bridge-test-double@0.1.0'
+  - '@uppercut-labs/electron-qa-measurements@0.1.0'
+  - '@uppercut-labs/electron-qa-measurements@0.1.1'
+  - '@uppercut-labs/static-file-server@0.1.0'

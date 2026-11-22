@@ -1,4 +1,4 @@
-# Sends one request to the running app through its control channel (electron/control.cjs)
+# Sends one request to the running app through its control channel (electron/control.ts)
 # and prints the reply, without starting any program: a named-pipe client in PowerShell.
 # Works in Windows PowerShell 5.1 and PowerShell 7.
 #

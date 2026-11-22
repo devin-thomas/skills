@@ -1,6 +1,6 @@
 # The bridge between the page and the shell
 
-`src/bridge.ts` is the whole interface. The page (`src/`) is built against it and against the stand-in in `src/bridge.fake.ts`; the shell (`electron/preload.cjs` and `electron/main.cjs`) implements it. Neither side changes it alone: a change is a lead decision recorded in `docs/DECISIONS.md`. Write this file and `docs/TOOL-CONTRACT.md` before any builder starts; in build 2 five builders in separate worktrees built against the two and merged with no conflicts.
+`src/bridge.ts` is the whole interface. The page (`src/`) is built against it and against the stand-in in `src/bridge.fake.ts`; the shell (`electron/preload.ts` and `electron/main.ts`) implements it. Neither side changes it alone: a change is a lead decision recorded in `docs/DECISIONS.md`. Write this file and `docs/TOOL-CONTRACT.md` before any builder starts; in build 2 five builders in separate worktrees built against the two and merged with no conflicts.
 
 ## Who owns what
 
@@ -15,7 +15,7 @@
 
 ## Commands from the shell
 
-The macOS menu bar, the Dock menu and a script (`--menu-command=<id>` through the control channel, `electron/control.cjs`) can send a command. The shell sends a command id through `onMenuCommand`; the page runs it through its one command registry, the same path a shortcut takes. The page reports which commands can run through `setMenuState`, so a menu item is dimmed exactly when its shortcut would do nothing. The ids are the keys of `shortcuts.json`.
+The macOS menu bar, the Dock menu and a script (`--menu-command=<id>` through the control channel, `electron/control.ts`) can send a command. The shell sends a command id through `onMenuCommand`; the page runs it through its one command registry, the same path a shortcut takes. The page reports which commands can run through `setMenuState`, so a menu item is dimmed exactly when its shortcut would do nothing. The ids are the keys of `shortcuts.json`.
 
 ## The stand-in
 

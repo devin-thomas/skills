@@ -10,6 +10,7 @@ What this starter and the skill's round 2 changes were extracted from, how each 
 | 2026-11-15 | The mail app (build 1 of this class) | Added the Windows content-app branch, the 56-rule premium bar, the measurement reference and the `windows-web` starter. Every item proven in 1 build |
 | 2026-11-15 | The media converter (build 2) | The content-app branch now covers Windows, macOS and Linux from one codebase over a bundled tool. Added this starter, the tool-contract and packaging references, rules 57 to 100, per-system memory definitions and the agent launch rules; renamed `windows-content.md` to `content-app.md`, kept the `windows-content` stage as an alias. Items seen again were raised to proven in 2; rules no build had checked were set to 0 |
 | 2026-11-15, evening | The media converter's fixes after the snapshot | The control channel (`electron/control.cjs`, both clients, command launches forwarded without the single-instance lock, the second-launch count), the windowless runner (`conhost.exe --headless`), an install that no longer quits a running app, installed checks on all three systems through the channel, shell-check rules 8 and 9, the control test, the foreground sampler (replacing `scripts/foreground-watch.ps1`), the focus and memory experiments, and the network service in the main process as a default for a page that makes no network request. Every QA and measure script now reaches the app through the channel. Premium-bar rules 101 to 103 added, each proven in 1 |
+| 2026-11-21 | The starter itself, in a fresh app made from it | Strict TypeScript for the main process, scripts, measurements, QA and tests (D-013 to D-017); shared code from the kit packages instead of copies (D-018, D-019: menus, tool runner and line reader, control channel, private-memory reading, QA measurements, stand-in bridge, audit server and browser, icons); the list fades where scrollbars are overlays. The installed-app check for macOS and Linux stays in `scripts/installed-check.sh`. Premium-bar rules 104 to 111 were written from a separate JavaScript version of the starter; their scripted checks are not in this one (see `references/premium-bar.md`) |
 
 ## Sources read
 
@@ -27,7 +28,7 @@ Counts: 10 constants, 35 defaults, 10 parameters, 31 lessons, 16 one-offs left b
 
 **Constants** (true for the class; owner rules marked):
 
-1. 680 MB ceiling and about 300 MB budget per app, counting the tool and its children . Proven in 2.
+1. 680 MB ceiling and about 300 MB budget per app, counting the tool and its children. Proven in 2.
 2. Premium is the owner's verdict after use; the bar is a floor. Proven in 2.
 3. Logic lives outside the page, and the page never sees a path, an executable or a flag. Proven in 2.
 4. No window an agent opens takes the owner's focus; the agent launch rules in `SKILL.md` (owner rule; the launch rules are proven in 1).
@@ -35,8 +36,8 @@ Counts: 10 constants, 35 defaults, 10 parameters, 31 lessons, 16 one-offs left b
 6. Windows installs and checks run through Explorer, because of the AppData redirect. Proven in 2.
 7. Sign-in uses the owner's standing auth rule. Proven in 0 (no build had a sign-in).
 8. Checks run locally or on the owner's Macs; no hosted workflow (owner rule). Proven in 2.
-9. One codebase on Windows, macOS and Linux; the Mac build is the same Electron app . Proven in 1.
-10. Linux is tested in containers on the Macs, never WSL . Proven in 1.
+9. One codebase on Windows, macOS and Linux; the Mac build is the same Electron app. Proven in 1.
+10. Linux is tested in containers on the Macs, never WSL. Proven in 1.
 
 **Defaults** (decided; a build may override with a recorded reason):
 

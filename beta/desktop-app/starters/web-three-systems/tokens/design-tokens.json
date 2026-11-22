@@ -2,7 +2,7 @@
   "meta": {
     "name": "Content app tokens",
     "version": 1,
-    "note": "Single source for the web build: tokens/build.mjs writes src/styles/tokens.css. Sizes are CSS px. Colours are OKLCH. Tier values are the percentage of the foreground colour mixed into transparent. Values come from the installed-app steal list (Claude Desktop, Grok Bot, Linear, Discord, Spotify), proven in 1 build."
+    "note": "Single source for the web build: tokens/build.ts writes src/styles/tokens.css. Sizes are CSS px. Colours are OKLCH. Tier values are the percentage of the foreground colour mixed into transparent. Values come from the installed-app steal list (Claude Desktop, Grok Bot, Linear, Discord, Spotify), proven in 1 build."
   },
   "color": {
     "light": {

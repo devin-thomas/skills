@@ -1,6 +1,6 @@
 #!/bin/sh
 # Turns a packaged Linux app folder into a .deb and a portable .tar.gz.
-# Started by scripts/package.mjs, normally inside a Debian container, as root.
+# Started by scripts/package.ts, normally inside a Debian container, as root.
 #
 #   make-packages.sh <out-dir> <icons-dir> <scripts-dir>
 #

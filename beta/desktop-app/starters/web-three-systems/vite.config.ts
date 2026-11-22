@@ -3,7 +3,8 @@ import tailwindcss from '@tailwindcss/vite';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-// `vite build` writes dist/, which the Electron main process serves over app://.
+// `vite build` writes dist/page/, which the Electron main process serves over app://.
+// dist/electron/ holds the main process (scripts/build-electron.ts); it is not emptied here.
 export default defineConfig(() => {
   return {
     base: './',
@@ -13,7 +14,7 @@ export default defineConfig(() => {
       tailwindcss(),
     ],
     build: {
-      outDir: 'dist',
+      outDir: 'dist/page',
       emptyOutDir: true,
       target: 'esnext',
       cssTarget: 'chrome140',
