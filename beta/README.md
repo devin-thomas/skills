@@ -8,6 +8,7 @@ Skills that work but are not released on `main` yet. They are not in the manifes
 | [watch-this-video](watch-this-video/SKILL.md) | Analyzes a video with local Whisper, terminology correction and direct visual review, and writes a timestamped evidence report. |
 | [watch-this](watch-this/SKILL.md) | Turns a video into a reusable skill, using `watch-this-video` for the evidence. Requires `watch-this-video`. |
 | [ui-library-selection](ui-library-selection/SKILL.md) | Replaces hand-built UI parts in a React and Tailwind app with established libraries, then checks the build and clicks through the result in a browser. |
+| [browser-verification](browser-verification/SKILL.md) | Reuses existing browser tooling for exploration and keeps durable checks in the project's test suite. |
 
 To install one, point your agent at this folder on the `beta` branch:
 
