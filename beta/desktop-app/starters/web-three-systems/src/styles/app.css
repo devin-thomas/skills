@@ -862,7 +862,7 @@
     box-shadow: var(--elev-low);
   }
 
-  :root[data-theme="dark"] .tab[aria-selected="true"] {
+  :root:not([data-theme="light"]) .tab[aria-selected="true"] {
     background: var(--fill-4);
   }
 

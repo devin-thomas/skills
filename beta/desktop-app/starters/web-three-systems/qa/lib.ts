@@ -57,8 +57,13 @@ export async function serve(dir: string = dist): Promise<{ url: string; close: (
   return { url: site.url.replace(/\/$/, ''), close: () => site.close() };
 }
 
+// --disable-gpu: with the GPU rasterizer the same page drew in slightly different ways from run
+// to run (in an app built from this starter, on Windows, 12 identical captures of one screen gave
+// three different pictures, a few hundred pixels of SVG icon and image edges apart). The software
+// rasterizer gave one picture in 12 of 12, so every QA capture uses it (D-023). Baselines made
+// before this change are redrawn once with `pnpm qa:visual --update`.
 export async function launch(): Promise<{ browser: Browser; channel: string }> {
-  const { browser, channel } = await launchBrowser({ envVar: 'QA_BROWSER', channels: ['msedge', 'chrome', 'bundled'], args: process.platform === 'linux' ? ['--disable-dev-shm-usage'] : [] });
+  const { browser, channel } = await launchBrowser({ envVar: 'QA_BROWSER', channels: ['msedge', 'chrome', 'bundled'], args: ['--disable-gpu', ...(process.platform === 'linux' ? ['--disable-dev-shm-usage'] : [])] });
   return { browser, channel };
 }
 
@@ -110,6 +115,19 @@ export async function openPage(browser: Browser, { width, height, scale = 1, the
       return command === 'copy';
     };
   });
+  // The app starts dark whatever the system says (D-020), so the colour scheme alone cannot open
+  // a light page: a light run stores the person's choice the way the toggle does, with the mark
+  // that says it was a choice (index.html reads both, D-022).
+  await context.addInitScript((chosen: string) => {
+    try {
+      if (!localStorage.getItem('app.theme')) {
+        localStorage.setItem('app.theme', chosen);
+        if (chosen === 'light') localStorage.setItem('app.themeChosenBy', 'user');
+      }
+    } catch {
+      // Storage unavailable: the page starts dark.
+    }
+  }, theme);
   const page = await context.newPage();
   await page.clock.setFixedTime(FIXED_TIME);
   const errors: string[] = [];

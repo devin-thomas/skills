@@ -40,7 +40,8 @@ export interface Bootstrap {
 
 export interface DesktopBridge {
   bootstrap(): Promise<Bootstrap>;
-  setTheme(theme: 'light' | 'dark'): void;
+  /** Repaints the parts of the window the system draws. `chosen` is true only when the person picked this theme; only a pick is saved. */
+  setTheme(theme: 'light' | 'dark', chosen: boolean): void;
   saveState(key: string, json: string): void;
   startJob(request: { kind: 'example' }): Promise<{ jobId: string; refused?: 'busy' }>;
   cancelJob(jobId: string): void;

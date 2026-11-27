@@ -20,6 +20,7 @@
     "qa:kill": "node qa/kill-test.ts",
     "qa:typing": "node qa/typing.ts",
     "qa:crash": "node qa/crash-test.ts",
+    "qa:theme": "node qa/theme-start.ts",
     "qa:visual": "node qa/visual.ts",
     "qa:planted": "node qa/planted-breaks.ts",
     "fuses:check": "node scripts/fuses-check.ts",

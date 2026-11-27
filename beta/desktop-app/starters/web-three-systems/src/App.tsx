@@ -27,15 +27,20 @@ type Theme = 'light' | 'dark';
 
 function useTheme(desktop: DesktopBridge): [Theme, () => void] {
   const [theme, setTheme] = useState<Theme>(() => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'));
+  // The theme is saved only when the person picks it (toggle, menu, palette), never because the
+  // page opened with one (electron/theme.ts, D-022).
+  const picked = useRef(false);
   // Keep the window's own colours (background, window-button glyphs) in step with the page.
   useEffect(() => {
-    desktop.setTheme(theme);
+    desktop.setTheme(theme, picked.current);
   }, [desktop, theme]);
   function toggle() {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';
+    picked.current = true;
     document.documentElement.dataset.theme = next;
     try {
       localStorage.setItem('app.theme', next);
+      localStorage.setItem('app.themeChosenBy', 'user');
     } catch {
       // The choice still applies for this session.
     }

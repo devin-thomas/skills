@@ -15,7 +15,8 @@
 // Fixtures (add one per state the app can be in; build 2 had one per primary
 // action in its tool's error table):
 //
-//   default             the tool is ready; a job finishes about 1.2 s after it starts
+//   default             the tool is ready; a job finishes about 1.5 s after it starts, its last
+//                       stage (saving) shown for 400 ms (premium-bar rule 9: at least 300)
 //   damaged             the tool did not answer at launch
 //   job-running         a job starts at once and holds at 40% with time remaining
 //   job-unknown-total   a job runs with no known total (indeterminate)
@@ -90,7 +91,7 @@ export function createFakeBridge(storagePrefix: string): DesktopBridge {
         later(400, () => step(0.35, null));
         later(800, () => step(0.8, null));
         later(1100, () => step(0.99, null, 'publishing'));
-        later(1200, () => emit({ jobId, state: 'done', bytes: 15 }));
+        later(1500, () => emit({ jobId, state: 'done', bytes: 15 }));
       });
       return { jobId };
     },

@@ -3,23 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="dark" />
     <title>Starter</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%231c1c1b'/%3E%3C/svg%3E" />
     <script>
-      // Set the theme before first paint so the window never flashes the wrong colour.
-      // The desktop shell names the theme it painted the window with in the address
-      // (#theme=dark), read from its own saved window state, which a kill cannot lose;
-      // a plain browser falls back to localStorage. With no saved choice the theme is dark, whatever
-      // the system's setting is (D-020).
+      // Set the theme before first paint so the window never flashes the wrong colour. The page
+      // is dark with or without this script: the stylesheet's default is the dark theme, and this
+      // only ever adds light, for a choice the person made. The desktop shell names the theme it
+      // painted the window with in the address (#theme=light), from its own saved window state,
+      // which a kill cannot lose, and only a picked light reaches it (electron/theme.ts). A plain
+      // browser reads localStorage, where light counts only beside app.themeChosenBy = "user".
+      // The system's setting is never read (D-020, D-022).
       (function () {
-        var theme = null;
+        var theme = 'dark';
         var named = /(?:^#|&)theme=(light|dark)(?:&|$)/.exec(location.hash);
         if (named) theme = named[1];
-        else try { theme = localStorage.getItem('app.theme'); } catch (e) {}
-        if (theme !== 'light' && theme !== 'dark') {
-          theme = 'dark';
-        }
+        else try {
+          if (localStorage.getItem('app.theme') === 'light' && localStorage.getItem('app.themeChosenBy') === 'user') theme = 'light';
+        } catch (e) {}
         document.documentElement.dataset.theme = theme;
       })();
     </script>

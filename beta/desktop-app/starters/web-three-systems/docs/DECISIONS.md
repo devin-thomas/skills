@@ -80,7 +80,7 @@ The control channel is `@uppercut-labs/electron-control-channel` (`electron/cont
 
 ## D-020 Desktop apps are dark by default
 
-Owner, 2026-11-21. A generated app starts dark on first run and with any fresh data folder, whatever the operating system's theme is. Light is a choice the person made and the app saved; the saved choice wins on every later start. `electron/theme.ts` holds the one rule (`initialTheme`), `electron/window.ts` paints the window with it, and `index.html` sets the page the same way before first paint (the shell names its theme in the address, a plain browser reads `localStorage`, and with neither the theme is dark). The system setting is never read. `test/dark-default.test.ts` fails when a fresh profile renders anything but dark, with the operating system set to light. The QA helpers open pages dark, and a critique round (`pnpm qa:shots --quick`) photographs dark alone; the audit still checks both themes, because light stays available.
+Owner, 2026-11-21. A generated app starts dark on first run and with any fresh data folder, whatever the operating system's theme is. Light is a choice the person made and the app saved; the saved choice wins on every later start. `electron/theme.ts` holds the one rule (`resolveTheme`, which D-022 narrowed), `electron/window.ts` paints the window with it, and `index.html` sets the page the same way before first paint (the shell names its theme in the address, a plain browser reads `localStorage`, and with neither the theme is dark). The system setting is never read. `test/dark-default.test.ts` fails when a fresh profile renders anything but dark, with the operating system set to light. The QA helpers open pages dark, and a critique round (`pnpm qa:shots --quick`) photographs dark alone; the audit still checks both themes, because light stays available.
 
 ## D-021 Rules 104 to 111 are built in, each with a check that fails when it is broken
 
@@ -91,6 +91,23 @@ Owner, 2026-11-21. A generated app starts dark on first run and with any fresh d
 - **Baselines.** Per system, because each system draws fonts its own way, in `qa/baselines/<system>/`. The starter keeps none (`.gitignore`); an app removes that line and commits its own after reviewing the pictures. The threshold is 0.02 with anti-aliasing excluded, and a picture fails above 0.05% changed pixels: 0.1, the library's default, cannot see the design's smallest step.
 - **Crash loop.** More than 3 renderer crashes in 60 s stop the reloads. The notice that tells the person is never shown under `--no-activate`, because a dialog would take focus.
 
+## D-022 A saved light theme counts only if the person picked it
+
+2026-11-27, from an app built from this starter. A freshly installed copy of that app opened light on a dark system. Its first-paint script had not run, so the page painted light and then told the window its theme, as the page does at every start, and the shell saved what it was told: `window.json` held `"theme":"light"` though nobody had chosen it, and D-020's "a saved choice wins" kept it. This starter's script does run, but the flaw is the same: the shell cannot tell a choice from an echo. Now:
+
+- A theme counts as the person's only beside `themeChosenBy: "user"` in `window.json`. Only the toggle, the menu item and the palette entry save it (`setTheme(theme, chosen)` in the bridge, the shell's `app:theme` handler with `chosenPatch`); the page reporting the theme it opened with saves nothing. A saved light without the mark opens dark and the file is rewritten (`resolveTheme`, `resetPatch` in `electron/theme.ts`). A plain browser keeps its pick in `app.theme` beside `app.themeChosenBy` the same way.
+- The first paint is dark with no script at all: the generated stylesheet's default (`:root`) is the dark theme, light applies only through `data-theme="light"` (`tokens/build.ts`), the colour-scheme meta says dark, and the script in `index.html` can only add light, for a marked pick.
+- `nativeTheme.themeSource` follows the app's theme, so menus, scrollbars and the frame do not follow the system.
+- The QA helpers open a light page by storing a marked pick (`qa/lib.ts`). Before this, since D-020, a light run only set the browser's colour scheme, which the page ignores, so every "light" audit run and light screenshot rendered dark.
+- Checks: `test/dark-default.test.ts` (the rule's cases, the shell saving only a pick, the page with scripts off, an unmarked saved light opening dark) and `pnpm qa:theme` (`qa/theme-start.ts`): the real shell on four data folders (unmarked light, marked light, fresh, dark), reading the window's colour, `nativeTheme`, the page's theme and `window.json` afterwards.
+
+## D-023 QA captures use the software rasterizer; a running job is sampled every frame
+
+2026-11-27, from an app built from this starter.
+
+- **Rasterizer.** That app's `qa:visual` failed now and then on a few hundred pixels of icon and image edges. On Windows, 12 identical captures of one screen gave three different pictures with the GPU rasterizer and one with `--disable-gpu`, so every QA browser launch passes it (`qa/lib.ts`). On this starter on macOS the largest change between runs stayed about the same (0.013% after, 0.015% before), within the 0.05% limit; the gain shown is on Windows. Baselines made before the change are redrawn once with `qa:visual --update`, after review.
+- **Progress gate.** The same app showed a long job with its stage, a meter, the time left and Cancel, and checked them on a live run. The audit's `progress` gate does the same for the starter's job: it samples the status bar every frame, with and without reduced motion, and fails when the meter goes back or reads 100% before the outcome, a stage shows for under 300 ms, Cancel is missing while the job runs, time left is not coarse words, an unknown total shows a number, or anything in the status bar animates under reduced motion (rules 9, 22, 65, 66). The stand-in's save stage now lasts 400 ms: it lasted 100 ms, which rule 9 does not allow and which the gate caught. An app gives its stand-in the tool's real stages, or the gate checks only the stand-in.
+
 ## Preferences ledger
 
-Every preference the app offers is listed here with the reason a default could not serve. The starter has one: the theme, which starts dark and keeps a person's saved choice (D-020).
+Every preference the app offers is listed here with the reason a default could not serve. The starter has one: the theme, which starts dark and keeps a person's own pick (D-020, D-022).

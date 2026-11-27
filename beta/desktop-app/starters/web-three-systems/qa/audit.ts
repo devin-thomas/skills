@@ -42,6 +42,9 @@
 //   job        cancel is acknowledged at once; each failure's filled button can succeed for
 //              its cause; "Copy details" copies the developer text without showing it, into
 //              a clipboard the audit captures (never the machine's) [50, 58, 65, 73]
+//   progress   a live job sampled every frame, with and without reduced motion: the meter never
+//              goes back or reads 100% early, a shown stage stays 300 ms, Cancel stays, time
+//              left is coarse words, an unknown total shows no number [9, 22, 65, 66]
 //
 // The states, the journey scripts, the shortcut effects and the job fixtures below
 // describe the starter screen. Rewrite those blocks for the app; the gates stay.
@@ -139,6 +142,7 @@ interface Gates {
   tokens?: { filesRead: number; linesRead: number; themes: string[] };
   overlay?: Record<string, { query: string | null; body: string }>;
   job?: JobGate;
+  progress?: Record<string, unknown>;
 }
 interface Report {
   generatedFor: string;
@@ -1286,6 +1290,126 @@ async function jobGate() {
   report.gates.job = out;
 }
 
+// ------------------------------------------------------------- progress ---
+// The running job as a person sees it, sampled every frame of a live run on the stand-in
+// bridge, once with reduced motion off and once with it on: the meter never goes back and never
+// reads 100% before the outcome; a stage, once shown, stays at least 300 ms; Cancel is there for
+// as long as the job runs; time left is coarse words; an unknown total shows no number; and
+// nothing in the status bar animates under reduced motion. The stand-in's timing stands in for
+// the tool's, so an app keeps this gate honest by giving its stand-in the tool's real stages.
+
+interface ProgressSample {
+  t: number;
+  job: string | null;
+  text: string;
+  scale: number | null;
+  valuenow: string | null;
+  cancel: boolean;
+  animations: number;
+}
+
+/** Samples the status bar every frame from now until the job's outcome or `ms` pass. */
+const sampleJob = (page: Page, ms: number): Promise<ProgressSample[]> =>
+  page.evaluate(
+    (limit) =>
+      new Promise<ProgressSample[]>((resolve) => {
+        const out: ProgressSample[] = [];
+        const begun = performance.now();
+        let seenRunning = false;
+        const read = () => {
+          const bar = document.querySelector('[data-status-bar]');
+          const meter = bar?.querySelector<HTMLElement>('[role="progressbar"]');
+          const fill = meter?.querySelector<HTMLElement>('span');
+          const scale = fill ? Number(/scaleX\(([\d.]+)\)/.exec(fill.style.transform)?.[1] ?? Number.NaN) : null;
+          const job = bar?.getAttribute('data-job') ?? null;
+          if (job === 'running') seenRunning = true;
+          out.push({
+            t: Math.round(performance.now() - begun),
+            job,
+            text: bar?.querySelector('[data-status-text]')?.textContent ?? '',
+            scale,
+            valuenow: meter?.getAttribute('aria-valuenow') ?? null,
+            cancel: [...(bar?.querySelectorAll('button') ?? [])].some((b) => (b.textContent ?? '').trim() === 'Cancel'),
+            animations: bar ? document.getAnimations().filter((a) => a.playState === 'running' && a.effect instanceof KeyframeEffect && a.effect.target instanceof Node && bar.contains(a.effect.target)).length : 0,
+          });
+          if ((seenRunning && job !== 'running') || performance.now() - begun > limit) resolve(out);
+          else requestAnimationFrame(read);
+        };
+        read();
+      }),
+    ms,
+  );
+
+async function progressGate() {
+  const out: Record<string, unknown> = {};
+  for (const reducedMotion of ['no-preference', 'reduce'] as const) {
+    const label = reducedMotion === 'reduce' ? 'reduced motion' : 'motion';
+    const { context, page } = await openPage(browser, { ...VIEW, reducedMotion });
+    await load(page, url, 'default');
+    const sampled = sampleJob(page, 6000);
+    await page.keyboard.press('Control+Shift+E');
+    const samples = (await sampled).filter((s, i, all) => s.job === 'running' || all.slice(0, i).some((p) => p.job === 'running'));
+    const running = samples.filter((s) => s.job === 'running');
+    const last = samples.at(-1);
+    if (last?.job !== 'done') fail('progress', `${label}: the job ended as "${last?.job}", not done, after ${last?.t} ms`);
+    if (running.length < 20) fail('progress', `${label}: the running job was seen in only ${running.length} frames`);
+    for (let i = 1; i < running.length; i++) {
+      const a = running[i - 1]!;
+      const b = running[i]!;
+      if (a.scale !== null && b.scale !== null && b.scale < a.scale - 1e-9) fail('progress', `${label}: the meter went back from ${a.scale} to ${b.scale} at ${b.t} ms`);
+      if (a.valuenow !== null && b.valuenow !== null && Number(b.valuenow) < Number(a.valuenow)) fail('progress', `${label}: the value went back from ${a.valuenow} to ${b.valuenow} at ${b.t} ms`);
+    }
+    if (running.some((s) => (s.scale ?? 0) >= 1 || Number(s.valuenow ?? 0) >= 100 || /100%/.test(s.text))) fail('progress', `${label}: the meter read 100% before the outcome`);
+    if (!running.some((s) => (s.scale ?? 0) > 0)) fail('progress', `${label}: the meter never moved`);
+    if (running.some((s) => !s.cancel)) fail('progress', `${label}: Cancel was missing from the status bar while the job ran`);
+    // A stage is the sentence without its numbers. Each one shown stays at least 300 ms; one frame
+    // of sampling is allowed for, so 280.
+    const stage = (s: ProgressSample) => s.text.replace(/:.*$/, '');
+    const runs: { label: string; from: number; to: number }[] = [];
+    for (const s of samples) {
+      const now = runs.at(-1);
+      if (s.job !== 'running') {
+        if (now) now.to = s.t;
+        break;
+      }
+      if (now && now.label === stage(s)) now.to = s.t;
+      else {
+        if (now) now.to = s.t;
+        runs.push({ label: stage(s), from: s.t, to: s.t });
+      }
+    }
+    for (const r of runs) if (r.to - r.from < 280) fail('progress', `${label}: the stage "${r.label}" showed for only ${r.to - r.from} ms`);
+    if (reducedMotion === 'reduce') {
+      const moving = Math.max(0, ...samples.map((s) => s.animations));
+      if (moving > 0) fail('progress', `reduced motion: ${moving} animations ran in the status bar during the job`);
+      if (new Set(running.map((s) => s.scale)).size < 3) fail('progress', 'reduced motion: the meter did not keep moving');
+    }
+    out[label] = { frames: samples.length, runningFrames: running.length, stages: runs.map((r) => `${r.label} ${r.to - r.from} ms`), endedAs: last?.job };
+    await context.close();
+  }
+  // Time left is coarse words, and an unknown total shows no number.
+  for (const [fixture, expect] of [
+    ['job-running', /^Running the example: \d+%, (less than a minute|about a minute|about \d+ minutes) left$/],
+    ['job-unknown-total', /^Running the example$/],
+  ] as const) {
+    const { context, page } = await openPage(browser, VIEW);
+    await load(page, url, fixture);
+    await runJob(page, 'running');
+    // The page shows the job as running at once; the stand-in's first report follows.
+    if (fixture === 'job-running') await page.waitForFunction(() => /%/.test(document.querySelector('[data-status-text]')?.textContent ?? ''), null, { timeout: 3000 }).catch(() => {});
+    const seen = await page.evaluate(() => {
+      const meter = document.querySelector('[data-status-bar] [role="progressbar"]');
+      return { text: document.querySelector('[data-status-text]')?.textContent ?? '', valuenow: meter?.getAttribute('aria-valuenow') ?? null, indeterminate: meter?.hasAttribute('data-indeterminate') ?? false };
+    });
+    if (!expect.test(seen.text)) fail('progress', `${fixture}: the status reads "${seen.text}"`);
+    if (fixture === 'job-unknown-total' && (seen.valuenow !== null || !seen.indeterminate)) fail('progress', `${fixture}: an unknown total shows a value (${seen.valuenow}) or is not marked indeterminate`);
+    if (fixture === 'job-running' && seen.valuenow === null) fail('progress', `${fixture}: the meter has no value for assistive technology`);
+    out[fixture] = seen;
+    await context.close();
+  }
+  report.gates.progress = out;
+}
+
 // ------------------------------------------------------------------ run ---
 
 try {
@@ -1301,6 +1425,7 @@ try {
   await shortcutsGate();
   await overlayGate();
   await jobGate();
+  await progressGate();
 } catch (error) {
   fail('audit', `the audit itself failed: ${(error instanceof Error ? (error.stack ?? error.message) : String(error)).split('\n').slice(0, 3).join(' ')}`);
 } finally {
@@ -1324,6 +1449,7 @@ console.log(`restore    ${g.restore ? `reload ${g.restore.restoredAfterReload}, 
 console.log(`journeys   ${g.journeys ? Object.entries(g.journeys).map(([id, j]) => `${id} ${j.steps}/${j.stepBudget} steps`).join(', ') : 'not run'}`);
 console.log(`shortcuts  ${g.shortcuts ? Object.entries(g.shortcuts).map(([p, r]) => `${p}: ${r.withShortcut} of ${r.commands} commands, ${r.worked.length} worked`).join('; ') : 'not run'}`);
 console.log(`overlay    ${g.overlay ? Object.entries(g.overlay).map(([p, r]) => `${p}: typed into the palette "${r.query}"`).join('; ') : 'not run'}`);
+console.log(`progress   ${g.progress ? Object.entries(g.progress).filter(([, v]) => (v as { stages?: string[] }).stages).map(([k, v]) => `${k}: ${(v as { stages: string[] }).stages.join(', ')}`).join('; ') : 'not run'}`);
 console.log(`job        ${g.job ? `cancel acknowledged as "${g.job.cancelAcknowledged}", ${Object.keys(g.job).length - 2} failure fixtures, repeated failure "${g.job.secondFailure?.text ?? ''}"` : 'not run'}`);
 if (failures.length) {
   console.error(`\naudit FAILED: ${failures.length} failure(s)`);

@@ -38,6 +38,7 @@ import * as control from './control.ts';
 import type { Channel, Reply } from './control.ts';
 import { ROOT } from './paths.ts';
 import type { Colours } from './platform.ts';
+import { chosenPatch } from './theme.ts';
 import * as appShell from './shell.ts';
 import { createNative } from './tool/index.ts';
 import type { SavedWindow } from './window.ts';
@@ -255,10 +256,13 @@ function registerIpc(): void {
   ipcMain.on('app:save-state', (event, key: unknown, json: unknown) => {
     if (trusted(event)) writeSavedState(key, json);
   });
-  ipcMain.on('app:theme', (event, theme: unknown) => {
+  // The page tells the window its theme so the parts the system draws match it. Only the person's
+  // own pick (chosen: true) is saved, with the mark that says so (electron/theme.ts, D-022); the
+  // page telling the window what it opened with saves nothing.
+  ipcMain.on('app:theme', (event, theme: unknown, chosen: unknown) => {
     if (!trusted(event) || (theme !== 'light' && theme !== 'dark') || !win || win.isDestroyed()) return;
     appShell.applyTheme(win, theme, { config, colours: COLOURS });
-    writeState({ theme });
+    if (chosen === true) writeState(chosenPatch(theme));
   });
 }
 

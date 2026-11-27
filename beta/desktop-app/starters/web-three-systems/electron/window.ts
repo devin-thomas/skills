@@ -4,13 +4,13 @@
 // What differs per system comes from platform.ts.
 import fs from 'node:fs';
 import path from 'node:path';
-import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron';
+import { app, BrowserWindow, dialog, Menu, nativeTheme, screen, shell } from 'electron';
 import type { BrowserWindowConstructorOptions, MenuItemConstructorOptions, Point, Rectangle } from 'electron';
 import * as placement from './bounds.ts';
 import * as platform from './platform.ts';
 import type { AppConfig, Colours, Facts, Theme } from './platform.ts';
 import * as shellMenu from './menu.ts';
-import { initialTheme } from './theme.ts';
+import { resetPatch, resolveTheme } from './theme.ts';
 
 // The default and minimum window come from app.config.json (`window`). The audit lays the
 // page out at exactly these sizes (qa/audit.ts), so the two can never disagree.
@@ -70,6 +70,7 @@ const CRASH_WINDOW_MS = 60_000;
 /** The saved window state main.ts keeps in window.json. */
 export interface SavedWindow {
   theme?: unknown;
+  themeChosenBy?: unknown;
   bounds?: unknown;
 }
 
@@ -98,8 +99,13 @@ export interface CreateOptions {
 export function create({ config, origin, colours, preload, saved, save, inactive }: CreateOptions): BrowserWindow {
   const facts = platform.facts(app);
   const size = sizes(config);
-  // Dark unless the person saved light (electron/theme.ts, D-020). The system's setting is not read.
-  const theme: Theme = initialTheme(saved.theme);
+  // Dark unless the person picked light (electron/theme.ts, D-020, D-022). The system's setting is
+  // not read. A saved light theme that was never a pick is reset to dark here, in the file too.
+  const resolved = resolveTheme(saved);
+  const theme: Theme = resolved.theme;
+  if (resolved.reset) save(resetPatch());
+  // The system's own parts (menus, scrollbars, the window frame) follow the app, not the system.
+  nativeTheme.themeSource = theme;
   const place = initialBounds(saved.bounds, facts, size);
   const initial = place.bounds;
   // Windows activates a window it maximizes (ShowWindow with SW_MAXIMIZE has no inactive form),
@@ -275,6 +281,7 @@ export function create({ config, origin, colours, preload, saved, save, inactive
 export function applyTheme(win: BrowserWindow | null, theme: unknown, { config, colours }: { config: AppConfig; colours: Colours }): void {
   if (!win || win.isDestroyed() || (theme !== 'light' && theme !== 'dark')) return;
   if (chosen) chosen.theme = theme; // a reload after a renderer crash opens in this theme
+  nativeTheme.themeSource = theme;
   win.setBackgroundColor(colours.chrome[theme]);
   // The traffic lights on macOS colour themselves; elsewhere the glyph colour is ours.
   if (platform.facts(app).overlayColours) win.setTitleBarOverlay({ color: '#00000000', symbolColor: colours.symbol[theme], height: platform.barHeight(config) });
@@ -304,6 +311,8 @@ const PAGE_PROBE = `(() => {
     displayModes: modes,
     pageBar: box ? { x: box.x, y: box.y, width: box.width, height: box.height } : null,
     dark: matchMedia('(prefers-color-scheme: dark)').matches,
+    theme: document.documentElement.dataset.theme ?? null,
+    pageBackground: getComputedStyle(document.body).backgroundColor,
     focused: document.hasFocus(),
   };
 })()`;
@@ -320,6 +329,10 @@ export interface PageProbe {
   displayModes: string[];
   pageBar: Rectangle | null;
   dark: boolean;
+  /** the theme the page is in (data-theme on the root element) */
+  theme: string | null;
+  /** the page's own background, as the browser computes it */
+  pageBackground: string;
   focused: boolean;
 }
 
@@ -337,6 +350,10 @@ export interface WindowDescription {
   windowButtonPosition?: Point | null;
   mediaSourceId?: string;
   display?: { id: number; scaleFactor: number; hz: number; workArea: Rectangle; primary: boolean };
+  /** The colour the system paints the window with around and before the page, as the window reports it now. */
+  backgroundColor?: string;
+  /** What the app told the system's own parts (menus, scrollbars, frame) to follow. */
+  nativeTheme?: { themeSource: string };
   /** The probe's answer, or why there is none. */
   page?: Partial<PageProbe> & { error?: string };
 }
@@ -361,6 +378,8 @@ export async function describe(win: BrowserWindow | null): Promise<WindowDescrip
     fullScreen: win.isFullScreen(),
     bounds: win.getBounds(),
     contentBounds: win.getContentBounds(),
+    backgroundColor: win.getBackgroundColor(),
+    nativeTheme: { themeSource: nativeTheme.themeSource },
     // macOS only: where the traffic lights are now.
     windowButtonPosition: typeof win.getWindowButtonPosition === 'function' ? win.getWindowButtonPosition() : null,
     // The system's id for the window ("window:<id>:0"), for a display-level screenshot of just this window.

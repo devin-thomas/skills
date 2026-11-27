@@ -27,7 +27,7 @@ type Result<K extends keyof DesktopBridge> = Awaited<ReturnType<DesktopBridge[K]
 contextBridge.exposeInMainWorld('desktop', {
   /** Saved state, the system, the app version and data folder, and the tool's status. */
   bootstrap: () => ipcRenderer.invoke('app:bootstrap') as Promise<Result<'bootstrap'>>,
-  setTheme: (theme) => ipcRenderer.send('app:theme', theme),
+  setTheme: (theme, chosen) => ipcRenderer.send('app:theme', theme, chosen),
   /** Saved at once by the main process, so unsaved work survives the app being killed. */
   saveState: (key, json) => ipcRenderer.send('app:save-state', key, json),
 
